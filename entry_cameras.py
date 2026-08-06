@@ -1574,7 +1574,7 @@ class CameraWorker:
             if frame_count % DETECTION_INTERVAL == 0:
                 faces       = face_app.get(frame)
                 new_tracked = []
-
+                print(f"[{self.cam_id}] frame={frame_count} faces={len(faces)}", flush=True)
                 for face in faces:
                     x1, y1, x2, y2       = map(int, face.bbox)
                     best_name, best_score = recognize_face(face.embedding)
