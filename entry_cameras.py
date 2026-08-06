@@ -1171,12 +1171,12 @@ RTSP_CAMERAS = [
         "user_id": "admin",
         "user_pw": "Tts@110092",
     },
-    {
-        "id":      "Entry-3",
-        "url":     "rtsp://192.168.1.107:554/video/live?channel=1&subtype=1",
-        "user_id": "admin",
-        "user_pw": "Tts@110092",
-    },
+    # {
+    #     "id":      "Entry-3",
+    #     "url":     "rtsp://192.168.1.107:554/video/live?channel=1&subtype=1",
+    #     "user_id": "admin",
+    #     "user_pw": "Tts@110092",
+    # },
     {
         "id":      "Entry-4",
         "url":     "rtsp://192.168.1.106:554/video/live?channel=1&subtype=1",
