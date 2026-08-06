@@ -862,6 +862,12 @@ _mem_cache      = {}
 _mem_cache_lock = threading.Lock()
 _cache_date     = None
 
+# Guards the check-then-write in mark_attendance()/mark_exit() — without
+# this, two cameras (or two duplicate camera processes) recognizing the same
+# person within the same instant could both pass the "not already marked"
+# check before either writes, producing duplicate Present/Exit rows.
+_mark_lock = threading.Lock()
+
 
 def _mem_get(name: str):
     with _mem_cache_lock:
@@ -1317,20 +1323,22 @@ def mark_attendance(name, camera_id, confidence=None, photo_path=None,
 
     _mem_reset_if_new_day()
 
-    if _get_effective_status(name) == "Present":
-        return "already_present"
+    with _mark_lock:
+        if _get_effective_status(name) == "Present":
+            return "already_present"
 
-    _local_insert(
-        name,
-        now.date().isoformat(),
-        now.strftime("%H:%M:%S"),
-        "Present",
-        camera_id,
-        confidence,
-        photo_path,
-    )
+        _local_insert(
+            name,
+            now.date().isoformat(),
+            now.strftime("%H:%M:%S"),
+            "Present",
+            camera_id,
+            confidence,
+            photo_path,
+        )
 
-    _mem_set(name, "Present")
+        _mem_set(name, "Present")
+
     with present_cache_lock:
         present_cache.add(name)
 
@@ -1343,20 +1351,22 @@ def mark_exit(name, camera_id, confidence=None, photo_path=None):
 
     _mem_reset_if_new_day()
 
-    if _get_effective_status(name) != "Present":
-        return "not_inside"
+    with _mark_lock:
+        if _get_effective_status(name) != "Present":
+            return "not_inside"
 
-    _local_insert(
-        name,
-        now.date().isoformat(),
-        now.strftime("%H:%M:%S"),
-        "Exit",
-        camera_id,
-        confidence,
-        photo_path,
-    )
+        _local_insert(
+            name,
+            now.date().isoformat(),
+            now.strftime("%H:%M:%S"),
+            "Exit",
+            camera_id,
+            confidence,
+            photo_path,
+        )
 
-    _mem_set(name, "Exit")
+        _mem_set(name, "Exit")
+
     with present_cache_lock:
         present_cache.discard(name)
 
@@ -1718,6 +1728,18 @@ def _sync_loop():
 
                     # Supabase smart logic
                     sb_status = _supabase_last_status_today(cur, name)
+
+                    # GUARD: Exit kabhi bhi push mat karo jab tak Supabase mein
+                    # Present already na dikhe — warna agar us employee ka
+                    # Present row abhi tak sync nahi hua (pichli cycle fail/
+                    # pending), toh Exit akela chala jaata: "entry missing,
+                    # exit marked" bug. Row ko PENDING hi chhodo (mark_synced
+                    # mat karo) — Present sync hone ke baad agli cycle mein
+                    # yeh khud-ba-khud push ho jaayega.
+                    if status == "Exit" and sb_status != "Present":
+                        print(f"[sync] DEFER (entry not synced yet) → {name} | Exit | {row['att_time']}")
+                        continue
+
                     if not _should_push(sb_status, status):
                         print(f"[sync] SMART SKIP → {name} | Supabase={sb_status} | incoming={status}")
                         _local_mark_synced(row["id"])
