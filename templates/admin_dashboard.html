@@ -622,43 +622,61 @@ $("empSave").addEventListener("click", async ()=>{
     fd.append("password",$("f-password").value);
   }
 
-  const res  = await fetch(id?`/api/portal/employees/${id}`:"/api/portal/employees",
-                           {method:id?"PUT":"POST", body:fd});
-  const data = await res.json();
+  // try/catch/finally — pehle agar server 500 (ya koi non-JSON response)
+  // deta tha, res.json() throw kar deta tha aur neeche wala button-reset
+  // code KABHI chalta hi nahi tha — button hamesha ke liye "Saving…" pe
+  // atka reh jaata tha. Ab finally block GUARANTEE karta hai reset chahe
+  // kuch bhi ho (network error, non-JSON response, ya koi bhi exception).
+  try {
+    const res = await fetch(id?`/api/portal/employees/${id}`:"/api/portal/employees",
+                             {method:id?"PUT":"POST", body:fd});
 
-  $("empSaveLabel").textContent = id?"Update Employee":"Save Employee";
-  $("empSave").disabled=false;
+    let data = null;
+    try { data = await res.json(); }
+    catch { /* server ne JSON nahi bheja — e.g. 500 error HTML page */ }
 
-  if(!res.ok){
-    $("empErr").textContent=data.error||"Failed";
+    if(!res.ok){
+      $("empErr").textContent = data?.error || `Server error (${res.status}) — check server logs.`;
+      $("empErr").style.display="block";
+      return;
+    }
+    if(!data){
+      $("empErr").textContent = "Server se unexpected response mila.";
+      $("empErr").style.display="block";
+      return;
+    }
+
+    // Embedding result show karo
+    if(data.embedded !== undefined){
+      const msg = data.embedded > 0
+        ? `✅ ${data.embedded} face embedding${data.embedded>1?"s":""} generated from ${data.photos} photo${data.photos>1?"s":""}. Camera will recognize this employee within 10 seconds.`
+        : `⚠️ ${data.photos} photo${data.photos>1?"s":""} saved but no face detected. Upload clear front-facing photos.`;
+      $("embResult").textContent=msg;
+      $("embResult").style.display="block";
+      $("embResult").style.background = data.embedded>0?"var(--teal-dim)":"var(--amber-dim)";
+      $("embResult").style.color       = data.embedded>0?"var(--teal)":"var(--amber)";
+      $("embResult").style.borderColor = data.embedded>0?"rgba(53,208,168,.3)":"rgba(240,184,86,.3)";
+    }
+
+    if(data.warnings && data.warnings.length){
+      $("empWarn").textContent = data.warnings.join(" | ");
+      $("empWarn").style.display="block";
+    }
+
+    // Agar no issues, modal close karo
+    if(!data.warnings?.length && data.embedded > 0){
+      setTimeout(()=>$("empModal").classList.remove("open"), 1800);
+    }
+
+    toast(id?"Employee updated ✅":"Employee added ✅");
+    loadEmployees();
+  } catch (err) {
+    $("empErr").textContent = "Request failed — " + (err?.message || "network error");
     $("empErr").style.display="block";
-    return;
+  } finally {
+    $("empSaveLabel").textContent = id?"Update Employee":"Save Employee";
+    $("empSave").disabled=false;
   }
-
-  // Embedding result show karo
-  if(data.embedded !== undefined){
-    const msg = data.embedded > 0
-      ? `✅ ${data.embedded} face embedding${data.embedded>1?"s":""} generated from ${data.photos} photo${data.photos>1?"s":""}. Camera will recognize this employee within 10 seconds.`
-      : `⚠️ ${data.photos} photo${data.photos>1?"s":""} saved but no face detected. Upload clear front-facing photos.`;
-    $("embResult").textContent=msg;
-    $("embResult").style.display="block";
-    $("embResult").style.background = data.embedded>0?"var(--teal-dim)":"var(--amber-dim)";
-    $("embResult").style.color       = data.embedded>0?"var(--teal)":"var(--amber)";
-    $("embResult").style.borderColor = data.embedded>0?"rgba(53,208,168,.3)":"rgba(240,184,86,.3)";
-  }
-
-  if(data.warnings && data.warnings.length){
-    $("empWarn").textContent = data.warnings.join(" | ");
-    $("empWarn").style.display="block";
-  }
-
-  // Agar no issues, modal close karo
-  if(!data.warnings?.length && data.embedded > 0){
-    setTimeout(()=>$("empModal").classList.remove("open"), 1800);
-  }
-
-  toast(id?"Employee updated ✅":"Employee added ✅");
-  loadEmployees();
 });
 
 async function regen(id){

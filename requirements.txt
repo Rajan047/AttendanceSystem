@@ -9,11 +9,13 @@ Werkzeug>=3.0
 psycopg2-binary>=2.9
 gunicorn>=21.0            # production WSGI server (Render uses this via Procfile)
 
-# --- Face recognition (ONLY needed on the camera machine / DGX) ---
-# On Render (dashboard-only), you can comment these out to keep the build light.
-# The admin "add employee -> generate embedding" step also needs these, so run
-# employee enrollment on the DGX (same box as the cameras), not on Render.
+# --- Face recognition (needed here too — admin panel enrollment can run
+#     from Render now, not just the Jetson; face_embedding.py always uses
+#     CPU-only inference so it works without a GPU) ---
 numpy>=1.24
 opencv-python>=4.8
 insightface>=0.7.3
-onnxruntime-gpu>=1.16    # on Jetson use the NVIDIA wheel; on CPU-only use onnxruntime
+onnxruntime>=1.16    # CPU-only package — Render has no GPU. The Jetson's
+                     # camera processes use their own separately-managed
+                     # conda env with onnxruntime-gpu; this file doesn't
+                     # affect them.
