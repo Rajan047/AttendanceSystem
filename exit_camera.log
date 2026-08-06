@@ -283,3 +283,17 @@ onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL 
 [ WARN:1@3204.073] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30047.360205 ms
 [ WARN:1@3234.125] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30043.486235 ms
 [ WARN:1@3264.206] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30042.060347 ms
+Exception in thread supabase-sync-worker:
+Traceback (most recent call last):
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/home/cyamsys/Documents/HR_attendance/db.py", line 1691, in _sync_loop
+    print(f"[sync] {len(pending)} pending row(s) — Supabase push shuru ...")
+  File "/home/cyamsys/Documents/HR_attendance/db.py", line 1625, in _has_client_uuid_column
+    if supabase_status is None:
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/psycopg2/extras.py", line 236, in execute
+    return super().execute(query, vars)
+psycopg2.DatabaseError: could not send data to server: Connection timed out
+
