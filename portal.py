@@ -377,6 +377,8 @@ def api_update_employee(emp_id):
         if single and single.filename:
             photos = [single]
 
+    resp = {"ok": True}
+
     if photos and any(p.filename for p in photos):
         emp = auth_db.get_employee(emp_id)
         if emp:
@@ -387,8 +389,17 @@ def api_update_employee(emp_id):
             if result["first_photo"] and not emp.get("photo_path"):
                 fields["photo_path"] = result["first_photo"]
 
+            # Add-employee jaisa hi response shape — taaki frontend ka
+            # "✅ N embeddings generated" confirmation edit pe bhi dikhe,
+            # pehle sirf {"ok": true} aata tha, koi feedback nahi milta tha.
+            resp["photos"]   = result["saved"]
+            resp["embedded"] = result["embedded"]
+            resp["failed"]   = result["failed"]
+            if result["warnings"]:
+                resp["warnings"] = result["warnings"]
+
     auth_db.update_employee(emp_id, **fields)
-    return jsonify({"ok": True})
+    return jsonify(resp)
 
 
 @portal.route("/api/portal/employees/<int:emp_id>/regenerate-embedding", methods=["POST"])
