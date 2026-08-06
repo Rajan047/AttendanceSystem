@@ -34,11 +34,16 @@ def _get_face_app():
     global _face_app
     if _face_app is None:
         from insightface.app import FaceAnalysis
-        # NOTE: on the Render web server there's no GPU — fall back to CPU.
-        # On the DGX/local server you can force CUDA. We try CUDA then CPU.
-        providers = ["CUDAExecutionProvider", "CPUExecutionProvider"]
+        # CPU-only, always. entry_cameras.py / exit_camera.py run continuously
+        # on this same box's GPU (Jetson — one shared GPU, not a datacenter
+        # box). A second CUDA context here regularly fails with
+        # CUDNN_STATUS_NOT_INITIALIZED while the cameras are running (onnx
+        # doesn't gracefully fall back to CPU on that error — it just raises).
+        # Enrollment is a one-off admin action, not latency-critical, so CPU
+        # is the reliable choice here even though it's a bit slower per photo.
+        providers = ["CPUExecutionProvider"]
         app = FaceAnalysis(name="buffalo_l", providers=providers)
-        app.prepare(ctx_id=0, det_size=(320, 320))
+        app.prepare(ctx_id=-1, det_size=(320, 320))
         _face_app = app
     return _face_app
 
@@ -67,6 +72,19 @@ def add_to_pickle(name, embedding, embeddings_file=None):
     Append `embedding` under `name` in embeddings.pkl, matching the
     { name: [emb, emb, ...] } structure entry_cameras.py loads. Creates the
     file if missing. Thread-safe.
+
+    Prefer add_many_to_pickle() when adding several embeddings for the same
+    employee in one go (e.g. a multi-photo upload) — this single-embedding
+    version re-reads and rewrites the WHOLE file (every employee's vectors)
+    on every call, which gets wasteful the more times it's called in a row.
+    """
+    return add_many_to_pickle(name, [embedding], embeddings_file)
+
+
+def add_many_to_pickle(name, embeddings, embeddings_file=None):
+    """
+    Append several embeddings under `name` in ONE read-modify-write pass —
+    used for multi-photo uploads so the file isn't rewritten once per photo.
     """
     embeddings_file = embeddings_file or config.EMBEDDINGS_FILE
     with _EMB_LOCK:
@@ -75,7 +93,8 @@ def add_to_pickle(name, embedding, embeddings_file=None):
             with open(embeddings_file, "rb") as f:
                 data = pickle.load(f)
         data.setdefault(name, [])
-        data[name].append(np.asarray(embedding, dtype=np.float32))
+        for embedding in embeddings:
+            data[name].append(np.asarray(embedding, dtype=np.float32))
         os.makedirs(os.path.dirname(embeddings_file) or ".", exist_ok=True)
         with open(embeddings_file, "wb") as f:
             pickle.dump(data, f)
