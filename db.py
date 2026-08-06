@@ -1570,45 +1570,106 @@ def get_employee_photo(name):
         conn.close()
 
 
-def sync_employee_photos_from_dir():
+def _safe_folder_name(name):
+    """Same sanitize rule as portal.py's _safe_name() / entry_cameras.py's
+       _safe() — spaces/special chars -> '_'. Must stay identical to those
+       so folder <-> employee-name matching is consistent everywhere."""
+    return "".join(c if c.isalnum() or c in "-_" else "_" for c in name)
+
+
+def _find_profile_photo(emp_dir):
+    """
+    PHOTOS_DIR/<folder>/ ke andar ek usable photo dhoondo.
+    Priority: top-level "profile_*" file > koi bhi top-level image >
+    (fallback) sabse recent date-subfolder ka camera capture.
+    Returns (filename, subdir_or_None) ya (None, None).
+    """
     import os as _os
     IMG_EXT = (".jpg", ".jpeg", ".png", ".webp")
+
+    top_files = sorted(
+        f for f in _os.listdir(emp_dir)
+        if _os.path.isfile(_os.path.join(emp_dir, f)) and f.lower().endswith(IMG_EXT)
+    )
+    for f in top_files:
+        if f.startswith("profile_"):
+            return f, None
+    if top_files:
+        return top_files[0], None
+
+    # Fallback — date subfolders (entry/exit camera captures). Most
+    # employees ONLY have this — no top-level profile photo — jab tak
+    # unhe kabhi portal se add/update na kiya gaya ho.
+    for sub in sorted(_os.listdir(emp_dir), reverse=True):   # newest date pehle
+        sub_path = _os.path.join(emp_dir, sub)
+        if _os.path.isdir(sub_path):
+            sub_files = sorted(
+                f for f in _os.listdir(sub_path)
+                if _os.path.isfile(_os.path.join(sub_path, f)) and f.lower().endswith(IMG_EXT)
+            )
+            if sub_files:
+                return sub_files[0], sub
+    return None, None
+
+
+def sync_employee_photos_from_dir():
+    """
+    Employees ke photo_path ko local PHOTOS_DIR se backfill karo.
+
+    BUG FIXES:
+      1. Pehle sirf PHOTOS_DIR/<folder>/ ke TOP-LEVEL files check hote the.
+         Zyada tar employees ke paas sirf date-wise subfolders hote hain
+         (camera captures) — top-level pe kuch nahi — isliye unka
+         photo_path kabhi set hi nahi hota tha. Ab date subfolders bhi
+         fallback ke taur pe check hote hain (_find_profile_photo).
+      2. Pehle folder ka RAW naam (jisme underscore hai, e.g.
+         "Amitabh_Prajapati") seedha `employees.name` (jisme space hai,
+         "Amitabh Prajapati") se match karne ki koshish hoti thi — kabhi
+         match hi nahi hota tha, aur ulta galat naam se DUPLICATE employee
+         INSERT ho jaata tha. Ab pehle existing employees ka
+         safe-folder-name -> row map banate hain, usi se match karte hain.
+    """
+    import os as _os
     if not _os.path.isdir(config.PHOTOS_DIR):
         return 0
+
     updated = 0
     try:
         conn = get_conn()
         try:
             cur = conn.cursor()
+
+            cur.execute("SELECT id, name, photo_path FROM employees")
+            emp_by_safe = {_safe_folder_name(r["name"]): r for r in cur.fetchall()}
+
             for entry in sorted(_os.listdir(config.PHOTOS_DIR)):
                 emp_dir = _os.path.join(config.PHOTOS_DIR, entry)
                 if not _os.path.isdir(emp_dir):
                     continue
-                photo_file = None
-                for fname in sorted(_os.listdir(emp_dir)):
-                    fpath = _os.path.join(emp_dir, fname)
-                    if _os.path.isfile(fpath) and fname.lower().endswith(IMG_EXT):
-                        photo_file = fname
-                        break
-                if not photo_file:
+
+                fname, subdir = _find_profile_photo(emp_dir)
+                if not fname:
                     continue
-                rel_path = f"{entry}/{photo_file}"
-                cur.execute(
-                    "SELECT id, photo_path FROM employees WHERE name = %s", (entry,)
-                )
-                row = cur.fetchone()
-                if row is None:
+                rel_path = f"{entry}/{subdir}/{fname}" if subdir else f"{entry}/{fname}"
+
+                row = emp_by_safe.get(entry)
+                if row is not None:
+                    if not row["photo_path"]:
+                        cur.execute(
+                            "UPDATE employees SET photo_path = %s WHERE id = %s",
+                            (rel_path, row["id"]),
+                        )
+                        updated += 1
+                else:
+                    # Koi matching employee nahi mila — bootstrap case
+                    # (photos already hain, DB row abhi tak nahi bana).
                     cur.execute(
-                        "INSERT INTO employees (name, photo_path) VALUES (%s, %s)",
+                        """INSERT INTO employees (name, photo_path)
+                           VALUES (%s, %s) ON CONFLICT (name) DO NOTHING""",
                         (entry, rel_path),
                     )
                     updated += 1
-                elif not row["photo_path"]:
-                    cur.execute(
-                        "UPDATE employees SET photo_path = %s WHERE id = %s",
-                        (rel_path, row["id"]),
-                    )
-                    updated += 1
+
             conn.commit()
             cur.close()
         finally:
