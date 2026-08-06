@@ -76,6 +76,21 @@ _n = db.sync_employee_photos_from_dir()
 if _n:
     print(f"[photos] {_n} employee profile photo(s) linked from {config.PHOTOS_DIR}")
 
+# Face-embedding model ko yahan (server boot pe) eagerly load karo, na ki
+# pehle admin add/update-employee request pe. buffalo_l pehli baar load hote
+# waqt insightface model weights (~300MB) internet se download karta hai —
+# request ke andar yeh hone se Render jaise host pe proxy-level timeout ho
+# jaata tha (502, no response). Boot ke waqt hone se woh cost yahin lagti
+# hai, koi live admin request kabhi iska wait nahi karta.
+try:
+    import face_embedding as _fe
+    print("[face_embedding] Warming up buffalo_l model (one-time, may take a while on first boot) ...")
+    _fe._get_face_app()
+    print("[face_embedding] ✅ Model ready.")
+except Exception as e:
+    print(f"[face_embedding] WARNING: warmup failed ({e}). "
+          f"Will retry lazily on first add/update-employee request.")
+
 
 # =============================================================================
 #  PAYLOAD BUILDERS  (same JSON shape as the original CSV version, + "photo")
