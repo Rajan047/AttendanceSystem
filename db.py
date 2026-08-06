@@ -1526,6 +1526,38 @@ def get_roster():
         conn.close()
 
 
+def get_all_face_embeddings():
+    """
+    Sabhi ACTIVE employees ke face_embeddings Supabase se ek saath fetch
+    karo — { name: [raw_bytes, raw_bytes, ...] }.
+
+    Yeh entry_cameras.py ko allow karta hai ki koi bhi machine se (admin
+    portal Jetson pe ho ya Render pe deployed ho) add/update kiya gaya
+    employee turant camera pe recognizable ho jaaye — kyunki admin panel
+    har photo ke embedding ko is table mein daalta hai (auth_db.py), chahe
+    request kahin se bhi aayi ho. Local embeddings.pkl sirf offline cache
+    hai; Supabase yahan source of truth hai.
+    """
+    conn = get_conn()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT e.name AS name, fe.embedding AS embedding
+               FROM face_embeddings fe
+               JOIN employees e ON e.id = fe.employee_id
+               WHERE e.active = TRUE"""
+        )
+        rows = cur.fetchall()
+        cur.close()
+    finally:
+        conn.close()
+
+    out = {}
+    for r in rows:
+        out.setdefault(r["name"], []).append(bytes(r["embedding"]))
+    return out
+
+
 def get_employee_photo(name):
     conn = get_conn()
     try:

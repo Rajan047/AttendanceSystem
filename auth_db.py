@@ -240,12 +240,34 @@ def update_employee(emp_id, **fields):
 
 
 def set_employee_embedding(emp_id, embedding_bytes):
-    """Store a serialized float32[512] vector in face_embeddings (one row per
-       employee — we replace any existing one)."""
+    """Replace ALL of this employee's face_embeddings rows with a single new
+       one. Used by the "regenerate from scratch" flow, which already
+       recomputes every embedding from the photos on disk — a full replace
+       is correct there. For adding photos incrementally, use
+       add_employee_embedding() instead (it doesn't delete existing rows)."""
     conn = db.get_conn()
     try:
         cur = conn.cursor()
         cur.execute("DELETE FROM face_embeddings WHERE employee_id = %s", (emp_id,))
+        cur.execute(
+            "INSERT INTO face_embeddings (employee_id, embedding) VALUES (%s, %s)",
+            (emp_id, psycopg2_binary(embedding_bytes)),
+        )
+        conn.commit()
+        cur.close()
+    finally:
+        conn.close()
+
+
+def add_employee_embedding(emp_id, embedding_bytes):
+    """Append one more face_embeddings row for this employee — does NOT
+       touch existing rows. Used when uploading additional photos (add/edit
+       employee), so multi-photo uploads accumulate instead of each new
+       photo silently replacing the previous one. entry_cameras.py averages
+       all rows for a name together, same as it does with embeddings.pkl."""
+    conn = db.get_conn()
+    try:
+        cur = conn.cursor()
         cur.execute(
             "INSERT INTO face_embeddings (employee_id, embedding) VALUES (%s, %s)",
             (emp_id, psycopg2_binary(embedding_bytes)),

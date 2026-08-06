@@ -1757,6 +1757,115 @@ def _watch_embeddings():
             print(f"[reload] watcher error (non-fatal): {e}")
 
 
+# =============================================================================
+#  SUPABASE EMBEDDINGS POLL
+#
+#  Admin panel Jetson pe chale ya kahin bhi (Render, ya koi doosra PC) — har
+#  photo ka embedding auth_db.add_employee_embedding() se Supabase ke
+#  face_embeddings table mein turant chala jaata hai (uska add/update route
+#  hamesha network-reachable Supabase ko hi likhta hai). Lekin local
+#  embeddings.pkl file sirf usi machine pe update hoti hai jahan request
+#  process hui — agar admin panel Render (ya kisi doosre PC) se use ho raha
+#  ho, wahan ka PHOTOS_DIR/embeddings.pkl is Jetson se bilkul alag hai, aur
+#  file-watcher (_watch_embeddings, upar) ko kabhi pata hi nahi chalega.
+#
+#  Yeh periodic poll us gap ko band karta hai: Supabase se seedha padhta
+#  hai, local pickle ke saath MERGE karta hai (dono taraf ke embeddings ek
+#  saath), aur naye Supabase-only vectors ko local pickle mein bhi backfill
+#  kar deta hai — taaki offline restart ke baad bhi last-known-good state
+#  local cache se mil jaaye.
+# =============================================================================
+SUPABASE_EMBEDDINGS_POLL_INTERVAL = 30   # seconds
+
+
+def _reload_embeddings_merged():
+    """Local embeddings.pkl + Supabase face_embeddings dono merge karke
+       _known_matrix/_known_names rebuild karo. Naye Supabase-only vectors
+       local pickle mein bhi backfill ho jaate hain (offline cache)."""
+    global _known_matrix, _known_names, _embeddings_mtime
+
+    # 1) Local pickle padho (agar hai) — baseline
+    local_data = {}
+    try:
+        with open(EMBEDDINGS_FILE, "rb") as f:
+            local_data = pickle.load(f)
+    except Exception:
+        pass   # pehli baar ho sakta hai ki file hi na ho
+
+    # 2) Supabase se sabhi ACTIVE employees ke embeddings padho
+    try:
+        sb_raw = db.get_all_face_embeddings()   # { name: [raw_bytes, ...] }
+    except Exception as e:
+        print(f"[reload] Supabase embeddings fetch failed (non-fatal): {e}")
+        sb_raw = {}
+
+    if not local_data and not sb_raw:
+        return
+
+    # 3) Merge — Supabase ke naye vectors (jo local mein nahi hain) backfill karo
+    changed = False
+    for name, raw_list in sb_raw.items():
+        existing = local_data.setdefault(name, [])
+        existing_set = {np.asarray(e, dtype=np.float32).tobytes() for e in existing}
+        for raw in raw_list:
+            vec = np.frombuffer(raw, dtype=np.float32)
+            vb  = vec.tobytes()
+            if vb not in existing_set:
+                existing.append(vec)
+                existing_set.add(vb)
+                changed = True
+
+    # 4) Kuch naya mila to local pickle mein backfill save karo
+    if changed:
+        try:
+            os.makedirs(os.path.dirname(EMBEDDINGS_FILE) or ".", exist_ok=True)
+            with open(EMBEDDINGS_FILE, "wb") as f:
+                pickle.dump(local_data, f)
+        except Exception as e:
+            print(f"[reload] local pickle backfill save failed (non-fatal): {e}")
+
+    # 5) _known_matrix/_known_names rebuild — sirf tab jab kuch naya mila ho
+    if not changed:
+        return
+
+    new_names, new_vecs = [], []
+    for name, emb_list in local_data.items():
+        if not emb_list:
+            continue
+        arr      = np.array(emb_list, dtype=np.float32)
+        mean_emb = np.mean(arr, axis=0)
+        mean_emb = mean_emb / np.linalg.norm(mean_emb)
+        new_names.append(name)
+        new_vecs.append(mean_emb)
+
+    if not new_vecs:
+        return
+
+    new_matrix = np.stack(new_vecs, axis=0)
+    with _embeddings_lock:
+        _known_names  = new_names
+        _known_matrix = new_matrix
+        try:
+            _embeddings_mtime = os.path.getmtime(EMBEDDINGS_FILE)
+        except Exception:
+            pass
+
+    print(f"[reload] ✅ Supabase se naye embeddings mile (remote add?) — "
+          f"{len(new_names)} employee(s) active (merged).")
+
+
+def _watch_embeddings_supabase():
+    """Background thread — Supabase face_embeddings table ko periodically
+       poll karo, taaki kisi bhi machine se add kiya employee is Jetson ke
+       cameras pe recognizable ho jaaye."""
+    while True:
+        time.sleep(SUPABASE_EMBEDDINGS_POLL_INTERVAL)
+        try:
+            _reload_embeddings_merged()
+        except Exception as e:
+            print(f"[reload] Supabase watcher error (non-fatal): {e}")
+
+
 def main():
     db.init_db()                        # SQLite init + cache seed + worker start
     db.sync_roster(_known_names)        # employees table sync
@@ -1770,6 +1879,13 @@ def main():
                                  name="embeddings-watcher")
     watcher_t.start()
     print(f"[reload] Embeddings watcher started (check every {RELOAD_CHECK_INTERVAL}s)")
+
+    # Supabase embeddings poll start karo — REMOTE machine se add kiya
+    # employee bhi is Jetson ke cameras pe recognizable ho jaaye
+    sb_watcher_t = threading.Thread(target=_watch_embeddings_supabase, daemon=True,
+                                    name="embeddings-supabase-watcher")
+    sb_watcher_t.start()
+    print(f"[reload] Supabase embeddings poll started (check every {SUPABASE_EMBEDDINGS_POLL_INTERVAL}s)")
 
     running = {"value": True}
     workers = [CameraWorker(cfg, running) for cfg in RTSP_CAMERAS]

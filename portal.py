@@ -223,9 +223,13 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
                 failed += 1
             else:
                 new_embeddings.append(emb)
-                # Last embedding Supabase mein bhi store karo (backup)
+                # Supabase mein bhi daalo (APPEND, replace nahi) — yahi woh
+                # data hai jo entry_cameras.py Supabase se poll karke, chahe
+                # yeh request kisi bhi machine se aayi ho (Jetson ya remote
+                # admin panel), naye chehre ko camera pe recognizable banata
+                # hai bina local embeddings.pkl file share kiye.
                 try:
-                    auth_db.set_employee_embedding(emp_id, fe.embedding_to_bytes(emb))
+                    auth_db.add_employee_embedding(emp_id, fe.embedding_to_bytes(emb))
                 except Exception:
                     pass
                 embedded += 1
