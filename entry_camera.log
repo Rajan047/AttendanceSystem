@@ -612,3 +612,1881 @@ set det-size: (320, 320)
 [reload] ✅ embeddings.pkl reloaded — 16 employee(s) active.
 [SQLite] Saved → Meraj | Present | 15:53:11 | Entry-2
 [RE-ENTRY] Meraj via Entry-2 at 15:53:11 — SQLite saved, Supabase sync 5 min mein
+[reload] embeddings.pkl changed — reloading ...
+[reload] ✅ embeddings.pkl reloaded — 17 employee(s) active.
+[SQLite] Saved → RemoteAddTest | Present | 16:34:13 | Entry-1
+[FIRST ENTRY] RemoteAddTest via Entry-1 at 16:34:13 — SQLite saved, Supabase sync 5 min mein
+[reload] embeddings.pkl changed — reloading ...
+[reload] ✅ embeddings.pkl reloaded — 16 employee(s) active.
+Loading embeddings …
+  Kajal: 4 embeddings
+  Prashant Kumar: 7 embeddings
+  Kuldeep: 6 embeddings
+  Neeraj : 5 embeddings
+  Vikas Sharma: 5 embeddings
+  Meraj: 5 embeddings
+  Ravi Shankar: 7 embeddings
+  Sunny : 4 embeddings
+  Abhishek : 6 embeddings
+  Aditya: 5 embeddings
+  Rajan: 7 embeddings
+  Rishu Kumar: 8 embeddings
+  Satya : 7 embeddings
+  Amitabh Prajapati: 7 embeddings
+  Praveen: 6 embeddings
+  Aakash: 10 embeddings
+Total employees loaded: 16
+
+[0;93m2026-08-06 16:36:27.030489456 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /home/cyamsys/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68 ['None', 3, 192, 192] 0.0 1.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /home/cyamsys/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106 ['None', 3, 192, 192] 0.0 1.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /home/cyamsys/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /home/cyamsys/.insightface/models/buffalo_l/genderage.onnx genderage ['None', 3, 96, 96] 0.0 1.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /home/cyamsys/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (320, 320)
+[cache] Startup: 1 employee(s) ka status SQLite (pending) se load kiya.
+[db] Supabase connection OK.
+[db] Sync worker started:
+     Interval : 300s (5 min)
+     Purge    : 7 din baad (synced rows only)
+     Queue    : /home/cyamsys/Desktop/test_Attendance/HR_attendance/offline_queue.db
+[photos] 1 employee profile photo(s) linked from /home/cyamsys/Documents/HR_attendance/photos
+[reload] Embeddings watcher started (check every 10s)
+[reload] Supabase embeddings poll started (check every 30s)
+[Entry-1] Trying GStreamer:
+  rtspsrc location="rtsp://192.168.1.101:554/video/live?channel=1&subtype=1" user-id="admin" user-pw="Tts@110092" latency=100 protocols=tcp ! decodebin ! videoconvert ! videoscale ! video/x-raw,width=1280,height=720,format=BGR ! appsink drop=true max-buffers=1 sync=false
+[Entry-1] ⚠️  GStreamer failed — FFmpeg fallback
+[Entry-1] Trying FFmpeg: rtsp://admin:Tts%40110092@192.168.1.101:554/video/live?channel=1&subtype=1
+[Entry-1] ✅ FFmpeg stream opened
+[Entry-2] Trying GStreamer:
+  rtspsrc location="rtsp://192.168.1.104:554/video/live?channel=1&subtype=1" user-id="admin" user-pw="Tts@110092" latency=100 protocols=tcp ! decodebin ! videoconvert ! videoscale ! video/x-raw,width=1280,height=720,format=BGR ! appsink drop=true max-buffers=1 sync=false
+[Entry-2] ⚠️  GStreamer failed — FFmpeg fallback
+[Entry-2] Trying FFmpeg: rtsp://admin:Tts%40110092@192.168.1.104:554/video/live?channel=1&subtype=1
+[Entry-2] ✅ FFmpeg stream opened
+[Entry-4] Trying GStreamer:
+  rtspsrc location="rtsp://192.168.1.106:554/video/live?channel=1&subtype=1" user-id="admin" user-pw="Tts@110092" latency=100 protocols=tcp ! decodebin ! videoconvert ! videoscale ! video/x-raw,width=1280,height=720,format=BGR ! appsink drop=true max-buffers=1 sync=false
+[Entry-4] ⚠️  GStreamer failed — FFmpeg fallback
+[Entry-4] Trying FFmpeg: rtsp://admin:Tts%40110092@192.168.1.106:554/video/live?channel=1&subtype=1
+[Entry-4] ✅ FFmpeg stream opened
+[main] Headless mode — cameras running in background, no display
+[Entry-2] frame=10 faces=0
+[Entry-4] frame=10 faces=0
+[Entry-2] frame=20 faces=0
+[Entry-4] frame=20 faces=0
+[Entry-1] frame=10 faces=1
+[DEBUG] Satya  score=0.140
+[DEBUG] Satya  score=0.140
+[Entry-2] frame=30 faces=0
+[Entry-4] frame=30 faces=0
+[Entry-1] frame=20 faces=1
+[DEBUG] Meraj score=0.170
+[DEBUG] Meraj score=0.170
+[Entry-2] frame=40 faces=0
+[Entry-4] frame=40 faces=0
+[Entry-1] frame=30 faces=1
+[DEBUG] Meraj score=0.114
+[DEBUG] Meraj score=0.114
+[Entry-2] frame=50 faces=0
+[Entry-4] frame=50 faces=0
+[Entry-1] frame=40 faces=1
+[DEBUG] Satya  score=0.111
+[DEBUG] Satya  score=0.111
+[Entry-2] frame=60 faces=0
+[Entry-4] frame=60 faces=0
+[Entry-1] frame=50 faces=1
+[DEBUG] Satya  score=0.190
+[DEBUG] Satya  score=0.190
+[Entry-2] frame=70 faces=0
+[Entry-4] frame=70 faces=0
+[Entry-1] frame=60 faces=1
+[DEBUG] Satya  score=0.126
+[DEBUG] Satya  score=0.126
+[Entry-2] frame=80 faces=0
+[Entry-4] frame=80 faces=0
+[Entry-1] frame=70 faces=1
+[DEBUG] Rishu Kumar score=0.116
+[DEBUG] Rishu Kumar score=0.116
+[Entry-2] frame=90 faces=0
+[Entry-4] frame=90 faces=0
+[Entry-1] frame=80 faces=1
+[DEBUG] Prashant Kumar score=0.127
+[DEBUG] Prashant Kumar score=0.127
+[Entry-2] frame=100 faces=0
+[Entry-4] frame=100 faces=0
+[Entry-1] frame=90 faces=1
+[DEBUG] Satya  score=0.149
+[DEBUG] Satya  score=0.149
+[Entry-2] frame=110 faces=0
+[Entry-4] frame=110 faces=0
+[Entry-1] frame=100 faces=1
+[DEBUG] Prashant Kumar score=0.135
+[DEBUG] Prashant Kumar score=0.135
+[Entry-2] frame=120 faces=0
+[Entry-4] frame=120 faces=0
+[Entry-2] frame=130 faces=0
+[Entry-4] frame=130 faces=0
+[Entry-1] frame=110 faces=1
+[DEBUG] Satya  score=0.134
+[DEBUG] Satya  score=0.134
+[Entry-2] frame=140 faces=0
+[Entry-4] frame=140 faces=0
+[Entry-1] frame=120 faces=1
+[DEBUG] Aakash score=0.177
+[DEBUG] Aakash score=0.177
+[Entry-2] frame=150 faces=0
+[Entry-4] frame=150 faces=0
+[Entry-1] frame=130 faces=1
+[DEBUG] Satya  score=0.260
+[DEBUG] Satya  score=0.260
+[Entry-2] frame=160 faces=0
+[Entry-4] frame=160 faces=0
+[Entry-1] frame=140 faces=1
+[DEBUG] Meraj score=0.203
+[DEBUG] Meraj score=0.203
+[Entry-2] frame=170 faces=0
+[Entry-4] frame=170 faces=0
+[Entry-1] frame=150 faces=1
+[DEBUG] Neeraj  score=0.159
+[DEBUG] Neeraj  score=0.159
+[Entry-2] frame=180 faces=0
+[Entry-4] frame=180 faces=0
+[Entry-1] frame=160 faces=0
+[Entry-2] frame=190 faces=0
+[Entry-4] frame=190 faces=0
+[Entry-1] frame=170 faces=0
+[Entry-2] frame=200 faces=0
+[Entry-4] frame=200 faces=0
+[Entry-1] frame=180 faces=0
+[Entry-2] frame=210 faces=0
+[Entry-4] frame=210 faces=0
+[Entry-1] frame=190 faces=0
+[Entry-2] frame=220 faces=0
+[Entry-4] frame=220 faces=0
+[Entry-1] frame=200 faces=0
+[Entry-2] frame=230 faces=0
+[Entry-4] frame=230 faces=0
+[Entry-1] frame=210 faces=1
+[DEBUG] Meraj score=0.231
+[DEBUG] Meraj score=0.231
+[Entry-2] frame=240 faces=0
+[Entry-4] frame=240 faces=0
+[Entry-1] frame=220 faces=1
+[DEBUG] Praveen score=0.151
+[DEBUG] Praveen score=0.151
+[Entry-2] frame=250 faces=0
+[Entry-4] frame=250 faces=0
+[Entry-1] frame=230 faces=1
+[DEBUG] Praveen score=0.131
+[DEBUG] Praveen score=0.131
+[Entry-2] frame=260 faces=0
+[Entry-4] frame=260 faces=0
+[Entry-1] frame=240 faces=0
+[Entry-2] frame=270 faces=0
+[Entry-4] frame=270 faces=0
+[Entry-1] frame=250 faces=0
+[Entry-2] frame=280 faces=0
+[Entry-4] frame=280 faces=0
+[Entry-1] frame=260 faces=0
+[Entry-2] frame=290 faces=0
+[Entry-4] frame=290 faces=0
+[Entry-1] frame=270 faces=0
+[Entry-2] frame=300 faces=0
+[Entry-4] frame=300 faces=0
+[Entry-1] frame=280 faces=0
+[Entry-2] frame=310 faces=0
+[Entry-4] frame=310 faces=0
+[Entry-1] frame=290 faces=0
+[Entry-2] frame=320 faces=0
+[Entry-4] frame=320 faces=0
+[Entry-1] frame=300 faces=0
+[Entry-2] frame=330 faces=0
+[Entry-4] frame=330 faces=0
+[Entry-1] frame=310 faces=0
+[Entry-2] frame=340 faces=0
+[Entry-4] frame=340 faces=0
+[Entry-1] frame=320 faces=0
+[Entry-2] frame=350 faces=0
+[Entry-4] frame=350 faces=0
+[Entry-1] frame=330 faces=0
+[Entry-2] frame=360 faces=0
+[Entry-4] frame=360 faces=0
+[Entry-1] frame=340 faces=0
+[Entry-2] frame=370 faces=0
+[Entry-4] frame=370 faces=0
+[Entry-1] frame=350 faces=1
+[DEBUG] Meraj score=0.099
+[DEBUG] Meraj score=0.099
+[Entry-2] frame=380 faces=0
+[Entry-4] frame=380 faces=0
+[Entry-1] frame=360 faces=1
+[DEBUG] Meraj score=0.198
+[DEBUG] Meraj score=0.198
+[Entry-2] frame=390 faces=0
+[Entry-4] frame=390 faces=0
+[Entry-1] frame=370 faces=1
+[DEBUG] Aakash score=0.222
+[DEBUG] Aakash score=0.222
+[Entry-2] frame=400 faces=0
+[Entry-4] frame=400 faces=0
+[Entry-2] frame=410 faces=0
+[Entry-1] frame=380 faces=1
+[DEBUG] Prashant Kumar score=0.194
+[DEBUG] Prashant Kumar score=0.194
+[Entry-4] frame=410 faces=0
+[Entry-2] frame=420 faces=0
+[Entry-4] frame=420 faces=0
+[Entry-1] frame=390 faces=1
+[DEBUG] Meraj score=0.205
+[DEBUG] Meraj score=0.205
+[Entry-4] frame=430 faces=0
+[Entry-2] frame=430 faces=1
+[DEBUG] Kajal score=0.082
+[DEBUG] Kajal score=0.082
+[Entry-1] frame=400 faces=1
+[DEBUG] Prashant Kumar score=0.186
+[DEBUG] Prashant Kumar score=0.186
+[Entry-4] frame=440 faces=0
+[Entry-2] frame=440 faces=0
+[Entry-1] frame=410 faces=1
+[DEBUG] Prashant Kumar score=0.207
+[DEBUG] Prashant Kumar score=0.207
+[Entry-4] frame=450 faces=0
+[Entry-2] frame=450 faces=0
+[Entry-1] frame=420 faces=1
+[DEBUG] Meraj score=0.182
+[DEBUG] Meraj score=0.182
+[Entry-4] frame=460 faces=0
+[Entry-2] frame=460 faces=0
+[Entry-1] frame=430 faces=1
+[DEBUG] Prashant Kumar score=0.172
+[DEBUG] Prashant Kumar score=0.172
+[Entry-4] frame=470 faces=0
+[Entry-2] frame=470 faces=0
+[Entry-1] frame=440 faces=1
+[DEBUG] Prashant Kumar score=0.201
+[DEBUG] Prashant Kumar score=0.201
+[Entry-4] frame=480 faces=0
+[Entry-2] frame=480 faces=0
+[Entry-1] frame=450 faces=2
+[DEBUG] Meraj score=0.123
+[DEBUG] Meraj score=0.123
+[DEBUG] Abhishek  score=0.315
+[DEBUG] Abhishek  score=0.315
+[Entry-4] frame=490 faces=0
+[Entry-2] frame=490 faces=0
+[Entry-4] frame=500 faces=0
+[Entry-2] frame=500 faces=0
+[Entry-1] frame=460 faces=2
+[DEBUG] Abhishek  score=0.617
+[DEBUG] Abhishek  score=0.617
+[DEBUG] Praveen score=0.112
+[DEBUG] Praveen score=0.112
+[Entry-4] frame=510 faces=0
+[Entry-2] frame=510 faces=0
+[Entry-1] frame=470 faces=2
+[DEBUG] Abhishek  score=0.696
+[DEBUG] Abhishek  score=0.696
+[DEBUG] Praveen score=0.179
+[DEBUG] Praveen score=0.179
+[Entry-4] frame=520 faces=0
+[Entry-2] frame=520 faces=0
+[Entry-1] frame=480 faces=2
+[DEBUG] Abhishek  score=0.571
+[DEBUG] Abhishek  score=0.571
+[DEBUG] Aditya score=0.176
+[DEBUG] Aditya score=0.176
+[Entry-4] frame=530 faces=0
+[Entry-2] frame=530 faces=0
+[Entry-1] frame=490 faces=2
+[DEBUG] Satya  score=0.193
+[DEBUG] Satya  score=0.193
+[DEBUG] Abhishek  score=0.392
+[DEBUG] Abhishek  score=0.392
+[Entry-4] frame=540 faces=0
+[Entry-2] frame=540 faces=0
+[Entry-1] frame=500 faces=1
+[DEBUG] Praveen score=0.086
+[DEBUG] Praveen score=0.086
+[Entry-4] frame=550 faces=0
+[Entry-2] frame=550 faces=0
+[Entry-1] frame=510 faces=1
+[DEBUG] Rajan score=0.155
+[DEBUG] Rajan score=0.155
+[Entry-4] frame=560 faces=0
+[Entry-2] frame=560 faces=0
+[Entry-1] frame=520 faces=0
+[Entry-4] frame=570 faces=0
+[Entry-2] frame=570 faces=0
+[Entry-1] frame=530 faces=0
+[Entry-4] frame=580 faces=0
+[Entry-2] frame=580 faces=0
+[Entry-1] frame=540 faces=0
+[Entry-4] frame=590 faces=0
+[Entry-2] frame=590 faces=0
+[Entry-1] frame=550 faces=0
+[Entry-4] frame=600 faces=0
+[Entry-2] frame=600 faces=0
+[Entry-1] frame=560 faces=0
+[Entry-4] frame=610 faces=0
+[Entry-2] frame=610 faces=0
+[Entry-1] frame=570 faces=0
+[Entry-4] frame=620 faces=0
+[Entry-2] frame=620 faces=0
+[Entry-1] frame=580 faces=0
+[Entry-4] frame=630 faces=0
+[Entry-2] frame=630 faces=0
+[Entry-1] frame=590 faces=1
+[DEBUG] Aditya score=0.185
+[DEBUG] Aditya score=0.185
+[Entry-4] frame=640 faces=0
+[Entry-2] frame=640 faces=0
+[Entry-4] frame=650 faces=0
+[Entry-1] frame=600 faces=1
+[DEBUG] Aditya score=0.189
+[DEBUG] Aditya score=0.189
+[Entry-2] frame=650 faces=0
+[Entry-4] frame=660 faces=0
+[Entry-2] frame=660 faces=0
+[Entry-1] frame=610 faces=1
+[DEBUG] Aakash score=0.173
+[DEBUG] Aakash score=0.173
+[Entry-4] frame=670 faces=0
+[Entry-2] frame=670 faces=0
+[Entry-1] frame=620 faces=1
+[DEBUG] Satya  score=0.235
+[DEBUG] Satya  score=0.235
+[Entry-4] frame=680 faces=0
+[Entry-2] frame=680 faces=0
+[Entry-1] frame=630 faces=1
+[DEBUG] Prashant Kumar score=0.192
+[DEBUG] Prashant Kumar score=0.192
+[Entry-4] frame=690 faces=0
+[Entry-2] frame=690 faces=0
+[Entry-1] frame=640 faces=1
+[DEBUG] Prashant Kumar score=0.152
+[DEBUG] Prashant Kumar score=0.152
+[Entry-4] frame=700 faces=0
+[Entry-2] frame=700 faces=0
+[Entry-1] frame=650 faces=1
+[DEBUG] Prashant Kumar score=0.198
+[DEBUG] Prashant Kumar score=0.198
+[Entry-4] frame=710 faces=0
+[Entry-2] frame=710 faces=0
+[Entry-1] frame=660 faces=1
+[DEBUG] Aakash score=0.163
+[DEBUG] Aakash score=0.163
+[Entry-4] frame=720 faces=0
+[Entry-2] frame=720 faces=0
+[Entry-1] frame=670 faces=1
+[DEBUG] Prashant Kumar score=0.139
+[DEBUG] Prashant Kumar score=0.139
+[Entry-4] frame=730 faces=0
+[Entry-2] frame=730 faces=0
+[Entry-1] frame=680 faces=1
+[DEBUG] Aditya score=0.161
+[DEBUG] Aditya score=0.161
+[Entry-4] frame=740 faces=0
+[Entry-2] frame=740 faces=0
+[Entry-1] frame=690 faces=1
+[DEBUG] Neeraj  score=0.159
+[DEBUG] Neeraj  score=0.159
+[Entry-4] frame=750 faces=0
+[Entry-2] frame=750 faces=0
+[Entry-1] frame=700 faces=1
+[DEBUG] Aakash score=0.191
+[DEBUG] Aakash score=0.191
+[Entry-4] frame=760 faces=0
+[Entry-2] frame=760 faces=0
+[Entry-4] frame=770 faces=0
+[Entry-2] frame=770 faces=0
+[Entry-1] frame=710 faces=1
+[DEBUG] Satya  score=0.175
+[DEBUG] Satya  score=0.175
+[Entry-4] frame=780 faces=0
+[Entry-2] frame=780 faces=0
+[Entry-1] frame=720 faces=1
+[DEBUG] Rajan score=0.195
+[DEBUG] Rajan score=0.195
+[Entry-4] frame=790 faces=0
+[Entry-2] frame=790 faces=0
+[Entry-1] frame=730 faces=1
+[DEBUG] Aakash score=0.224
+[DEBUG] Aakash score=0.224
+[Entry-4] frame=800 faces=0
+[Entry-2] frame=800 faces=0
+[Entry-1] frame=740 faces=1
+[DEBUG] Neeraj  score=0.169
+[DEBUG] Neeraj  score=0.169
+[Entry-4] frame=810 faces=0
+[Entry-2] frame=810 faces=0
+[Entry-1] frame=750 faces=0
+[Entry-4] frame=820 faces=0
+[Entry-2] frame=820 faces=0
+[Entry-1] frame=760 faces=1
+[DEBUG] Prashant Kumar score=0.263
+[DEBUG] Prashant Kumar score=0.263
+[Entry-4] frame=830 faces=0
+[Entry-2] frame=830 faces=0
+[Entry-1] frame=770 faces=1
+[DEBUG] Aakash score=0.268
+[DEBUG] Aakash score=0.268
+[Entry-4] frame=840 faces=0
+[Entry-2] frame=840 faces=0
+[Entry-1] frame=780 faces=1
+[DEBUG] Rajan score=0.244
+[DEBUG] Rajan score=0.244
+[Entry-4] frame=850 faces=0
+[Entry-2] frame=850 faces=0
+[Entry-1] frame=790 faces=1
+[DEBUG] Prashant Kumar score=0.231
+[DEBUG] Prashant Kumar score=0.231
+[Entry-4] frame=860 faces=0
+[Entry-2] frame=860 faces=0
+[Entry-4] frame=870 faces=0
+[Entry-2] frame=870 faces=0
+[Entry-1] frame=800 faces=1
+[DEBUG] Aakash score=0.183
+[DEBUG] Aakash score=0.183
+[Entry-4] frame=880 faces=0
+[Entry-2] frame=880 faces=0
+[Entry-1] frame=810 faces=1
+[DEBUG] Aakash score=0.211
+[DEBUG] Aakash score=0.211
+[Entry-4] frame=890 faces=0
+[Entry-2] frame=890 faces=0
+[Entry-1] frame=820 faces=1
+[DEBUG] Satya  score=0.167
+[DEBUG] Satya  score=0.167
+[Entry-4] frame=900 faces=0
+[Entry-2] frame=900 faces=0
+[Entry-1] frame=830 faces=0
+[Entry-4] frame=910 faces=0
+[Entry-2] frame=910 faces=0
+[Entry-1] frame=840 faces=0
+[Entry-4] frame=920 faces=0
+[Entry-2] frame=920 faces=0
+[Entry-1] frame=850 faces=0
+[Entry-4] frame=930 faces=0
+[Entry-2] frame=930 faces=0
+[Entry-1] frame=860 faces=0
+[Entry-4] frame=940 faces=0
+[Entry-2] frame=940 faces=0
+[Entry-1] frame=870 faces=0
+[Entry-4] frame=950 faces=0
+[Entry-2] frame=950 faces=0
+[Entry-1] frame=880 faces=0
+[Entry-4] frame=960 faces=0
+[Entry-2] frame=960 faces=0
+[Entry-1] frame=890 faces=0
+[Entry-4] frame=970 faces=0
+[Entry-2] frame=970 faces=0
+[Entry-1] frame=900 faces=0
+[Entry-4] frame=980 faces=0
+[Entry-2] frame=980 faces=0
+[Entry-1] frame=910 faces=0
+[Entry-4] frame=990 faces=0
+[Entry-2] frame=990 faces=0
+[Entry-1] frame=920 faces=0
+[Entry-4] frame=1000 faces=0
+[Entry-2] frame=1000 faces=0
+[Entry-1] frame=930 faces=0
+[Entry-4] frame=1010 faces=0
+[Entry-2] frame=1010 faces=0
+[Entry-1] frame=940 faces=0
+[Entry-4] frame=1020 faces=0
+[Entry-2] frame=1020 faces=0
+[Entry-1] frame=950 faces=0
+[Entry-4] frame=1030 faces=0
+[Entry-2] frame=1030 faces=0
+[Entry-1] frame=960 faces=0
+[Entry-4] frame=1040 faces=0
+[Entry-2] frame=1040 faces=0
+[Entry-1] frame=970 faces=0
+[Entry-4] frame=1050 faces=0
+[Entry-2] frame=1050 faces=0
+[Entry-1] frame=980 faces=0
+[Entry-4] frame=1060 faces=0
+[Entry-2] frame=1060 faces=0
+[Entry-1] frame=990 faces=0
+[Entry-4] frame=1070 faces=0
+[Entry-2] frame=1070 faces=0
+[Entry-1] frame=1000 faces=1
+[DEBUG] Praveen score=0.063
+[DEBUG] Praveen score=0.063
+[Entry-4] frame=1080 faces=0
+[Entry-2] frame=1080 faces=0
+[Entry-1] frame=1010 faces=1
+[DEBUG] Neeraj  score=0.216
+[DEBUG] Neeraj  score=0.216
+[Entry-4] frame=1090 faces=0
+[Entry-2] frame=1090 faces=0
+[Entry-1] frame=1020 faces=0
+[Entry-4] frame=1100 faces=0
+[Entry-2] frame=1100 faces=0
+[Entry-1] frame=1030 faces=1
+[DEBUG] Meraj score=0.127
+[DEBUG] Meraj score=0.127
+[Entry-4] frame=1110 faces=0
+[Entry-2] frame=1110 faces=0
+[Entry-1] frame=1040 faces=0
+[Entry-4] frame=1120 faces=0
+[Entry-2] frame=1120 faces=0
+[Entry-1] frame=1050 faces=1
+[DEBUG] Aakash score=0.059
+[DEBUG] Aakash score=0.059
+[Entry-4] frame=1130 faces=0
+[Entry-2] frame=1130 faces=0
+[Entry-1] frame=1060 faces=1
+[DEBUG] Prashant Kumar score=0.238
+[DEBUG] Prashant Kumar score=0.238
+[Entry-4] frame=1140 faces=0
+[Entry-2] frame=1140 faces=0
+[Entry-1] frame=1070 faces=1
+[DEBUG] Prashant Kumar score=0.207
+[DEBUG] Prashant Kumar score=0.207
+[Entry-4] frame=1150 faces=0
+[Entry-2] frame=1150 faces=0
+[Entry-1] frame=1080 faces=1
+[DEBUG] Meraj score=0.207
+[DEBUG] Meraj score=0.207
+[Entry-4] frame=1160 faces=0
+[Entry-2] frame=1160 faces=0
+[Entry-1] frame=1090 faces=1
+[DEBUG] Prashant Kumar score=0.195
+[DEBUG] Prashant Kumar score=0.195
+[Entry-4] frame=1170 faces=0
+[Entry-2] frame=1170 faces=0
+[Entry-4] frame=1180 faces=0
+[Entry-2] frame=1180 faces=0
+[Entry-1] frame=1100 faces=1
+[DEBUG] Prashant Kumar score=0.207
+[DEBUG] Prashant Kumar score=0.207
+[Entry-4] frame=1190 faces=0
+[Entry-2] frame=1190 faces=0
+[Entry-1] frame=1110 faces=1
+[DEBUG] Aakash score=0.158
+[DEBUG] Aakash score=0.158
+[Entry-4] frame=1200 faces=0
+[Entry-2] frame=1200 faces=0
+[Entry-1] frame=1120 faces=1
+[DEBUG] Aakash score=0.232
+[DEBUG] Aakash score=0.232
+[Entry-4] frame=1210 faces=0
+[Entry-2] frame=1210 faces=0
+[Entry-1] frame=1130 faces=1
+[DEBUG] Prashant Kumar score=0.212
+[DEBUG] Prashant Kumar score=0.212
+[Entry-4] frame=1220 faces=0
+[Entry-2] frame=1220 faces=0
+[Entry-1] frame=1140 faces=1
+[DEBUG] Prashant Kumar score=0.186
+[DEBUG] Prashant Kumar score=0.186
+[Entry-4] frame=1230 faces=0
+[Entry-2] frame=1230 faces=0
+[Entry-1] frame=1150 faces=1
+[DEBUG] Rajan score=0.175
+[DEBUG] Rajan score=0.175
+[Entry-4] frame=1240 faces=0
+[Entry-2] frame=1240 faces=0
+[Entry-1] frame=1160 faces=1
+[DEBUG] Prashant Kumar score=0.102
+[DEBUG] Prashant Kumar score=0.102
+[Entry-4] frame=1250 faces=0
+[Entry-2] frame=1250 faces=0
+[Entry-1] frame=1170 faces=1
+[DEBUG] Aakash score=0.131
+[DEBUG] Aakash score=0.131
+[Entry-4] frame=1260 faces=0
+[Entry-2] frame=1260 faces=0
+[Entry-1] frame=1180 faces=1
+[DEBUG] Prashant Kumar score=0.198
+[DEBUG] Prashant Kumar score=0.198
+[Entry-4] frame=1270 faces=0
+[Entry-2] frame=1270 faces=0
+[Entry-1] frame=1190 faces=1
+[DEBUG] Prashant Kumar score=0.188
+[DEBUG] Prashant Kumar score=0.188
+[Entry-4] frame=1280 faces=0
+[Entry-2] frame=1280 faces=0
+[Entry-4] frame=1290 faces=0
+[Entry-1] frame=1200 faces=1
+[DEBUG] Satya  score=0.186
+[DEBUG] Satya  score=0.186
+[Entry-2] frame=1290 faces=0
+[Entry-4] frame=1300 faces=0
+[Entry-2] frame=1300 faces=0
+[Entry-1] frame=1210 faces=1
+[DEBUG] Aditya score=0.135
+[DEBUG] Aditya score=0.135
+[Entry-4] frame=1310 faces=0
+[Entry-2] frame=1310 faces=0
+[Entry-1] frame=1220 faces=1
+[DEBUG] Prashant Kumar score=0.153
+[DEBUG] Prashant Kumar score=0.153
+[Entry-4] frame=1320 faces=0
+[Entry-2] frame=1320 faces=0
+[Entry-1] frame=1230 faces=1
+[DEBUG] Prashant Kumar score=0.150
+[DEBUG] Prashant Kumar score=0.150
+[Entry-4] frame=1330 faces=0
+[Entry-2] frame=1330 faces=0
+[Entry-1] frame=1240 faces=1
+[DEBUG] Meraj score=0.172
+[DEBUG] Meraj score=0.172
+[Entry-4] frame=1340 faces=0
+[Entry-2] frame=1340 faces=0
+[Entry-1] frame=1250 faces=1
+[DEBUG] Prashant Kumar score=0.174
+[DEBUG] Prashant Kumar score=0.174
+[Entry-4] frame=1350 faces=0
+[Entry-2] frame=1350 faces=0
+[Entry-1] frame=1260 faces=1
+[DEBUG] Meraj score=0.168
+[DEBUG] Meraj score=0.168
+[Entry-4] frame=1360 faces=0
+[Entry-2] frame=1360 faces=0
+[Entry-1] frame=1270 faces=1
+[DEBUG] Prashant Kumar score=0.129
+[DEBUG] Prashant Kumar score=0.129
+[Entry-4] frame=1370 faces=0
+[Entry-2] frame=1370 faces=0
+[Entry-1] frame=1280 faces=1
+[DEBUG] Prashant Kumar score=0.140
+[DEBUG] Prashant Kumar score=0.140
+[Entry-4] frame=1380 faces=0
+[Entry-2] frame=1380 faces=0
+[Entry-4] frame=1390 faces=0
+[Entry-2] frame=1390 faces=0
+[Entry-1] frame=1290 faces=1
+[DEBUG] Prashant Kumar score=0.144
+[DEBUG] Prashant Kumar score=0.144
+[Entry-4] frame=1400 faces=0
+[Entry-2] frame=1400 faces=0
+[Entry-1] frame=1300 faces=1
+[DEBUG] Rajan score=0.125
+[DEBUG] Rajan score=0.125
+[Entry-4] frame=1410 faces=0
+[Entry-2] frame=1410 faces=0
+[Entry-1] frame=1310 faces=1
+[DEBUG] Neeraj  score=0.098
+[DEBUG] Neeraj  score=0.098
+[Entry-4] frame=1420 faces=0
+[Entry-2] frame=1420 faces=0
+[Entry-1] frame=1320 faces=1
+[DEBUG] Prashant Kumar score=0.066
+[DEBUG] Prashant Kumar score=0.066
+[Entry-4] frame=1430 faces=0
+[Entry-2] frame=1430 faces=0
+[Entry-1] frame=1330 faces=1
+[DEBUG] Prashant Kumar score=0.146
+[DEBUG] Prashant Kumar score=0.146
+[Entry-4] frame=1440 faces=0
+[Entry-2] frame=1440 faces=0
+[Entry-1] frame=1340 faces=1
+[DEBUG] Prashant Kumar score=0.174
+[DEBUG] Prashant Kumar score=0.174
+[Entry-4] frame=1450 faces=0
+[Entry-2] frame=1450 faces=0
+[Entry-1] frame=1350 faces=1
+[DEBUG] Prashant Kumar score=0.127
+[DEBUG] Prashant Kumar score=0.127
+[Entry-4] frame=1460 faces=0
+[Entry-2] frame=1460 faces=0
+[Entry-1] frame=1360 faces=0
+[Entry-4] frame=1470 faces=0
+[Entry-2] frame=1470 faces=0
+[Entry-1] frame=1370 faces=1
+[DEBUG] Neeraj  score=0.145
+[DEBUG] Neeraj  score=0.145
+[Entry-4] frame=1480 faces=0
+[Entry-2] frame=1480 faces=0
+[Entry-1] frame=1380 faces=1
+[DEBUG] Aditya score=0.128
+[DEBUG] Aditya score=0.128
+[Entry-4] frame=1490 faces=0
+[Entry-2] frame=1490 faces=0
+[Entry-1] frame=1390 faces=1
+[DEBUG] Prashant Kumar score=0.189
+[DEBUG] Prashant Kumar score=0.189
+[Entry-4] frame=1500 faces=0
+[Entry-2] frame=1500 faces=0
+[Entry-1] frame=1400 faces=1
+[DEBUG] Aakash score=0.197
+[DEBUG] Aakash score=0.197
+[Entry-4] frame=1510 faces=0[Entry-2] frame=1510 faces=0
+
+[Entry-4] frame=1520 faces=0
+[Entry-2] frame=1520 faces=0
+[Entry-1] frame=1410 faces=1
+[DEBUG] Satya  score=0.227
+[DEBUG] Satya  score=0.227
+[Entry-4] frame=1530 faces=0
+[Entry-2] frame=1530 faces=0
+[Entry-1] frame=1420 faces=1
+[DEBUG] Meraj score=0.131
+[DEBUG] Meraj score=0.131
+[Entry-4] frame=1540 faces=0
+[Entry-2] frame=1540 faces=0
+[Entry-1] frame=1430 faces=1
+[DEBUG] Prashant Kumar score=0.150
+[DEBUG] Prashant Kumar score=0.150
+[Entry-4] frame=1550 faces=0
+[Entry-2] frame=1550 faces=0
+[Entry-1] frame=1440 faces=1
+[DEBUG] Prashant Kumar score=0.243
+[DEBUG] Prashant Kumar score=0.243
+[Entry-4] frame=1560 faces=0
+[Entry-2] frame=1560 faces=0
+[Entry-1] frame=1450 faces=1
+[DEBUG] Prashant Kumar score=0.129
+[DEBUG] Prashant Kumar score=0.129
+[Entry-4] frame=1570 faces=0
+[Entry-2] frame=1570 faces=0
+[Entry-1] frame=1460 faces=1
+[DEBUG] Rajan score=0.176
+[DEBUG] Rajan score=0.176
+[Entry-4] frame=1580 faces=0
+[Entry-2] frame=1580 faces=0
+[Entry-1] frame=1470 faces=1
+[DEBUG] Rajan score=0.140
+[DEBUG] Rajan score=0.140
+[Entry-4] frame=1590 faces=0
+[Entry-2] frame=1590 faces=0
+[Entry-1] frame=1480 faces=1
+[DEBUG] Praveen score=0.102
+[DEBUG] Praveen score=0.102
+[Entry-4] frame=1600 faces=0
+[Entry-2] frame=1600 faces=0
+[Entry-1] frame=1490 faces=0
+[Entry-4] frame=1610 faces=0
+[Entry-2] frame=1610 faces=0
+[Entry-1] frame=1500 faces=0
+[Entry-4] frame=1620 faces=0
+[Entry-2] frame=1620 faces=0
+[Entry-1] frame=1510 faces=0
+[Entry-4] frame=1630 faces=0
+[Entry-2] frame=1630 faces=0
+[Entry-1] frame=1520 faces=1
+[DEBUG] Prashant Kumar score=0.139
+[DEBUG] Prashant Kumar score=0.139
+[Entry-4] frame=1640 faces=0
+[Entry-2] frame=1640 faces=0
+[Entry-1] frame=1530 faces=1
+[DEBUG] Prashant Kumar score=0.162
+[DEBUG] Prashant Kumar score=0.162
+[Entry-4] frame=1650 faces=0
+[Entry-2] frame=1650 faces=0
+[Entry-1] frame=1540 faces=1
+[DEBUG] Praveen score=0.098
+[DEBUG] Praveen score=0.098
+[Entry-4] frame=1660 faces=0
+[Entry-2] frame=1660 faces=0
+[Entry-1] frame=1550 faces=1
+[DEBUG] Rajan score=0.104
+[DEBUG] Rajan score=0.104
+[Entry-4] frame=1670 faces=0
+[Entry-2] frame=1670 faces=0
+[Entry-1] frame=1560 faces=1
+[DEBUG] Neeraj  score=0.205
+[DEBUG] Neeraj  score=0.205
+[Entry-4] frame=1680 faces=0[Entry-2] frame=1680 faces=0
+
+[Entry-1] frame=1570 faces=0
+[Entry-4] frame=1690 faces=0
+[Entry-2] frame=1690 faces=0
+[Entry-1] frame=1580 faces=0
+[Entry-4] frame=1700 faces=0
+[Entry-2] frame=1700 faces=0
+[Entry-1] frame=1590 faces=0
+[Entry-4] frame=1710 faces=0
+[Entry-2] frame=1710 faces=0
+[Entry-1] frame=1600 faces=0
+[Entry-4] frame=1720 faces=0
+[Entry-2] frame=1720 faces=0
+[Entry-1] frame=1610 faces=0
+[Entry-4] frame=1730 faces=0
+[Entry-2] frame=1730 faces=0
+[Entry-1] frame=1620 faces=0
+[Entry-4] frame=1740 faces=0
+[Entry-2] frame=1740 faces=0
+[Entry-1] frame=1630 faces=0
+[Entry-4] frame=1750 faces=0
+[Entry-2] frame=1750 faces=0
+[Entry-1] frame=1640 faces=0
+[Entry-4] frame=1760 faces=0
+[Entry-2] frame=1760 faces=0
+[Entry-1] frame=1650 faces=0
+[Entry-4] frame=1770 faces=0
+[Entry-2] frame=1770 faces=0
+[Entry-1] frame=1660 faces=0
+[Entry-4] frame=1780 faces=0
+[Entry-2] frame=1780 faces=0
+[Entry-1] frame=1670 faces=0
+[Entry-4] frame=1790 faces=0
+[Entry-2] frame=1790 faces=0
+[Entry-1] frame=1680 faces=0
+[Entry-4] frame=1800 faces=0
+[Entry-2] frame=1800 faces=0
+[Entry-1] frame=1690 faces=0
+[Entry-4] frame=1810 faces=0
+[Entry-2] frame=1810 faces=0
+[Entry-1] frame=1700 faces=0
+[Entry-4] frame=1820 faces=0
+[Entry-2] frame=1820 faces=0
+[Entry-1] frame=1710 faces=0
+[Entry-4] frame=1830 faces=0
+[Entry-2] frame=1830 faces=0
+[Entry-1] frame=1720 faces=0
+[Entry-4] frame=1840 faces=0
+[Entry-2] frame=1840 faces=0
+[Entry-1] frame=1730 faces=0
+[Entry-4] frame=1850 faces=0
+[Entry-2] frame=1850 faces=0
+[Entry-1] frame=1740 faces=0
+[Entry-4] frame=1860 faces=0
+[Entry-2] frame=1860 faces=0
+[Entry-1] frame=1750 faces=0
+[Entry-4] frame=1870 faces=0
+[Entry-2] frame=1870 faces=0
+[Entry-1] frame=1760 faces=0
+[Entry-4] frame=1880 faces=0
+[Entry-2] frame=1880 faces=0
+[Entry-1] frame=1770 faces=0
+[Entry-4] frame=1890 faces=0
+[Entry-2] frame=1890 faces=0
+[Entry-1] frame=1780 faces=0
+[Entry-4] frame=1900 faces=0
+[Entry-2] frame=1900 faces=0
+[Entry-4] frame=1910 faces=0
+[Entry-2] frame=1910 faces=0
+[Entry-1] frame=1790 faces=1
+[DEBUG] Aakash score=0.101
+[DEBUG] Aakash score=0.101
+[Entry-2] frame=1920 faces=0
+[Entry-1] frame=1800 faces=0
+[Entry-4] frame=1920 faces=1
+[DEBUG] Kajal score=0.162
+[DEBUG] Kajal score=0.162
+[Entry-2] frame=1930 faces=0
+[Entry-1] frame=1810 faces=0
+[Entry-4] frame=1930 faces=1
+[DEBUG] Kajal score=0.215
+[DEBUG] Kajal score=0.215
+[Entry-2] frame=1940 faces=0
+[Entry-1] frame=1820 faces=0
+[Entry-4] frame=1940 faces=0
+[Entry-2] frame=1950 faces=0
+[Entry-1] frame=1830 faces=0
+[Entry-4] frame=1950 faces=0
+[Entry-2] frame=1960 faces=0
+[Entry-1] frame=1840 faces=0
+[Entry-4] frame=1960 faces=0
+[Entry-2] frame=1970 faces=0
+[Entry-1] frame=1850 faces=0
+[Entry-4] frame=1970 faces=0
+[Entry-2] frame=1980 faces=0
+[Entry-1] frame=1860 faces=0
+[Entry-4] frame=1980 faces=0
+[Entry-2] frame=1990 faces=0
+[Entry-1] frame=1870 faces=0
+[Entry-4] frame=1990 faces=0
+[Entry-2] frame=2000 faces=0
+[Entry-1] frame=1880 faces=1
+[DEBUG] Rajan score=0.131
+[DEBUG] Rajan score=0.131
+[Entry-4] frame=2000 faces=0
+[Entry-2] frame=2010 faces=1
+[DEBUG] Prashant Kumar score=0.378
+[DEBUG] Prashant Kumar score=0.378
+[Entry-4] frame=2010 faces=0
+[Entry-1] frame=1890 faces=1
+[DEBUG] Aakash score=0.133
+[DEBUG] Aakash score=0.133
+[Entry-2] frame=2020 faces=0
+[Entry-4] frame=2020 faces=0
+[Entry-1] frame=1900 faces=1
+[DEBUG] Meraj score=0.198
+[DEBUG] Meraj score=0.198
+[Entry-2] frame=2030 faces=0
+[Entry-4] frame=2030 faces=0
+[Entry-1] frame=1910 faces=1
+[DEBUG] Aakash score=0.233
+[DEBUG] Aakash score=0.233
+[Entry-2] frame=2040 faces=0[Entry-4] frame=2040 faces=0
+
+[Entry-1] frame=1920 faces=1
+[DEBUG] Neeraj  score=0.155
+[DEBUG] Neeraj  score=0.155
+[Entry-2] frame=2050 faces=0[Entry-4] frame=2050 faces=0
+
+[Entry-1] frame=1930 faces=1
+[DEBUG] Neeraj  score=0.121
+[DEBUG] Neeraj  score=0.121
+[Entry-4] frame=2060 faces=0
+[Entry-2] frame=2060 faces=1
+[DEBUG] Prashant Kumar score=0.272
+[DEBUG] Prashant Kumar score=0.272
+[Entry-1] frame=1940 faces=1
+[DEBUG] Aditya score=0.212
+[DEBUG] Aditya score=0.212
+[Entry-4] frame=2070 faces=0
+[Entry-2] frame=2070 faces=0
+[Entry-1] frame=1950 faces=1
+[DEBUG] Neeraj  score=0.110
+[DEBUG] Neeraj  score=0.110
+[Entry-4] frame=2080 faces=0
+[Entry-2] frame=2080 faces=0
+[Entry-1] frame=1960 faces=1
+[DEBUG] Aditya score=0.092
+[DEBUG] Aditya score=0.092
+[Entry-4] frame=2090 faces=0
+[Entry-2] frame=2090 faces=1
+[DEBUG] Meraj score=0.110
+[DEBUG] Meraj score=0.110
+[Entry-1] frame=1970 faces=1
+[DEBUG] Meraj score=0.082
+[DEBUG] Meraj score=0.082
+[Entry-4] frame=2100 faces=0
+[Entry-2] frame=2100 faces=0
+[Entry-1] frame=1980 faces=1
+[DEBUG] Amitabh Prajapati score=0.063
+[DEBUG] Amitabh Prajapati score=0.063
+[Entry-4] frame=2110 faces=0
+[Entry-2] frame=2110 faces=0
+[Entry-1] frame=1990 faces=1
+[DEBUG] Kuldeep score=0.133
+[DEBUG] Kuldeep score=0.133
+[Entry-4] frame=2120 faces=0
+[Entry-2] frame=2120 faces=0
+[Entry-1] frame=2000 faces=0
+[Entry-4] frame=2130 faces=0
+[Entry-2] frame=2130 faces=1
+[DEBUG] Prashant Kumar score=0.316
+[DEBUG] Prashant Kumar score=0.316
+[Entry-1] frame=2010 faces=0
+[Entry-4] frame=2140 faces=0
+[Entry-2] frame=2140 faces=0
+[Entry-1] frame=2020 faces=0
+[Entry-4] frame=2150 faces=0
+[Entry-2] frame=2150 faces=0
+[Entry-1] frame=2030 faces=1
+[DEBUG] Aakash score=0.058
+[DEBUG] Aakash score=0.058
+[Entry-4] frame=2160 faces=0
+[Entry-2] frame=2160 faces=0
+[Entry-1] frame=2040 faces=0
+[Entry-4] frame=2170 faces=0
+[Entry-2] frame=2170 faces=0
+[Entry-1] frame=2050 faces=1
+[DEBUG] Ravi Shankar score=0.054
+[DEBUG] Ravi Shankar score=0.054
+[Entry-4] frame=2180 faces=0
+[Entry-2] frame=2180 faces=0
+[Entry-1] frame=2060 faces=0
+[Entry-4] frame=2190 faces=0
+[Entry-2] frame=2190 faces=1
+[DEBUG] Satya  score=0.071
+[DEBUG] Satya  score=0.071
+[Entry-1] frame=2070 faces=1
+[DEBUG] Ravi Shankar score=0.047
+[DEBUG] Ravi Shankar score=0.047
+[Entry-4] frame=2200 faces=0
+[Entry-2] frame=2200 faces=1
+[DEBUG] Prashant Kumar score=0.345
+[DEBUG] Prashant Kumar score=0.345
+[Entry-4] frame=2210 faces=0
+[Entry-1] frame=2080 faces=1
+[DEBUG] Praveen score=0.050
+[DEBUG] Praveen score=0.050
+[Entry-2] frame=2210 faces=1
+[DEBUG] Prashant Kumar score=0.412
+[DEBUG] Prashant Kumar score=0.412
+[Entry-4] frame=2220 faces=0
+[Entry-1] frame=2090 faces=0
+[Entry-2] frame=2220 faces=0
+[Entry-4] frame=2230 faces=0
+[Entry-1] frame=2100 faces=0
+[Entry-2] frame=2230 faces=0
+[Entry-4] frame=2240 faces=0
+[Entry-1] frame=2110 faces=1
+[DEBUG] Rajan score=0.059
+[DEBUG] Rajan score=0.059
+[Entry-2] frame=2240 faces=1
+[DEBUG] Prashant Kumar score=0.455
+[DEBUG] Prashant Kumar score=0.455
+[Entry-4] frame=2250 faces=0
+[Entry-1] frame=2120 faces=0
+[Entry-2] frame=2250 faces=0
+[Entry-4] frame=2260 faces=0
+[Entry-1] frame=2130 faces=0
+[Entry-2] frame=2260 faces=0
+[Entry-4] frame=2270 faces=0
+[Entry-1] frame=2140 faces=0
+[Entry-2] frame=2270 faces=0
+[Entry-4] frame=2280 faces=0
+[Entry-1] frame=2150 faces=0
+[Entry-2] frame=2280 faces=0
+[Entry-4] frame=2290 faces=0
+[Entry-1] frame=2160 faces=0
+[Entry-2] frame=2290 faces=1
+[DEBUG] Aditya score=0.080
+[DEBUG] Aditya score=0.080
+[Entry-4] frame=2300 faces=0
+[Entry-1] frame=2170 faces=0
+[Entry-2] frame=2300 faces=1
+[DEBUG] Prashant Kumar score=0.401
+[DEBUG] Prashant Kumar score=0.401
+[Entry-4] frame=2310 faces=0
+[Entry-1] frame=2180 faces=0
+[Entry-2] frame=2310 faces=1
+[DEBUG] Prashant Kumar score=0.369
+[DEBUG] Prashant Kumar score=0.369
+[Entry-4] frame=2320 faces=0
+[Entry-1] frame=2190 faces=1
+[DEBUG] Rajan score=0.069
+[DEBUG] Rajan score=0.069
+[Entry-2] frame=2320 faces=0
+[Entry-4] frame=2330 faces=0
+[Entry-1] frame=2200 faces=0
+[Entry-2] frame=2330 faces=0
+[Entry-4] frame=2340 faces=0
+[Entry-1] frame=2210 faces=0
+[Entry-2] frame=2340 faces=0
+[Entry-4] frame=2350 faces=0
+[Entry-1] frame=2220 faces=0
+[Entry-2] frame=2350 faces=0
+[Entry-4] frame=2360 faces=0
+[Entry-1] frame=2230 faces=0
+[Entry-2] frame=2360 faces=0
+[Entry-4] frame=2370 faces=0
+[Entry-1] frame=2240 faces=0
+[Entry-2] frame=2370 faces=0
+[Entry-4] frame=2380 faces=0
+[Entry-1] frame=2250 faces=0
+[Entry-2] frame=2380 faces=0
+[Entry-4] frame=2390 faces=0
+[Entry-1] frame=2260 faces=0
+[Entry-2] frame=2390 faces=0
+[Entry-4] frame=2400 faces=0
+[Entry-1] frame=2270 faces=1
+[DEBUG] Rajan score=0.136
+[DEBUG] Rajan score=0.136
+[Entry-2] frame=2400 faces=1
+[DEBUG] Prashant Kumar score=0.441
+[DEBUG] Prashant Kumar score=0.441
+[Entry-4] frame=2410 faces=0
+[Entry-1] frame=2280 faces=1
+[DEBUG] Rajan score=0.084
+[DEBUG] Rajan score=0.084
+[Entry-4] frame=2420 faces=0
+[Entry-2] frame=2410 faces=1
+[DEBUG] Aditya score=0.130
+[DEBUG] Aditya score=0.130
+[Entry-1] frame=2290 faces=1
+[DEBUG] Sunny  score=0.070
+[DEBUG] Sunny  score=0.070
+[Entry-4] frame=2430 faces=0
+[Entry-2] frame=2420 faces=1
+[DEBUG] Prashant Kumar score=0.386
+[DEBUG] Prashant Kumar score=0.386
+[Entry-1] frame=2300 faces=1
+[DEBUG] Neeraj  score=0.192
+[DEBUG] Neeraj  score=0.192
+[Entry-4] frame=2440 faces=0
+[Entry-2] frame=2430 faces=1
+[DEBUG] Prashant Kumar score=0.432
+[DEBUG] Prashant Kumar score=0.432
+[Entry-1] frame=2310 faces=1
+[DEBUG] Neeraj  score=0.084
+[DEBUG] Neeraj  score=0.084
+[Entry-4] frame=2450 faces=0
+[Entry-2] frame=2440 faces=1
+[DEBUG] Prashant Kumar score=0.497
+[DEBUG] Prashant Kumar score=0.497
+[Entry-1] frame=2320 faces=1
+[DEBUG] Kuldeep score=0.110
+[DEBUG] Kuldeep score=0.110
+[Entry-4] frame=2460 faces=0
+[Entry-2] frame=2450 faces=1
+[DEBUG] Prashant Kumar score=0.457
+[DEBUG] Prashant Kumar score=0.457
+[Entry-1] frame=2330 faces=1
+[DEBUG] Aditya score=0.155
+[DEBUG] Aditya score=0.155
+[Entry-4] frame=2470 faces=0
+[Entry-2] frame=2460 faces=0
+[Entry-1] frame=2340 faces=1
+[DEBUG] Rajan score=0.130
+[DEBUG] Rajan score=0.130
+[Entry-4] frame=2480 faces=0
+[Entry-2] frame=2470 faces=0
+[Entry-1] frame=2350 faces=1
+[DEBUG] Prashant Kumar score=0.085
+[DEBUG] Prashant Kumar score=0.085
+[Entry-4] frame=2490 faces=0
+[Entry-2] frame=2480 faces=1
+[DEBUG] Prashant Kumar score=0.352
+[DEBUG] Prashant Kumar score=0.352
+[Entry-1] frame=2360 faces=1
+[DEBUG] Prashant Kumar score=0.056
+[DEBUG] Prashant Kumar score=0.056
+[Entry-4] frame=2500 faces=0
+[Entry-2] frame=2490 faces=0
+[Entry-1] frame=2370 faces=0
+[Entry-4] frame=2510 faces=0
+[Entry-2] frame=2500 faces=1
+[DEBUG] Prashant Kumar score=0.310
+[DEBUG] Prashant Kumar score=0.310
+[Entry-1] frame=2380 faces=0
+[Entry-4] frame=2520 faces=0
+[Entry-2] frame=2510 faces=0
+[Entry-4] frame=2530 faces=0
+[Entry-1] frame=2390 faces=0
+[Entry-2] frame=2520 faces=0
+[Entry-1] frame=2400 faces=0
+[Entry-4] frame=2540 faces=0
+[Entry-2] frame=2530 faces=0
+[Entry-1] frame=2410 faces=0
+[Entry-4] frame=2550 faces=0
+[Entry-2] frame=2540 faces=0
+[Entry-4] frame=2560 faces=0
+[Entry-1] frame=2420 faces=1
+[DEBUG] Rajan score=0.056
+[DEBUG] Rajan score=0.056
+[Entry-2] frame=2550 faces=0
+[Entry-4] frame=2570 faces=0
+[Entry-1] frame=2430 faces=1
+[DEBUG] Meraj score=0.082
+[DEBUG] Meraj score=0.082
+[Entry-2] frame=2560 faces=0
+[Entry-4] frame=2580 faces=0
+[Entry-1] frame=2440 faces=0
+[Entry-2] frame=2570 faces=0
+[Entry-4] frame=2590 faces=0
+[Entry-1] frame=2450 faces=1
+[DEBUG] Meraj score=0.056
+[DEBUG] Meraj score=0.056
+[Entry-2] frame=2580 faces=0
+[Entry-4] frame=2600 faces=0
+[Entry-1] frame=2460 faces=0
+[Entry-2] frame=2590 faces=0
+[Entry-4] frame=2610 faces=0
+[Entry-1] frame=2470 faces=0
+[Entry-2] frame=2600 faces=1
+[DEBUG] Prashant Kumar score=0.193
+[DEBUG] Prashant Kumar score=0.193
+[Entry-4] frame=2620 faces=0
+[Entry-1] frame=2480 faces=1
+[DEBUG] Prashant Kumar score=0.068
+[DEBUG] Prashant Kumar score=0.068
+[Entry-2] frame=2610 faces=0
+[Entry-4] frame=2630 faces=0
+[Entry-1] frame=2490 faces=1
+[DEBUG] Prashant Kumar score=0.096
+[DEBUG] Prashant Kumar score=0.096
+[Entry-2] frame=2620 faces=0
+[Entry-4] frame=2640 faces=0
+[Entry-1] frame=2500 faces=1
+[DEBUG] Meraj score=0.053
+[DEBUG] Meraj score=0.053
+[Entry-2] frame=2630 faces=0
+[Entry-4] frame=2650 faces=0
+[Entry-2] frame=2640 faces=0
+[Entry-1] frame=2510 faces=1
+[DEBUG] Ravi Shankar score=0.047
+[DEBUG] Ravi Shankar score=0.047
+[Entry-4] frame=2660 faces=0
+[Entry-2] frame=2650 faces=0
+[Entry-1] frame=2520 faces=1
+[DEBUG] Amitabh Prajapati score=0.052
+[DEBUG] Amitabh Prajapati score=0.052
+[Entry-4] frame=2670 faces=0
+[Entry-2] frame=2660 faces=0
+[Entry-1] frame=2530 faces=1
+[DEBUG] Praveen score=0.071
+[DEBUG] Praveen score=0.071
+[Entry-4] frame=2680 faces=0
+[Entry-2] frame=2670 faces=0
+[Entry-1] frame=2540 faces=1
+[DEBUG] Rajan score=0.036
+[DEBUG] Rajan score=0.036
+[Entry-4] frame=2690 faces=0
+[Entry-2] frame=2680 faces=0
+[Entry-1] frame=2550 faces=1
+[DEBUG] Ravi Shankar score=0.057
+[DEBUG] Ravi Shankar score=0.057
+[Entry-4] frame=2700 faces=0
+[Entry-2] frame=2690 faces=0
+[Entry-4] frame=2710 faces=0
+[Entry-1] frame=2560 faces=1
+[DEBUG] Ravi Shankar score=0.101
+[DEBUG] Ravi Shankar score=0.101
+[Entry-2] frame=2700 faces=0
+[Entry-4] frame=2720 faces=0
+[Entry-1] frame=2570 faces=1
+[DEBUG] Praveen score=0.053
+[DEBUG] Praveen score=0.053
+[Entry-2] frame=2710 faces=0
+[Entry-4] frame=2730 faces=0
+[Entry-1] frame=2580 faces=1
+[DEBUG] Rajan score=0.079
+[DEBUG] Rajan score=0.079
+[Entry-2] frame=2720 faces=0
+[Entry-4] frame=2740 faces=0
+[Entry-1] frame=2590 faces=1
+[DEBUG] Meraj score=0.060
+[DEBUG] Meraj score=0.060
+[Entry-2] frame=2730 faces=0
+[Entry-4] frame=2750 faces=0
+[Entry-1] frame=2600 faces=0
+[Entry-2] frame=2740 faces=0
+[Entry-4] frame=2760 faces=0
+[Entry-1] frame=2610 faces=0
+[Entry-2] frame=2750 faces=0
+[Entry-4] frame=2770 faces=0
+[Entry-1] frame=2620 faces=0
+[Entry-2] frame=2760 faces=1
+[DEBUG] Prashant Kumar score=0.153
+[DEBUG] Prashant Kumar score=0.153
+[Entry-4] frame=2780 faces=0
+[Entry-1] frame=2630 faces=0
+[Entry-2] frame=2770 faces=0
+[Entry-4] frame=2790 faces=0
+[Entry-1] frame=2640 faces=0
+[Entry-2] frame=2780 faces=0
+[Entry-4] frame=2800 faces=0
+[Entry-1] frame=2650 faces=0
+[Entry-2] frame=2790 faces=0
+[Entry-4] frame=2810 faces=0
+[Entry-1] frame=2660 faces=0
+[Entry-2] frame=2800 faces=0
+[Entry-4] frame=2820 faces=0
+[Entry-1] frame=2670 faces=0
+[Entry-2] frame=2810 faces=0
+[Entry-4] frame=2830 faces=0
+[Entry-1] frame=2680 faces=0
+[Entry-2] frame=2820 faces=0
+[Entry-4] frame=2840 faces=0
+[Entry-1] frame=2690 faces=0
+[Entry-2] frame=2830 faces=0
+[Entry-4] frame=2850 faces=0
+[Entry-1] frame=2700 faces=0
+[Entry-2] frame=2840 faces=0
+[Entry-4] frame=2860 faces=0
+[Entry-1] frame=2710 faces=0
+[Entry-2] frame=2850 faces=0
+[Entry-4] frame=2870 faces=0
+[Entry-1] frame=2720 faces=0
+[Entry-2] frame=2860 faces=1
+[DEBUG] Prashant Kumar score=0.251
+[DEBUG] Prashant Kumar score=0.251
+[Entry-4] frame=2880 faces=0
+[Entry-1] frame=2730 faces=0
+[Entry-2] frame=2870 faces=1
+[DEBUG] Prashant Kumar score=0.193
+[DEBUG] Prashant Kumar score=0.193
+[Entry-4] frame=2890 faces=0
+[Entry-1] frame=2740 faces=0
+[Entry-2] frame=2880 faces=1
+[DEBUG] Prashant Kumar score=0.330
+[DEBUG] Prashant Kumar score=0.330
+[Entry-4] frame=2900 faces=0
+[Entry-1] frame=2750 faces=0
+[Entry-4] frame=2910 faces=0
+[Entry-2] frame=2890 faces=1
+[DEBUG] Prashant Kumar score=0.263
+[DEBUG] Prashant Kumar score=0.263
+[Entry-1] frame=2760 faces=1
+[DEBUG] Rajan score=0.110
+[DEBUG] Rajan score=0.110
+[Entry-4] frame=2920 faces=0
+[Entry-2] frame=2900 faces=1
+[DEBUG] Prashant Kumar score=0.235
+[DEBUG] Prashant Kumar score=0.235
+[Entry-1] frame=2770 faces=1
+[DEBUG] Kuldeep score=0.165
+[DEBUG] Kuldeep score=0.165
+[Entry-4] frame=2930 faces=0
+[Entry-2] frame=2910 faces=1
+[DEBUG] Prashant Kumar score=0.319
+[DEBUG] Prashant Kumar score=0.319
+[Entry-1] frame=2780 faces=1
+[DEBUG] Prashant Kumar score=0.072
+[DEBUG] Prashant Kumar score=0.072
+[Entry-4] frame=2940 faces=0
+[Entry-2] frame=2920 faces=1
+[DEBUG] Prashant Kumar score=0.366
+[DEBUG] Prashant Kumar score=0.366
+[Entry-1] frame=2790 faces=0
+[Entry-4] frame=2950 faces=0
+[Entry-2] frame=2930 faces=1
+[DEBUG] Prashant Kumar score=0.324
+[DEBUG] Prashant Kumar score=0.324
+[Entry-1] frame=2800 faces=1
+[DEBUG] Aakash score=0.107
+[DEBUG] Aakash score=0.107
+[Entry-4] frame=2960 faces=0
+[Entry-2] frame=2940 faces=0
+[Entry-1] frame=2810 faces=1
+[DEBUG] Aakash score=0.096
+[DEBUG] Aakash score=0.096
+[Entry-4] frame=2970 faces=0
+[Entry-2] frame=2950 faces=0
+[Entry-1] frame=2820 faces=1
+[DEBUG] Ravi Shankar score=0.052
+[DEBUG] Ravi Shankar score=0.052
+[Entry-4] frame=2980 faces=0
+[Entry-2] frame=2960 faces=0
+[Entry-1] frame=2830 faces=1
+[DEBUG] Ravi Shankar score=0.072
+[DEBUG] Ravi Shankar score=0.072
+[Entry-4] frame=2990 faces=0
+[Entry-2] frame=2970 faces=1
+[DEBUG] Prashant Kumar score=0.117
+[DEBUG] Prashant Kumar score=0.117
+[Entry-1] frame=2840 faces=1
+[DEBUG] Ravi Shankar score=0.063
+[DEBUG] Ravi Shankar score=0.063
+[Entry-4] frame=3000 faces=0
+[Entry-2] frame=2980 faces=0
+[Entry-1] frame=2850 faces=0
+[Entry-4] frame=3010 faces=0
+[Entry-2] frame=2990 faces=1
+[DEBUG] Prashant Kumar score=0.180
+[DEBUG] Prashant Kumar score=0.180
+[Entry-1] frame=2860 faces=0
+[Entry-4] frame=3020 faces=0
+[Entry-2] frame=3000 faces=0
+[Entry-4] frame=3030 faces=0
+[Entry-1] frame=2870 faces=1
+[DEBUG] Rajan score=0.053
+[DEBUG] Rajan score=0.053
+[Entry-2] frame=3010 faces=0
+[Entry-4] frame=3040 faces=0
+[Entry-1] frame=2880 faces=1
+[DEBUG] Ravi Shankar score=0.085
+[DEBUG] Ravi Shankar score=0.085
+[Entry-2] frame=3020 faces=0
+[Entry-4] frame=3050 faces=0
+[Entry-1] frame=2890 faces=1
+[DEBUG] Ravi Shankar score=0.062
+[DEBUG] Ravi Shankar score=0.062
+[Entry-2] frame=3030 faces=0
+[Entry-4] frame=3060 faces=0
+[Entry-1] frame=2900 faces=1
+[DEBUG] Ravi Shankar score=0.043
+[DEBUG] Ravi Shankar score=0.043
+[Entry-2] frame=3040 faces=0
+[Entry-4] frame=3070 faces=0
+[Entry-1] frame=2910 faces=1
+[DEBUG] Amitabh Prajapati score=0.049
+[DEBUG] Amitabh Prajapati score=0.049
+[Entry-2] frame=3050 faces=1
+[DEBUG] Satya  score=0.072
+[DEBUG] Satya  score=0.072
+[Entry-4] frame=3080 faces=0
+[Entry-1] frame=2920 faces=1
+[DEBUG] Rajan score=0.052
+[DEBUG] Rajan score=0.052
+[Entry-2] frame=3060 faces=0
+[Entry-4] frame=3090 faces=0
+[Entry-1] frame=2930 faces=1
+[DEBUG] Ravi Shankar score=0.051
+[DEBUG] Ravi Shankar score=0.051
+[Entry-2] frame=3070 faces=0
+[Entry-4] frame=3100 faces=0
+[Entry-1] frame=2940 faces=0
+[Entry-2] frame=3080 faces=1
+[DEBUG] Neeraj  score=0.058
+[DEBUG] Neeraj  score=0.058
+[Entry-4] frame=3110 faces=0
+[Entry-1] frame=2950 faces=1
+[DEBUG] Aakash score=0.076
+[DEBUG] Aakash score=0.076
+[Entry-2] frame=3090 faces=1
+[DEBUG] Amitabh Prajapati score=0.167
+[DEBUG] Amitabh Prajapati score=0.167
+[Entry-4] frame=3120 faces=0
+[Entry-1] frame=2960 faces=1
+[DEBUG] Ravi Shankar score=0.130
+[DEBUG] Ravi Shankar score=0.130
+[Entry-2] frame=3100 faces=0
+[Entry-4] frame=3130 faces=0
+[Entry-2] frame=3110 faces=0
+[Entry-1] frame=2970 faces=1
+[DEBUG] Kuldeep score=0.100
+[DEBUG] Kuldeep score=0.100
+[Entry-4] frame=3140 faces=0
+[Entry-2] frame=3120 faces=0
+[Entry-1] frame=2980 faces=1
+[DEBUG] Rishu Kumar score=0.108
+[DEBUG] Rishu Kumar score=0.108
+[Entry-4] frame=3150 faces=0
+[Entry-2] frame=3130 faces=0
+[Entry-1] frame=2990 faces=0
+[Entry-4] frame=3160 faces=0
+[Entry-2] frame=3140 faces=0
+[Entry-1] frame=3000 faces=0
+[Entry-4] frame=3170 faces=0
+[Entry-2] frame=3150 faces=0
+[Entry-1] frame=3010 faces=0
+[Entry-4] frame=3180 faces=0
+[Entry-2] frame=3160 faces=0
+[Entry-1] frame=3020 faces=0
+[Entry-4] frame=3190 faces=0
+[Entry-2] frame=3170 faces=0
+[Entry-4] frame=3200 faces=0
+[Entry-1] frame=3030 faces=1
+[DEBUG] Abhishek  score=0.678
+[DEBUG] Abhishek  score=0.678
+[Entry-2] frame=3180 faces=0
+[Entry-4] frame=3210 faces=0
+[Entry-1] frame=3040 faces=1
+[DEBUG] Abhishek  score=0.683
+[DEBUG] Abhishek  score=0.683
+[Entry-2] frame=3190 faces=0
+[Entry-4] frame=3220 faces=0
+[Entry-1] frame=3050 faces=2
+[DEBUG] Abhishek  score=0.480
+[DEBUG] Abhishek  score=0.480
+[DEBUG] Aakash score=0.242
+[DEBUG] Aakash score=0.242
+[Entry-2] frame=3200 faces=0
+[Entry-4] frame=3230 faces=0
+[Entry-1] frame=3060 faces=1
+[DEBUG] Aakash score=0.217
+[DEBUG] Aakash score=0.217
+[Entry-2] frame=3210 faces=0
+[Entry-4] frame=3240 faces=0
+[Entry-1] frame=3070 faces=0
+[Entry-2] frame=3220 faces=0
+[Entry-4] frame=3250 faces=0
+[Entry-1] frame=3080 faces=0
+[Entry-2] frame=3230 faces=0
+[Entry-4] frame=3260 faces=0
+[Entry-1] frame=3090 faces=0
+[Entry-2] frame=3240 faces=0
+[Entry-4] frame=3270 faces=0
+[Entry-1] frame=3100 faces=0
+[Entry-2] frame=3250 faces=0
+[Entry-4] frame=3280 faces=0
+[Entry-1] frame=3110 faces=0
+[Entry-2] frame=3260 faces=0
+[Entry-4] frame=3290 faces=0
+[Entry-1] frame=3120 faces=0
+[Entry-2] frame=3270 faces=0
+[Entry-4] frame=3300 faces=0
+[Entry-1] frame=3130 faces=0
+[Entry-2] frame=3280 faces=0
+[Entry-4] frame=3310 faces=0
+[Entry-1] frame=3140 faces=0
+[Entry-2] frame=3290 faces=0
+[Entry-4] frame=3320 faces=0
+[Entry-1] frame=3150 faces=0
+[Entry-2] frame=3300 faces=0
+[Entry-4] frame=3330 faces=0
+[Entry-1] frame=3160 faces=0
+[Entry-2] frame=3310 faces=0
+[Entry-4] frame=3340 faces=0
+[Entry-1] frame=3170 faces=0
+[Entry-2] frame=3320 faces=0
+[Entry-4] frame=3350 faces=0
+[Entry-1] frame=3180 faces=0
+[Entry-2] frame=3330 faces=0
+[Entry-4] frame=3360 faces=0
+[Entry-1] frame=3190 faces=0
+[Entry-2] frame=3340 faces=0
+[Entry-4] frame=3370 faces=0
+[Entry-1] frame=3200 faces=0
+[Entry-2] frame=3350 faces=0
+[Entry-4] frame=3380 faces=0
+[Entry-1] frame=3210 faces=1
+[DEBUG] Abhishek  score=0.049
+[DEBUG] Abhishek  score=0.049
+[Entry-2] frame=3360 faces=0
+[Entry-4] frame=3390 faces=0
+[Entry-1] frame=3220 faces=2
+[DEBUG] Aakash score=0.156
+[DEBUG] Aakash score=0.156
+[DEBUG] Meraj score=0.054
+[DEBUG] Meraj score=0.054
+[Entry-2] frame=3370 faces=0
+[Entry-4] frame=3400 faces=0
+[Entry-2] frame=3380 faces=0
+[Entry-1] frame=3230 faces=2
+[DEBUG] Amitabh Prajapati score=0.055
+[DEBUG] Amitabh Prajapati score=0.055
+[DEBUG] Aakash score=0.164
+[DEBUG] Aakash score=0.164
+[Entry-4] frame=3410 faces=0
+[Entry-2] frame=3390 faces=0
+[Entry-1] frame=3240 faces=0
+[Entry-4] frame=3420 faces=0
+[Entry-2] frame=3400 faces=0
+[Entry-1] frame=3250 faces=1
+[DEBUG] Meraj score=0.157
+[DEBUG] Meraj score=0.157
+[Entry-4] frame=3430 faces=0
+[Entry-2] frame=3410 faces=0
+[Entry-1] frame=3260 faces=1
+[DEBUG] Aditya score=0.206
+[DEBUG] Aditya score=0.206
+[Entry-4] frame=3440 faces=0
+[Entry-2] frame=3420 faces=0
+[Entry-4] frame=3450 faces=0
+[Entry-1] frame=3270 faces=1
+[DEBUG] Aditya score=0.213
+[DEBUG] Aditya score=0.213
+[Entry-2] frame=3430 faces=0
+[Entry-4] frame=3460 faces=0
+[Entry-1] frame=3280 faces=1
+[DEBUG] Aditya score=0.243
+[DEBUG] Aditya score=0.243
+[Entry-2] frame=3440 faces=0
+[Entry-4] frame=3470 faces=0
+[Entry-1] frame=3290 faces=1
+[DEBUG] Meraj score=0.086
+[DEBUG] Meraj score=0.086
+[Entry-2] frame=3450 faces=0
+[Entry-4] frame=3480 faces=0
+[Entry-1] frame=3300 faces=1
+[DEBUG] Meraj score=0.099
+[DEBUG] Meraj score=0.099
+[Entry-2] frame=3460 faces=0
+[Entry-4] frame=3490 faces=0
+[Entry-1] frame=3310 faces=0
+[Entry-2] frame=3470 faces=0
+[Entry-4] frame=3500 faces=0
+[Entry-1] frame=3320 faces=1
+[DEBUG] Kajal score=0.152
+[DEBUG] Kajal score=0.152
+[Entry-2] frame=3480 faces=0
+[Entry-4] frame=3510 faces=0
+[Entry-1] frame=3330 faces=0
+[Entry-2] frame=3490 faces=0
+[Entry-4] frame=3520 faces=0
+[Entry-1] frame=3340 faces=1
+[DEBUG] Abhishek  score=0.605
+[DEBUG] Abhishek  score=0.605
+[Entry-2] frame=3500 faces=0
+[Entry-4] frame=3530 faces=0
+[Entry-1] frame=3350 faces=1
+[DEBUG] Abhishek  score=0.670
+[DEBUG] Abhishek  score=0.670
+[Entry-2] frame=3510 faces=0
+[Entry-4] frame=3540 faces=0
+[Entry-2] frame=3520 faces=0
+[Entry-1] frame=3360 faces=2
+[DEBUG] Abhishek  score=0.695
+[DEBUG] Abhishek  score=0.695
+[DEBUG] Prashant Kumar score=0.079
+[DEBUG] Prashant Kumar score=0.079
+[Entry-4] frame=3550 faces=0
+[Entry-2] frame=3530 faces=0
+[Entry-4] frame=3560 faces=0
+[Entry-1] frame=3370 faces=2
+[DEBUG] Abhishek  score=0.670
+[DEBUG] Abhishek  score=0.670
+[DEBUG] Praveen score=0.116
+[DEBUG] Praveen score=0.116
+[Entry-2] frame=3540 faces=0
+[Entry-4] frame=3570 faces=0
+[Entry-1] frame=3380 faces=2
+[DEBUG] Abhishek  score=0.659
+[DEBUG] Abhishek  score=0.659
+[DEBUG] Aakash score=0.199
+[DEBUG] Aakash score=0.199
+[Entry-2] frame=3550 faces=0
+[Entry-4] frame=3580 faces=0
+[Entry-1] frame=3390 faces=0
+[Entry-2] frame=3560 faces=0
+[Entry-4] frame=3590 faces=0
+[Entry-1] frame=3400 faces=1
+[DEBUG] Prashant Kumar score=0.056
+[DEBUG] Prashant Kumar score=0.056
+[Entry-2] frame=3570 faces=0
+[Entry-4] frame=3600 faces=0
+[Entry-1] frame=3410 faces=1
+[DEBUG] Rajan score=0.129
+[DEBUG] Rajan score=0.129
+[Entry-2] frame=3580 faces=0
+[Entry-4] frame=3610 faces=0
+[Entry-1] frame=3420 faces=1
+[DEBUG] Prashant Kumar score=0.195
+[DEBUG] Prashant Kumar score=0.195
+[Entry-2] frame=3590 faces=0
+[Entry-4] frame=3620 faces=0
+[Entry-1] frame=3430 faces=1
+[DEBUG] Neeraj  score=0.143
+[DEBUG] Neeraj  score=0.143
+[Entry-2] frame=3600 faces=0
+[Entry-4] frame=3630 faces=0
+[Entry-1] frame=3440 faces=0
+[Entry-2] frame=3610 faces=0
+[Entry-4] frame=3640 faces=0
+[Entry-1] frame=3450 faces=0
+[Entry-2] frame=3620 faces=0
+[Entry-4] frame=3650 faces=0
+[Entry-1] frame=3460 faces=0
+[Entry-2] frame=3630 faces=0
+[Entry-4] frame=3660 faces=0
+[Entry-1] frame=3470 faces=1
+[DEBUG] Aditya score=0.151
+[DEBUG] Aditya score=0.151
+[Entry-2] frame=3640 faces=0
+[Entry-4] frame=3670 faces=0
+[Entry-1] frame=3480 faces=0
+[Entry-2] frame=3650 faces=0
+[Entry-4] frame=3680 faces=0
+[Entry-1] frame=3490 faces=0
+[Entry-2] frame=3660 faces=0
+[Entry-4] frame=3690 faces=0
+[Entry-1] frame=3500 faces=0
+[Entry-2] frame=3670 faces=0
+[Entry-4] frame=3700 faces=0
+[Entry-1] frame=3510 faces=1
+[DEBUG] Abhishek  score=0.400
+[DEBUG] Abhishek  score=0.400
+[Entry-2] frame=3680 faces=0
+[Entry-4] frame=3710 faces=0
+[Entry-1] frame=3520 faces=0
+[Entry-2] frame=3690 faces=0
+[Entry-4] frame=3720 faces=0
+[Entry-1] frame=3530 faces=0
+[Entry-2] frame=3700 faces=0
+[Entry-4] frame=3730 faces=0
+[Entry-1] frame=3540 faces=0
+[Entry-2] frame=3710 faces=0
+[Entry-4] frame=3740 faces=0
+[Entry-1] frame=3550 faces=0
+[Entry-2] frame=3720 faces=0
+[Entry-4] frame=3750 faces=0
+[Entry-1] frame=3560 faces=0
+[Entry-2] frame=3730 faces=0
+[Entry-4] frame=3760 faces=0
+[Entry-1] frame=3570 faces=1
+[DEBUG] Amitabh Prajapati score=0.032
+[DEBUG] Amitabh Prajapati score=0.032
+[Entry-2] frame=3740 faces=0
+[Entry-4] frame=3770 faces=0
+[Entry-2] frame=3750 faces=0
+[Entry-4] frame=3780 faces=0
+[Entry-1] frame=3580 faces=2
+[DEBUG] Ravi Shankar score=0.118
+[DEBUG] Ravi Shankar score=0.118
+[DEBUG] Aditya score=0.134
+[DEBUG] Aditya score=0.134
+[Entry-2] frame=3760 faces=0
+[Entry-4] frame=3790 faces=0
+[Entry-1] frame=3590 faces=2
+[DEBUG] Abhishek  score=0.353
+[DEBUG] Abhishek  score=0.353
+[DEBUG] Aditya score=0.140
+[DEBUG] Aditya score=0.140
+[Entry-2] frame=3770 faces=0
+[Entry-4] frame=3800 faces=0
+[Entry-1] frame=3600 faces=1
+[DEBUG] Abhishek  score=0.425
+[DEBUG] Abhishek  score=0.425
+[Entry-2] frame=3780 faces=0
+[Entry-4] frame=3810 faces=0
+[Entry-1] frame=3610 faces=2
+[DEBUG] Rishu Kumar score=0.082
+[DEBUG] Rishu Kumar score=0.082
+[DEBUG] Neeraj  score=0.047
+[DEBUG] Neeraj  score=0.047
+[Entry-2] frame=3790 faces=0
+[Entry-4] frame=3820 faces=0
+[Entry-1] frame=3620 faces=1
+[DEBUG] Abhishek  score=0.353
+[DEBUG] Abhishek  score=0.353
+[Entry-2] frame=3800 faces=0
+[Entry-4] frame=3830 faces=0
+[Entry-1] frame=3630 faces=0
+[Entry-2] frame=3810 faces=0
+[Entry-4] frame=3840 faces=0
+[Entry-1] frame=3640 faces=1
+[DEBUG] Abhishek  score=0.571
+[DEBUG] Abhishek  score=0.571
+[Entry-2] frame=3820 faces=0
+[Entry-4] frame=3850 faces=0
+[Entry-1] frame=3650 faces=1
+[DEBUG] Abhishek  score=0.505
+[DEBUG] Abhishek  score=0.505
+[Entry-2] frame=3830 faces=0
+[Entry-4] frame=3860 faces=0
+[Entry-2] frame=3840 faces=0
+[Entry-1] frame=3660 faces=1
+[DEBUG] Abhishek  score=0.490
+[DEBUG] Abhishek  score=0.490
+[Entry-4] frame=3870 faces=0
+[Entry-2] frame=3850 faces=0
+[Entry-1] frame=3670 faces=1
+[DEBUG] Abhishek  score=0.486
+[DEBUG] Abhishek  score=0.486
+[Entry-4] frame=3880 faces=0
+[Entry-2] frame=3860 faces=0
+[Entry-4] frame=3890 faces=0
+[Entry-1] frame=3680 faces=1
+[DEBUG] Abhishek  score=0.230
+[DEBUG] Abhishek  score=0.230
+[Entry-2] frame=3870 faces=0
+[Entry-4] frame=3900 faces=0
+[Entry-1] frame=3690 faces=0
+[Entry-2] frame=3880 faces=0
+[Entry-4] frame=3910 faces=0
+[Entry-1] frame=3700 faces=0
+[Entry-2] frame=3890 faces=0
+[Entry-4] frame=3920 faces=0
+[Entry-1] frame=3710 faces=0
+[Entry-2] frame=3900 faces=0
+[Entry-4] frame=3930 faces=0
+[Entry-1] frame=3720 faces=0
+[Entry-2] frame=3910 faces=0
+[Entry-4] frame=3940 faces=0
+[Entry-1] frame=3730 faces=0
+[Entry-2] frame=3920 faces=0
+[Entry-4] frame=3950 faces=0
+[Entry-1] frame=3740 faces=1
+[DEBUG] Aakash score=0.220
+[DEBUG] Aakash score=0.220
+[Entry-2] frame=3930 faces=0
+[Entry-4] frame=3960 faces=0
+[Entry-1] frame=3750 faces=0
+[Entry-2] frame=3940 faces=0
+[Entry-4] frame=3970 faces=0
+[Entry-1] frame=3760 faces=0
+[Entry-2] frame=3950 faces=0
+[Entry-4] frame=3980 faces=0
+[Entry-1] frame=3770 faces=0
+[Entry-2] frame=3960 faces=0
+[Entry-4] frame=3990 faces=0
+[Entry-1] frame=3780 faces=0
+[Entry-2] frame=3970 faces=0
+[Entry-4] frame=4000 faces=0
+[Entry-1] frame=3790 faces=0
+[Entry-2] frame=3980 faces=0
+[Entry-4] frame=4010 faces=0
+[Entry-1] frame=3800 faces=0
+[Entry-2] frame=3990 faces=0
+[Entry-4] frame=4020 faces=0
+[Entry-1] frame=3810 faces=0
+[Entry-2] frame=4000 faces=0
+[Entry-4] frame=4030 faces=0
+[Entry-1] frame=3820 faces=0
+[Entry-2] frame=4010 faces=0
+[Entry-4] frame=4040 faces=0
+[Entry-1] frame=3830 faces=0
+[Entry-2] frame=4020 faces=0
+[Entry-4] frame=4050 faces=0
+[Entry-1] frame=3840 faces=0
+[Entry-2] frame=4030 faces=0
+[Entry-4] frame=4060 faces=0
+[Entry-1] frame=3850 faces=1
+[DEBUG] Rajan score=0.058
+[DEBUG] Rajan score=0.058
+[Entry-2] frame=4040 faces=0
+[Entry-4] frame=4070 faces=0
+[Entry-1] frame=3860 faces=1
+[DEBUG] Ravi Shankar score=0.067
+[DEBUG] Ravi Shankar score=0.067
+[Entry-2] frame=4050 faces=0
+[Entry-4] frame=4080 faces=0
+[Entry-1] frame=3870 faces=0
+[Entry-2] frame=4060 faces=0
+[Entry-4] frame=4090 faces=0
+[Entry-1] frame=3880 faces=0
+[Entry-2] frame=4070 faces=0
+[Entry-4] frame=4100 faces=0
+[Entry-1] frame=3890 faces=0
+[Entry-2] frame=4080 faces=0
+[Entry-4] frame=4110 faces=0
+[Entry-1] frame=3900 faces=0
+[Entry-2] frame=4090 faces=0
+[Entry-4] frame=4120 faces=0
+[Entry-1] frame=3910 faces=0
+[Entry-2] frame=4100 faces=0
+[Entry-4] frame=4130 faces=0
+[Entry-1] frame=3920 faces=0
+[Entry-2] frame=4110 faces=0
+[Entry-4] frame=4140 faces=0
+[Entry-1] frame=3930 faces=0
+[Entry-2] frame=4120 faces=0
+[Entry-4] frame=4150 faces=0
+[Entry-1] frame=3940 faces=0
+[Entry-2] frame=4130 faces=0
+[Entry-4] frame=4160 faces=0
+[Entry-1] frame=3950 faces=0
+[Entry-2] frame=4140 faces=0
+[Entry-4] frame=4170 faces=0
+[Entry-1] frame=3960 faces=0
+[Entry-2] frame=4150 faces=0
+[Entry-4] frame=4180 faces=0
+[Entry-1] frame=3970 faces=0
+[Entry-2] frame=4160 faces=0
+[Entry-4] frame=4190 faces=0
+[Entry-1] frame=3980 faces=0
+[Entry-2] frame=4170 faces=0
+[Entry-4] frame=4200 faces=0
+[Entry-1] frame=3990 faces=0
+[Entry-2] frame=4180 faces=0
+[Entry-4] frame=4210 faces=0
+[Entry-1] frame=4000 faces=0
+[Entry-2] frame=4190 faces=0
+[Entry-4] frame=4220 faces=0
+[Entry-1] frame=4010 faces=1
+[DEBUG] Meraj score=0.100
+[DEBUG] Meraj score=0.100
+[Entry-2] frame=4200 faces=0
+[Entry-4] frame=4230 faces=0
+[Entry-1] frame=4020 faces=0
+[Entry-2] frame=4210 faces=0
+[Entry-4] frame=4240 faces=0
+[Entry-1] frame=4030 faces=1
+[DEBUG] Neeraj  score=0.101
+[DEBUG] Neeraj  score=0.101
+[Entry-2] frame=4220 faces=0
+[Entry-4] frame=4250 faces=0
+[Entry-1] frame=4040 faces=1
+[DEBUG] Rajan score=0.045
+[DEBUG] Rajan score=0.045
+[Entry-2] frame=4230 faces=0
+[Entry-4] frame=4260 faces=0
+[Entry-1] frame=4050 faces=0
+[Entry-2] frame=4240 faces=0
+[Entry-4] frame=4270 faces=0
+[Entry-1] frame=4060 faces=0
+[Entry-2] frame=4250 faces=0
+[Entry-4] frame=4280 faces=0
+[Entry-1] frame=4070 faces=0
+[Entry-2] frame=4260 faces=0
+[Entry-4] frame=4290 faces=0
+[Entry-1] frame=4080 faces=0
+[Entry-2] frame=4270 faces=0
+[Entry-4] frame=4300 faces=0
+[Entry-1] frame=4090 faces=0
+[Entry-2] frame=4280 faces=0
+[Entry-4] frame=4310 faces=0
+[Entry-1] frame=4100 faces=0
+[Entry-2] frame=4290 faces=0
+[Entry-4] frame=4320 faces=0
+[Entry-1] frame=4110 faces=1
+[DEBUG] Prashant Kumar score=0.102
+[DEBUG] Prashant Kumar score=0.102
+[Entry-2] frame=4300 faces=0
+[Entry-4] frame=4330 faces=0
+[Entry-1] frame=4120 faces=0
+[Entry-2] frame=4310 faces=0
+[Entry-4] frame=4340 faces=0
+[Entry-1] frame=4130 faces=0
+[Entry-2] frame=4320 faces=0
+[Entry-4] frame=4350 faces=0
+[Entry-1] frame=4140 faces=1
+[DEBUG] Rajan score=0.082
+[DEBUG] Rajan score=0.082
+[Entry-2] frame=4330 faces=0
