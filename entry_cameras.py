@@ -225,7 +225,8 @@
 
 # def _open_ffmpeg_cap(cam_id: str, ffmpeg_url: str) -> cv2.VideoCapture:
 #     os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = (
-#         "rtsp_transport;tcp|stimeout;5000000"
+#         "rtsp_transport;t
+# |stimeout;5000000"
 #     )
 #     print(f"[{cam_id}] Trying FFmpeg: {ffmpeg_url}")
 #     cap = cv2.VideoCapture(ffmpeg_url, cv2.CAP_FFMPEG)
@@ -1401,7 +1402,7 @@ _known_matrix = np.stack(list(known_face_db.values()), axis=0)   # (N, 512)
 from insightface.app import FaceAnalysis
 face_app = FaceAnalysis(
     name="buffalo_l",
-    providers=["CUDAExecutionProvider"],
+    providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
 )
 face_app.prepare(ctx_id=0, det_size=(320, 320))
 
@@ -1534,12 +1535,14 @@ class CameraWorker:
         threading.Thread(target=self._process_loop, daemon=True,
                          name=f"proc-{self.cam_id}").start()
 
-    # ── show() — MAIN THREAD ONLY. Annotated frame window mein dikhao. ───────
+    # ── show() — MAIN THREAD ONLY. Annotated frame window mein dikhao.
+    #    Headless (systemd service) mode ke liye commented out — no display
+    #    wahan attached hota. Manual debug run ke liye uncomment karo.
     def show(self):
         with self.display_lock:
             frame = self.display_frame
-        if frame is not None:
-            cv2.imshow(self.window_name, frame)
+        # if frame is not None:
+        #     cv2.imshow(self.window_name, frame)
 
     # ── Processing loop (background thread — NO imshow/waitKey here) ─────────
     def _process_loop(self):
@@ -1774,26 +1777,30 @@ def main():
         worker.open()
 
     # Windows pehle create karo MAIN THREAD pe — Qt needs this before imshow
-    for worker in workers:
-        cv2.namedWindow(worker.window_name, cv2.WINDOW_NORMAL)
-        cv2.resizeWindow(worker.window_name, 640, 360)
+    # Headless (systemd service) mode ke liye commented out — no display.
+    # for worker in workers:
+    #     cv2.namedWindow(worker.window_name, cv2.WINDOW_NORMAL)
+    #     cv2.resizeWindow(worker.window_name, 640, 360)
 
     # Sab workers ke capture + processing threads start karo (background)
     for worker in workers:
         worker.start()
 
-    print("[main] GUI loop started — press 'q' to quit")
+    print("[main] Headless mode — cameras running in background, no display")
 
-    # ── GUI loop — MAIN THREAD ONLY. Qt HighGUI is not thread-safe.
+    # ── Idle loop — GUI disabled for headless service mode. Capture +
+    #    detection already run fully in the background threads above; this
+    #    just keeps the process alive until a worker signals a failure.
     while running["value"]:
-        for worker in workers:
-            worker.show()
-        key = cv2.waitKey(1) & 0xFF
-        if key == ord("q"):
-            running["value"] = False
-            break
+        # for worker in workers:
+        #     worker.show()
+        # key = cv2.waitKey(1) & 0xFF
+        # if key == ord("q"):
+        #     running["value"] = False
+        #     break
+        time.sleep(0.5)
 
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
     print("All cameras stopped.")
     time.sleep(1)
     os._exit(0)

@@ -711,7 +711,7 @@ print(f"Total employees loaded: {len(known_face_db)}\n")
 # =============================================================================
 face_app = FaceAnalysis(
     name="buffalo_l",
-    providers=["CUDAExecutionProvider"],
+    providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
 )
 face_app.prepare(ctx_id=0, det_size=(320, 320))
 
@@ -1048,18 +1048,20 @@ def main():
             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (200, 200, 200), 2,
         )
 
-        cv2.imshow("HR Face Attendance - EXIT GATE", display_frame)
+        # Headless (systemd service) mode ke liye commented out — no display
+        # wahan attached hota. Manual debug run ke liye uncomment karo.
+        # cv2.imshow("HR Face Attendance - EXIT GATE", display_frame)
 
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            running = False
-            break
+        # if cv2.waitKey(1) & 0xFF == ord("q"):
+        #     running = False
+        #     break
 
         elapsed    = time.time() - loop_start
         sleep_time = frame_time - elapsed
         if sleep_time > 0:
             time.sleep(sleep_time)
 
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
     time.sleep(1)
     os._exit(0)
 
