@@ -519,3 +519,79 @@ set det-size: (320, 320)
 [Entry-4] Trying FFmpeg: rtsp://admin:Tts%40110092@192.168.1.106:554/video/live?channel=1&subtype=1
 [Entry-4] ✅ FFmpeg stream opened
 [main] Headless mode — cameras running in background, no display
+[ WARN:3@1871.411] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30043.385101 ms
+[ WARN:4@1871.423] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30043.432430 ms
+[ WARN:5@1871.423] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30041.473263 ms
+[ WARN:3@1901.459] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30043.670401 ms
+[ WARN:5@1901.468] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30041.065101 ms
+[ WARN:4@1901.468] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30041.192305 ms
+[ WARN:3@1931.534] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30042.873525 ms
+[Entry-2] Stream lost — reconnecting …
+[ WARN:4@1931.547] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30041.530218 ms
+[ WARN:5@1931.547] global cap_ffmpeg_impl.hpp:453 _opencv_ffmpeg_interrupt_callback Stream timeout triggered after 30041.518729 ms
+[Entry-4] Stream lost — reconnecting …[Entry-1] Stream lost — reconnecting …
+
+[Entry-2] Reconnecting via FFmpeg …
+[Entry-2] Trying FFmpeg: rtsp://admin:Tts%40110092@192.168.1.104:554/video/live?channel=1&subtype=1
+[Entry-4] Reconnecting via FFmpeg …
+[Entry-4] Trying FFmpeg: rtsp://admin:Tts%40110092@192.168.1.106:554/video/live?channel=1&subtype=1
+[Entry-1] Reconnecting via FFmpeg …
+[Entry-1] Trying FFmpeg: rtsp://admin:Tts%40110092@192.168.1.101:554/video/live?channel=1&subtype=1
+[Entry-2] ✅ FFmpeg stream opened
+[Entry-4] ✅ FFmpeg stream opened
+[Entry-1] ✅ FFmpeg stream opened
+Loading embeddings …
+  Kajal: 4 embeddings
+  Prashant Kumar: 7 embeddings
+  Kuldeep: 6 embeddings
+  Neeraj : 5 embeddings
+  Vikas Sharma: 5 embeddings
+  Meraj: 5 embeddings
+  Ravi Shankar: 7 embeddings
+  Sunny : 4 embeddings
+  Abhishek : 6 embeddings
+  Aditya: 5 embeddings
+  Rajan: 7 embeddings
+  Rishu Kumar: 8 embeddings
+  Satya : 7 embeddings
+  Amitabh Prajapati: 7 embeddings
+  Praveen: 6 embeddings
+  Aakash: 10 embeddings
+  abc: 5 embeddings
+Total employees loaded: 17
+
+[0;93m2026-08-06 14:41:52.950541805 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /home/cyamsys/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68 ['None', 3, 192, 192] 0.0 1.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /home/cyamsys/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106 ['None', 3, 192, 192] 0.0 1.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /home/cyamsys/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /home/cyamsys/.insightface/models/buffalo_l/genderage.onnx genderage ['None', 3, 96, 96] 0.0 1.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /home/cyamsys/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (320, 320)
+[cache] Startup: 0 employee(s) ka status SQLite (pending) se load kiya.
+[db] Supabase connection OK.
+[db] Sync worker started:
+     Interval : 300s (5 min)
+     Purge    : 7 din baad (synced rows only)
+     Queue    : /home/cyamsys/Desktop/test_Attendance/HR_attendance/offline_queue.db
+[reload] Embeddings watcher started (check every 10s)
+[Entry-1] Trying GStreamer:
+  rtspsrc location="rtsp://192.168.1.101:554/video/live?channel=1&subtype=1" user-id="admin" user-pw="Tts@110092" latency=100 protocols=tcp ! decodebin ! videoconvert ! videoscale ! video/x-raw,width=1280,height=720,format=BGR ! appsink drop=true max-buffers=1 sync=false
+[Entry-1] ⚠️  GStreamer failed — FFmpeg fallback
+[Entry-1] Trying FFmpeg: rtsp://admin:Tts%40110092@192.168.1.101:554/video/live?channel=1&subtype=1
+[Entry-1] ✅ FFmpeg stream opened
+[Entry-2] Trying GStreamer:
+  rtspsrc location="rtsp://192.168.1.104:554/video/live?channel=1&subtype=1" user-id="admin" user-pw="Tts@110092" latency=100 protocols=tcp ! decodebin ! videoconvert ! videoscale ! video/x-raw,width=1280,height=720,format=BGR ! appsink drop=true max-buffers=1 sync=false
+[Entry-2] ⚠️  GStreamer failed — FFmpeg fallback
+[Entry-2] Trying FFmpeg: rtsp://admin:Tts%40110092@192.168.1.104:554/video/live?channel=1&subtype=1
+[Entry-2] ✅ FFmpeg stream opened
+[Entry-4] Trying GStreamer:
+  rtspsrc location="rtsp://192.168.1.106:554/video/live?channel=1&subtype=1" user-id="admin" user-pw="Tts@110092" latency=100 protocols=tcp ! decodebin ! videoconvert ! videoscale ! video/x-raw,width=1280,height=720,format=BGR ! appsink drop=true max-buffers=1 sync=false
+[Entry-4] ⚠️  GStreamer failed — FFmpeg fallback
+[Entry-4] Trying FFmpeg: rtsp://admin:Tts%40110092@192.168.1.106:554/video/live?channel=1&subtype=1
+[Entry-4] ✅ FFmpeg stream opened
+[main] Headless mode — cameras running in background, no display
