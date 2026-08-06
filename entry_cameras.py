@@ -1578,7 +1578,9 @@ class CameraWorker:
                 for face in faces:
                     x1, y1, x2, y2       = map(int, face.bbox)
                     best_name, best_score = recognize_face(face.embedding)
+                    print(f"[DEBUG] {best_name} score={best_score:.3f}", flush=True)
 
+                    print(f"[DEBUG] {best_name} score={best_score:.3f}", flush=True)
                     if best_score >= THRESHOLD:
                         now      = time.time()
                         last_try = self.last_mark_attempt.get(best_name, 0)

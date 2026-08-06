@@ -595,3 +595,10 @@ set det-size: (320, 320)
 [Entry-4] Trying FFmpeg: rtsp://admin:Tts%40110092@192.168.1.106:554/video/live?channel=1&subtype=1
 [Entry-4] ✅ FFmpeg stream opened
 [main] Headless mode — cameras running in background, no display
+[reload] embeddings.pkl changed — reloading ...
+[reload] ✅ embeddings.pkl reloaded — 16 employee(s) active.
+[SQLite] Saved → Satya  | Present | 15:28:53 | Entry-1
+[FIRST ENTRY] Satya  via Entry-1 at 15:28:53 — SQLite saved, Supabase sync 5 min mein
+[sync] 1 pending row(s) — Supabase push shuru ...
+[sync] PUSHED → Satya  | Present | 2026-08-06 15:28:53
+[sync] COMPLETE — pushed:1 | skipped:0 | failed:0 | still pending:0
