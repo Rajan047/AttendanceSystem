@@ -191,6 +191,7 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
     failed     = 0
     warnings   = []
     first_photo = None
+    new_embeddings = []   # batch — pickle file written once at the end, not per-photo
 
     for i, photo in enumerate(photos):
         if not photo or not photo.filename:
@@ -221,7 +222,7 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
                 )
                 failed += 1
             else:
-                fe.add_to_pickle(emp_name, emb)
+                new_embeddings.append(emb)
                 # Last embedding Supabase mein bhi store karo (backup)
                 try:
                     auth_db.set_employee_embedding(emp_id, fe.embedding_to_bytes(emb))
@@ -232,8 +233,10 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
             warnings.append(f"Photo {i+1}: embedding error — {e}")
             failed += 1
 
-    # Live cameras ko signal karo ki embeddings.pkl update ho gaya
-    if embedded > 0:
+    # Saare embeddings ek hi read-modify-write mein pickle file mein daalo
+    if new_embeddings:
+        fe.add_many_to_pickle(emp_name, new_embeddings)
+        # Live cameras ko signal karo ki embeddings.pkl update ho gaya
         _touch_embeddings_file()
 
     return {
