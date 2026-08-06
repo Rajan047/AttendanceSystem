@@ -1,3 +1,281 @@
 [ WARN:0@6.330] global cap_gstreamer.cpp:1750 open OpenCV | GStreamer warning: frame count is estimated by duration and fps
 /home/cyamsys/miniforge3/envs/camera/lib/python3.12/site-packages/insightface/utils/face_align.py:23: FutureWarning: `estimate` is deprecated since version 0.26 and will be removed in version 2.2. Please use `SimilarityTransform.from_estimate` class constructor instead.
   tform.estimate(lmk, dst)
+[0;93m2026-08-06 13:10:03.134417595 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[1;31m2026-08-06 13:10:09.678655940 [E:onnxruntime:, inference_session.cc:2579 operator()] Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+[m
+Loading embeddings …
+Total employees loaded: 17
+
+Traceback (most recent call last):
+  File "/home/cyamsys/Documents/HR_attendance/exit_camera.py", line 712, in <module>
+    face_app = FaceAnalysis(
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/app/face_analysis.py", line 31, in __init__
+    model = model_zoo.get_model(onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 96, in get_model
+    model = router.get_model(providers=providers, provider_options=provider_options)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 40, in get_model
+    session = PickableInferenceSession(self.onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 25, in __init__
+    super().__init__(model_path, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 504, in __init__
+    self._create_inference_session(providers, provider_options, disabled_optimizers)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 593, in _create_inference_session
+    sess.initialize_session(providers, provider_options, disabled_optimizers)
+onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL : Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+
+[0;93m2026-08-06 13:10:16.921485559 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[1;31m2026-08-06 13:10:23.238339784 [E:onnxruntime:, inference_session.cc:2579 operator()] Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+[m
+Loading embeddings …
+Total employees loaded: 17
+
+Traceback (most recent call last):
+  File "/home/cyamsys/Documents/HR_attendance/exit_camera.py", line 712, in <module>
+    face_app = FaceAnalysis(
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/app/face_analysis.py", line 31, in __init__
+    model = model_zoo.get_model(onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 96, in get_model
+    model = router.get_model(providers=providers, provider_options=provider_options)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 40, in get_model
+    session = PickableInferenceSession(self.onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 25, in __init__
+    super().__init__(model_path, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 504, in __init__
+    self._create_inference_session(providers, provider_options, disabled_optimizers)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 593, in _create_inference_session
+    sess.initialize_session(providers, provider_options, disabled_optimizers)
+onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL : Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+
+[0;93m2026-08-06 13:10:30.236923591 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[1;31m2026-08-06 13:10:36.737092989 [E:onnxruntime:, inference_session.cc:2579 operator()] Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+[m
+Loading embeddings …
+Total employees loaded: 17
+
+Traceback (most recent call last):
+  File "/home/cyamsys/Documents/HR_attendance/exit_camera.py", line 712, in <module>
+    face_app = FaceAnalysis(
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/app/face_analysis.py", line 31, in __init__
+    model = model_zoo.get_model(onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 96, in get_model
+    model = router.get_model(providers=providers, provider_options=provider_options)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 40, in get_model
+    session = PickableInferenceSession(self.onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 25, in __init__
+    super().__init__(model_path, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 504, in __init__
+    self._create_inference_session(providers, provider_options, disabled_optimizers)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 593, in _create_inference_session
+    sess.initialize_session(providers, provider_options, disabled_optimizers)
+onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL : Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+
+[0;93m2026-08-06 13:10:43.713237165 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[1;31m2026-08-06 13:10:50.051245026 [E:onnxruntime:, inference_session.cc:2579 operator()] Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+[m
+Loading embeddings …
+Total employees loaded: 17
+
+Traceback (most recent call last):
+  File "/home/cyamsys/Documents/HR_attendance/exit_camera.py", line 712, in <module>
+    face_app = FaceAnalysis(
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/app/face_analysis.py", line 31, in __init__
+    model = model_zoo.get_model(onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 96, in get_model
+    model = router.get_model(providers=providers, provider_options=provider_options)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 40, in get_model
+    session = PickableInferenceSession(self.onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 25, in __init__
+    super().__init__(model_path, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 504, in __init__
+    self._create_inference_session(providers, provider_options, disabled_optimizers)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 593, in _create_inference_session
+    sess.initialize_session(providers, provider_options, disabled_optimizers)
+onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL : Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+
+[0;93m2026-08-06 13:10:56.922964243 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[1;31m2026-08-06 13:11:03.269333361 [E:onnxruntime:, inference_session.cc:2579 operator()] Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+[m
+Loading embeddings …
+Total employees loaded: 17
+
+Traceback (most recent call last):
+  File "/home/cyamsys/Documents/HR_attendance/exit_camera.py", line 712, in <module>
+    face_app = FaceAnalysis(
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/app/face_analysis.py", line 31, in __init__
+    model = model_zoo.get_model(onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 96, in get_model
+    model = router.get_model(providers=providers, provider_options=provider_options)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 40, in get_model
+    session = PickableInferenceSession(self.onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 25, in __init__
+    super().__init__(model_path, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 504, in __init__
+    self._create_inference_session(providers, provider_options, disabled_optimizers)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 593, in _create_inference_session
+    sess.initialize_session(providers, provider_options, disabled_optimizers)
+onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL : Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+
+[0;93m2026-08-06 13:11:10.158459813 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[1;31m2026-08-06 13:11:16.281985305 [E:onnxruntime:, inference_session.cc:2579 operator()] Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+[m
+Loading embeddings …
+Total employees loaded: 17
+
+Traceback (most recent call last):
+  File "/home/cyamsys/Documents/HR_attendance/exit_camera.py", line 712, in <module>
+    face_app = FaceAnalysis(
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/app/face_analysis.py", line 31, in __init__
+    model = model_zoo.get_model(onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 96, in get_model
+    model = router.get_model(providers=providers, provider_options=provider_options)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 40, in get_model
+    session = PickableInferenceSession(self.onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 25, in __init__
+    super().__init__(model_path, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 504, in __init__
+    self._create_inference_session(providers, provider_options, disabled_optimizers)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 593, in _create_inference_session
+    sess.initialize_session(providers, provider_options, disabled_optimizers)
+onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL : Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+
+[0;93m2026-08-06 13:11:23.165240858 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[1;31m2026-08-06 13:11:29.746751475 [E:onnxruntime:, inference_session.cc:2579 operator()] Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+[m
+Loading embeddings …
+Total employees loaded: 17
+
+Traceback (most recent call last):
+  File "/home/cyamsys/Documents/HR_attendance/exit_camera.py", line 712, in <module>
+    face_app = FaceAnalysis(
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/app/face_analysis.py", line 31, in __init__
+    model = model_zoo.get_model(onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 96, in get_model
+    model = router.get_model(providers=providers, provider_options=provider_options)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 40, in get_model
+    session = PickableInferenceSession(self.onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 25, in __init__
+    super().__init__(model_path, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 504, in __init__
+    self._create_inference_session(providers, provider_options, disabled_optimizers)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 593, in _create_inference_session
+    sess.initialize_session(providers, provider_options, disabled_optimizers)
+onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL : Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+
+[0;93m2026-08-06 13:11:36.928873003 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[1;31m2026-08-06 13:11:43.605353589 [E:onnxruntime:, inference_session.cc:2579 operator()] Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+[m
+Loading embeddings …
+Total employees loaded: 17
+
+Traceback (most recent call last):
+  File "/home/cyamsys/Documents/HR_attendance/exit_camera.py", line 712, in <module>
+    face_app = FaceAnalysis(
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/app/face_analysis.py", line 31, in __init__
+    model = model_zoo.get_model(onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 96, in get_model
+    model = router.get_model(providers=providers, provider_options=provider_options)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 40, in get_model
+    session = PickableInferenceSession(self.onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 25, in __init__
+    super().__init__(model_path, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 504, in __init__
+    self._create_inference_session(providers, provider_options, disabled_optimizers)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 593, in _create_inference_session
+    sess.initialize_session(providers, provider_options, disabled_optimizers)
+onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL : Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+
+[0;93m2026-08-06 13:11:50.690086089 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[1;31m2026-08-06 13:11:57.293744589 [E:onnxruntime:, inference_session.cc:2579 operator()] Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+[m
+Loading embeddings …
+Total employees loaded: 17
+
+Traceback (most recent call last):
+  File "/home/cyamsys/Documents/HR_attendance/exit_camera.py", line 712, in <module>
+    face_app = FaceAnalysis(
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/app/face_analysis.py", line 31, in __init__
+    model = model_zoo.get_model(onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 96, in get_model
+    model = router.get_model(providers=providers, provider_options=provider_options)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 40, in get_model
+    session = PickableInferenceSession(self.onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 25, in __init__
+    super().__init__(model_path, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 504, in __init__
+    self._create_inference_session(providers, provider_options, disabled_optimizers)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 593, in _create_inference_session
+    sess.initialize_session(providers, provider_options, disabled_optimizers)
+onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL : Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+
+[0;93m2026-08-06 13:12:04.190042302 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[1;31m2026-08-06 13:12:10.661651957 [E:onnxruntime:, inference_session.cc:2579 operator()] Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+[m
+Loading embeddings …
+Total employees loaded: 17
+
+Traceback (most recent call last):
+  File "/home/cyamsys/Documents/HR_attendance/exit_camera.py", line 712, in <module>
+    face_app = FaceAnalysis(
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/app/face_analysis.py", line 31, in __init__
+    model = model_zoo.get_model(onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 96, in get_model
+    model = router.get_model(providers=providers, provider_options=provider_options)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 40, in get_model
+    session = PickableInferenceSession(self.onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 25, in __init__
+    super().__init__(model_path, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 504, in __init__
+    self._create_inference_session(providers, provider_options, disabled_optimizers)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 593, in _create_inference_session
+    sess.initialize_session(providers, provider_options, disabled_optimizers)
+onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL : Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+
+[0;93m2026-08-06 13:12:17.677420088 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[1;31m2026-08-06 13:12:24.206819436 [E:onnxruntime:, inference_session.cc:2579 operator()] Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+[m
+Loading embeddings …
+Total employees loaded: 17
+
+Traceback (most recent call last):
+  File "/home/cyamsys/Documents/HR_attendance/exit_camera.py", line 712, in <module>
+    face_app = FaceAnalysis(
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/app/face_analysis.py", line 31, in __init__
+    model = model_zoo.get_model(onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 96, in get_model
+    model = router.get_model(providers=providers, provider_options=provider_options)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 40, in get_model
+    session = PickableInferenceSession(self.onnx_file, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/insightface/model_zoo/model_zoo.py", line 25, in __init__
+    super().__init__(model_path, **kwargs)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 504, in __init__
+    self._create_inference_session(providers, provider_options, disabled_optimizers)
+  File "/home/cyamsys/miniforge3/envs/ai/lib/python3.10/site-packages/onnxruntime/capi/onnxruntime_inference_collection.py", line 593, in _create_inference_session
+    sess.initialize_session(providers, provider_options, disabled_optimizers)
+onnxruntime.capi.onnxruntime_pybind11_state.Fail: [ONNXRuntimeError] : 1 : FAIL : Exception during initialization: /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:129 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] /opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_call.cc:121 std::conditional_t<THRW, void, onnxruntime::common::Status> onnxruntime::CudaCall(ERRTYPE, const char*, const char*, SUCCTYPE, const char*, const char*, int) [with ERRTYPE = cudnnStatus_t; bool THRW = true; SUCCTYPE = cudnnStatus_t; std::conditional_t<THRW, void, onnxruntime::common::Status> = void] CUDNN failure 1001: CUDNN_STATUS_NOT_INITIALIZED ; GPU=0 ; hostname=cyamsys-desktop ; file=/opt/onnxruntime/onnxruntime/core/providers/cuda/cuda_execution_provider.cc ; line=232 ; expr=cudnnCreate(&cudnn_handle_); 
+
+
+[0;93m2026-08-06 13:12:31.157860856 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[0;93m2026-08-06 13:12:33.557495229 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
+[0;93m2026-08-06 13:24:27.988166329 [W:onnxruntime:Default, device_discovery.cc:211 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:91 ReadFileContents Failed to open file: "/sys/class/drm/card1/device/vendor"[m
