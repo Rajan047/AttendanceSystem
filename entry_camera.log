@@ -610,3 +610,5 @@ set det-size: (320, 320)
 [reload] ✅ embeddings.pkl reloaded — 18 employee(s) active.
 [reload] embeddings.pkl changed — reloading ...
 [reload] ✅ embeddings.pkl reloaded — 16 employee(s) active.
+[SQLite] Saved → Meraj | Present | 15:53:11 | Entry-2
+[RE-ENTRY] Meraj via Entry-2 at 15:53:11 — SQLite saved, Supabase sync 5 min mein
