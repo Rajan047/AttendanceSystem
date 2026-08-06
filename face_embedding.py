@@ -27,24 +27,31 @@ _EMB_LOCK = threading.Lock()
 
 # Lazy singleton so the model loads once, and ONLY if the admin actually adds
 # a photo (the web server process may not otherwise need InsightFace).
-_face_app = None
+_face_app       = None
+_face_app_lock  = threading.Lock()   # server.py warms this up in a background
+                                      # thread at boot; a real request landing
+                                      # mid-warmup must wait for THAT load to
+                                      # finish, not kick off a second one.
 
 
 def _get_face_app():
     global _face_app
     if _face_app is None:
-        from insightface.app import FaceAnalysis
-        # CPU-only, always. entry_cameras.py / exit_camera.py run continuously
-        # on this same box's GPU (Jetson — one shared GPU, not a datacenter
-        # box). A second CUDA context here regularly fails with
-        # CUDNN_STATUS_NOT_INITIALIZED while the cameras are running (onnx
-        # doesn't gracefully fall back to CPU on that error — it just raises).
-        # Enrollment is a one-off admin action, not latency-critical, so CPU
-        # is the reliable choice here even though it's a bit slower per photo.
-        providers = ["CPUExecutionProvider"]
-        app = FaceAnalysis(name="buffalo_l", providers=providers)
-        app.prepare(ctx_id=-1, det_size=(320, 320))
-        _face_app = app
+        with _face_app_lock:
+            if _face_app is None:   # double-checked locking
+                from insightface.app import FaceAnalysis
+                # CPU-only, always. entry_cameras.py / exit_camera.py run
+                # continuously on this same box's GPU (Jetson — one shared
+                # GPU, not a datacenter box). A second CUDA context here
+                # regularly fails with CUDNN_STATUS_NOT_INITIALIZED while the
+                # cameras are running (onnx doesn't gracefully fall back to
+                # CPU on that error — it just raises). Enrollment is a
+                # one-off admin action, not latency-critical, so CPU is the
+                # reliable choice here even though it's a bit slower per photo.
+                providers = ["CPUExecutionProvider"]
+                app = FaceAnalysis(name="buffalo_l", providers=providers)
+                app.prepare(ctx_id=-1, det_size=(320, 320))
+                _face_app = app
     return _face_app
 
 

@@ -27,8 +27,9 @@
 
 import os
 import io
-import csv 
+import csv
 import calendar
+import threading
 from datetime import datetime, date
 from collections import defaultdict
 
@@ -76,20 +77,30 @@ _n = db.sync_employee_photos_from_dir()
 if _n:
     print(f"[photos] {_n} employee profile photo(s) linked from {config.PHOTOS_DIR}")
 
-# Face-embedding model ko yahan (server boot pe) eagerly load karo, na ki
-# pehle admin add/update-employee request pe. buffalo_l pehli baar load hote
-# waqt insightface model weights (~300MB) internet se download karta hai —
-# request ke andar yeh hone se Render jaise host pe proxy-level timeout ho
-# jaata tha (502, no response). Boot ke waqt hone se woh cost yahin lagti
-# hai, koi live admin request kabhi iska wait nahi karta.
-try:
-    import face_embedding as _fe
-    print("[face_embedding] Warming up buffalo_l model (one-time, may take a while on first boot) ...")
-    _fe._get_face_app()
-    print("[face_embedding] ✅ Model ready.")
-except Exception as e:
-    print(f"[face_embedding] WARNING: warmup failed ({e}). "
-          f"Will retry lazily on first add/update-employee request.")
+# Face-embedding model ko BACKGROUND THREAD mein warm up karo — na ki request
+# ke andar (Render pe 502 timeout deta tha), na hi SEEDHE yahan blocking call
+# se (pehli baar try kiya toh Render ka apna health-check hi mar gaya: model
+# download ~300MB, ~20-40s leta hai, aur jab tak yeh khatam nahi hota tab tak
+# gunicorn port bind hi nahi karta — Render "no open ports" dekh ke poori
+# deploy ko SIGKILL kar deta hai, status 137). Background thread se gunicorn
+# turant port bind kar leta hai (health-check turant pass), aur model uske
+# peeche-peeche load hota rehta hai. face_embedding._get_face_app() ka apna
+# lock hai, isliye agar koi real request warmup complete hone se PEHLE aa
+# jaaye, woh bas usi load ke khatam hone ka wait karega — dobara load nahi
+# hoga.
+def _warmup_face_embedding():
+    try:
+        import face_embedding as _fe
+        print("[face_embedding] Warming up buffalo_l model in the background "
+              "(first boot may take ~30-60s to download model weights) ...")
+        _fe._get_face_app()
+        print("[face_embedding] ✅ Model ready.")
+    except Exception as e:
+        print(f"[face_embedding] WARNING: background warmup failed ({e}). "
+              f"Will retry lazily on first add/update-employee request.")
+
+threading.Thread(target=_warmup_face_embedding, daemon=True,
+                 name="face-embedding-warmup").start()
 
 
 # =============================================================================
