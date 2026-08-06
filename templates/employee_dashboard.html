@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Attendance — Attendance Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e13; --bg-2:#10151c; --bg-3:#161d26; --panel:#12171f;
+    --border:#202a35; --border-2:#2c3843; --text:#eef2f6; --muted:#8492a3; --muted-2:#5b6774;
+    --teal:#35d0a8; --teal-dim:rgba(53,208,168,.12);
+    --indigo:#7c9cf5; --indigo-dim:rgba(124,156,245,.12);
+    --amber:#f0b856; --amber-dim:rgba(240,184,86,.12);
+    --red:#ec6f74; --red-dim:rgba(236,111,116,.12);
+    --shadow:0 20px 60px -24px rgba(0,0,0,.85);
+    --mono:'JetBrains Mono',ui-monospace,monospace; --sans:'Manrope',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:var(--sans); background:var(--bg); color:var(--text); min-height:100vh;
+    background-image: radial-gradient(1200px 620px at 88% -8%, rgba(53,208,168,.055), transparent 60%),
+      radial-gradient(900px 520px at -4% 108%, rgba(124,156,245,.05), transparent 58%);}
+  .wrap{max-width:1000px; margin:0 auto; padding:26px 22px 60px;}
+  .topbar{display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding:16px 22px;
+    background:linear-gradient(180deg,var(--bg-2),var(--panel)); border:1px solid var(--border);
+    border-radius:18px; box-shadow:var(--shadow);}
+  .brand{display:flex; align-items:center; gap:13px; margin-right:auto;}
+  .avatar-big{width:42px;height:42px;border-radius:11px;overflow:hidden;display:flex;align-items:center;justify-content:center;
+    font-weight:700;color:#06120c;background:linear-gradient(135deg,var(--teal),#1fae87);}
+  .avatar-big img{width:100%;height:100%;object-fit:cover;}
+  .brand h1{font-size:1.08rem; font-weight:700;}
+  .brand .sub{font-size:.75rem; color:var(--muted);}
+  .btn{font-size:.85rem; font-weight:600; color:var(--text); background:var(--bg-3); border:1px solid var(--border-2);
+    border-radius:10px; padding:9px 14px; cursor:pointer; text-decoration:none;}
+  .btn:hover{border-color:var(--teal);}
+  .btn-accent{background:var(--teal-dim); border-color:rgba(53,208,168,.4); color:var(--teal);}
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px;}
+  .card{background:linear-gradient(180deg,var(--bg-2),var(--panel)); border:1px solid var(--border);
+    border-radius:16px; padding:18px; position:relative; overflow:hidden;}
+  .card::before{content:""; position:absolute; top:0; left:0; width:100%; height:3px; background:var(--accent,var(--teal)); opacity:.85;}
+  .card .lbl{font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; font-weight:600;}
+  .card .num{font-family:var(--mono); font-size:2rem; font-weight:700; margin-top:10px; color:var(--accent,var(--text));}
+  .card.teal{--accent:var(--teal);} .card.indigo{--accent:var(--indigo);} .card.amber{--accent:var(--amber);}
+  .panel{background:linear-gradient(180deg,var(--bg-2),var(--panel)); border:1px solid var(--border);
+    border-radius:18px; box-shadow:var(--shadow); overflow:hidden; margin-top:16px;}
+  .panel-head{display:flex; align-items:center; gap:12px; padding:16px 20px; border-bottom:1px solid var(--border); flex-wrap:wrap;}
+  .panel-head h2{font-size:.94rem; font-weight:700;}
+  select, input{background:var(--bg-3); border:1px solid var(--border-2); border-radius:10px; padding:8px 13px; color:var(--text); font-family:var(--sans); font-size:.85rem;}
+  table{width:100%; border-collapse:collapse;}
+  thead th{text-align:left; font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);
+    font-weight:700; padding:12px 18px; background:var(--panel); border-bottom:1px solid var(--border);}
+  tbody td{padding:11px 18px; border-bottom:1px solid rgba(32,42,53,.6); font-size:.87rem;}
+  .pill{display:inline-flex; align-items:center; gap:6px; font-size:.74rem; font-weight:700; padding:4px 10px; border-radius:20px;}
+  .pill::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor;}
+  .pill.Present{color:var(--teal); background:var(--teal-dim);}
+  .pill.WFH{color:var(--indigo); background:var(--indigo-dim);}
+  .pill.Leave{color:var(--amber); background:var(--amber-dim);}
+  .pill.HalfDay{color:#c9a53b; background:rgba(201,165,59,.12);}
+  .pill.Absent{color:var(--red); background:var(--red-dim);}
+  .pill.pending{color:var(--muted); background:rgba(132,146,163,.12);}
+  .pill.approved{color:var(--teal); background:var(--teal-dim);}
+  .pill.rejected{color:var(--red); background:var(--red-dim);}
+  .empty{padding:44px 20px; text-align:center; color:var(--muted-2); font-size:.88rem;}
+  .req-form{display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:16px 20px;}
+  .req-form select, .req-form input{flex:1; min-width:140px;}
+  .toast{position:fixed; bottom:24px; right:24px; background:var(--panel); border:1px solid var(--border-2);
+    border-radius:12px; padding:12px 18px; font-size:.85rem; box-shadow:var(--shadow); z-index:1100; display:none;}
+  .toast.ok{color:var(--teal); border-color:rgba(53,208,168,.35);}
+  .toast.err{color:var(--red); border-color:rgba(236,111,116,.35);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <div class="avatar-big" id="myAvatar">?</div>
+      <div><h1 id="myName">Loading…</h1><div class="sub" id="myRole">—</div></div>
+    </div>
+    <a class="btn" href="/portal/logout">Logout</a>
+  </div>
+
+  <div class="stats">
+    <div class="card teal"><div class="lbl">Present This Month</div><div class="num" id="s-present">0</div></div>
+    <div class="card indigo"><div class="lbl">WFH This Month</div><div class="num" id="s-wfh">0</div></div>
+    <div class="card amber"><div class="lbl">Attendance %</div><div class="num" id="s-pct">0%</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><h2>My Monthly Attendance</h2><input type="month" id="monthSel"></div>
+    <table>
+      <thead><tr><th>Date</th><th>Status</th><th>In</th><th>Out</th></tr></thead>
+      <tbody id="attBody"></tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head"><h2>Request WFH / Leave</h2></div>
+    <div class="req-form">
+      <select id="reqType"><option value="wfh">Work From Home</option><option value="leave">Leave</option></select>
+      <input type="date" id="reqDate">
+      <input type="text" id="reqReason" placeholder="Reason (optional)">
+      <button class="btn btn-accent" id="reqSubmit">Submit</button>
+    </div>
+    <table>
+      <thead><tr><th>Type</th><th>Date</th><th>Reason</th><th>Status</th></tr></thead>
+      <tbody id="reqBody"></tbody>
+    </table>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const todayStr=()=>new Date().toISOString().slice(0,10);
+function initials(n){ const p=(n||"").trim().split(/\s+/); return ((p[0]?.[0]||"")+(p[1]?.[0]||"")).toUpperCase()||"?"; }
+function toast(msg,ok=true){ const t=$("toast"); t.textContent=msg; t.className="toast "+(ok?"ok":"err"); t.style.display="block"; setTimeout(()=>t.style.display="none",3200); }
+const statusLabel = s => ({Present:"present",WFH:"WFH",Leave:"leave",Absent:"absent",HalfDay:"half-day"}[s]||s);
+
+async function loadProfile(){
+  const me=await (await fetch("/api/portal/me")).json();
+  if(me.error){ $("myName").textContent="No linked record"; return; }
+  $("myName").textContent=me.name||"Employee";
+  $("myRole").textContent=[me.designation,me.department].filter(Boolean).join(" · ")||"Employee";
+  $("myAvatar").innerHTML=me.photo_path?`<img src="/photos/${me.photo_path}">`:initials(me.name);
+}
+$("monthSel").value=todayStr().slice(0,7);
+$("reqDate").value=todayStr();
+
+async function loadMonthly(){
+  const d=await (await fetch("/api/portal/me/monthly?month="+$("monthSel").value)).json();
+  const me=d.employees[0];
+  if(!me){ $("s-present").textContent="0"; $("s-wfh").textContent="0"; $("s-pct").textContent="0%";
+    $("attBody").innerHTML=`<tr><td colspan="4"><div class="empty">No attendance data</div></td></tr>`; return; }
+  $("s-present").textContent=me.present_days; $("s-pct").textContent=me.attendance_pct+"%";
+  $("s-wfh").textContent=Object.values(me.days).filter(x=>x.status==="WFH").length;
+  const dates=[...d.working_dates].reverse(); const tb=$("attBody");
+  if(!dates.length){ tb.innerHTML=`<tr><td colspan="4"><div class="empty">No working days</div></td></tr>`; return; }
+  tb.innerHTML=dates.map(dt=>{
+    const rec=me.days[dt];
+    if(!rec) return `<tr><td style="font-family:var(--mono)">${dt}</td><td><span class="pill Absent">absent</span></td><td>—</td><td>—</td></tr>`;
+    return `<tr><td style="font-family:var(--mono)">${dt}</td>
+      <td><span class="pill ${rec.status}">${statusLabel(rec.status)}</span></td>
+      <td style="font-family:var(--mono); color:var(--muted);">${rec.in}</td>
+      <td style="font-family:var(--mono); color:var(--muted);">${rec.out}</td></tr>`;
+  }).join("");
+}
+$("monthSel").addEventListener("change",loadMonthly);
+
+async function loadRequests(){
+  const rows=await (await fetch("/api/portal/me/requests")).json();
+  const tb=$("reqBody");
+  if(!rows.length){ tb.innerHTML=`<tr><td colspan="4"><div class="empty">No requests yet</div></td></tr>`; return; }
+  tb.innerHTML=rows.map(r=>`<tr>
+    <td><span class="pill ${r.type==='wfh'?'WFH':'Leave'}">${r.type.toUpperCase()}</span></td>
+    <td style="font-family:var(--mono)">${r.req_date}</td>
+    <td style="color:var(--muted)">${r.reason||'—'}</td>
+    <td><span class="pill ${r.status}">${r.status}</span></td></tr>`).join("");
+}
+$("reqSubmit").addEventListener("click",async ()=>{
+  const res=await fetch("/api/portal/me/requests",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({type:$("reqType").value,date:$("reqDate").value,reason:$("reqReason").value})});
+  if(res.ok){ toast("Request submitted"); $("reqReason").value=""; loadRequests(); }
+  else { const d=await res.json(); toast(d.error||"Failed",false); }
+});
+
+loadProfile(); loadMonthly(); loadRequests();
+</script>
+</body>
+</html>

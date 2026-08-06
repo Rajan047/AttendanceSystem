@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(timeout 15 python server.py)"
+    ]
+  }
+}

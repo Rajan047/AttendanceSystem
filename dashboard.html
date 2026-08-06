@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance Intelligence — Cyamsys Technologies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:        #0a0e13;
+    --bg-2:      #10151c;
+    --bg-3:      #161d26;
+    --panel:     #12171f;
+    --border:    #202a35;
+    --border-2:  #2c3843;
+    --text:      #eef2f6;
+    --muted:     #8492a3;
+    --muted-2:   #5b6774;
+    --teal:      #35d0a8;
+    --teal-dim:  rgba(53,208,168,.12);
+    --indigo:    #7c9cf5;
+    --indigo-dim:rgba(124,156,245,.12);
+    --amber:     #f0b856;
+    --amber-dim: rgba(240,184,86,.12);
+    --red:       #ec6f74;
+    --red-dim:   rgba(236,111,116,.12);
+    --shadow:    0 20px 60px -24px rgba(0,0,0,.85);
+    --mono:      'JetBrains Mono', ui-monospace, monospace;
+    --sans:      'Manrope', system-ui, sans-serif;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  body{
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(1200px 620px at 88% -8%, rgba(53,208,168,.055), transparent 60%),
+      radial-gradient(900px 520px at -4% 108%, rgba(124,156,245,.05), transparent 58%),
+      linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 46px 46px, 46px 46px;
+  }
+
+  .wrap{ max-width:1360px; margin:0 auto; padding:28px 24px 64px; }
+
+  .topbar{
+    display:flex; align-items:center; gap:22px;
+    flex-wrap:wrap;
+    padding:18px 24px;
+    background:linear-gradient(180deg, var(--bg-2), var(--panel));
+    border:1px solid var(--border);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+  }
+  .brand{ display:flex; align-items:center; gap:14px; margin-right:auto; }
+  .logo-mark{
+    width:38px; height:38px; border-radius:11px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:700; font-size:.95rem; letter-spacing:-.02em;
+    background:linear-gradient(135deg, var(--teal), var(--indigo));
+    color:#06120c;
+    box-shadow:0 6px 18px -6px rgba(53,208,168,.45);
+  }
+  .brand h1{ font-size:1.16rem; font-weight:700; letter-spacing:.01em; }
+  .brand .sub{ font-size:.74rem; color:var(--muted); letter-spacing:.06em; margin-top:2px; }
+
+  .clock{
+    font-family:var(--mono); font-size:1.42rem; font-weight:600;
+    letter-spacing:.02em; color:var(--text);
+    font-variant-numeric:tabular-nums;
+    text-align:right;
+  }
+  .clock .small{ font-size:.7rem; color:var(--muted); display:block; letter-spacing:.06em; font-family:var(--sans); margin-top:1px; }
+
+  .ctrls{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  select, .btn{
+    font-family:var(--sans); font-size:.85rem; font-weight:500; color:var(--text);
+    background:var(--bg-3); border:1px solid var(--border-2);
+    border-radius:10px; padding:9px 14px; cursor:pointer;
+    transition:.18s; outline:none; text-decoration:none;
+  }
+  select:hover, .btn:hover{ border-color:var(--teal); background:#18222d; }
+  .btn-accent{ background:var(--teal-dim); border-color:rgba(53,208,168,.4); color:var(--teal); font-weight:600; }
+  .btn-accent:hover{ background:rgba(53,208,168,.22); }
+
+  .live-tag{
+    display:inline-flex; align-items:center; gap:7px;
+    font-size:.72rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+    color:var(--teal); padding:8px 13px; border-radius:9px;
+    background:var(--teal-dim); border:1px solid rgba(53,208,168,.28);
+  }
+  .live-tag.paused{ color:var(--amber); background:var(--amber-dim); border-color:rgba(240,184,86,.28); }
+  .live-tag .dot{ width:7px; height:7px; border-radius:50%; background:currentColor; animation:pulse 2s infinite; }
+  .live-tag.paused .dot{ animation:none; }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(53,208,168,.55); }
+    70%{ box-shadow:0 0 0 10px rgba(53,208,168,0); }
+    100%{ box-shadow:0 0 0 0 rgba(53,208,168,0); }
+  }
+
+  .stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:16px; }
+  .card{
+    background:linear-gradient(180deg, var(--bg-2), var(--panel));
+    border:1px solid var(--border); border-radius:16px;
+    padding:20px 20px 18px; position:relative; overflow:hidden;
+    opacity:0; transform:translateY(12px);
+    animation:rise .5s cubic-bezier(.2,.7,.3,1) forwards;
+  }
+  .card:nth-child(1){ animation-delay:.03s; }
+  .card:nth-child(2){ animation-delay:.08s; }
+  .card:nth-child(3){ animation-delay:.13s; }
+  .card:nth-child(4){ animation-delay:.18s; }
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+  .card::before{
+    content:""; position:absolute; top:0; left:0; width:100%; height:3px;
+    background:var(--accent, var(--teal)); opacity:.85;
+  }
+  .card .lbl{ display:flex; align-items:center; gap:8px; font-size:.72rem; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; font-weight:600; }
+  .card .num{
+    font-family:var(--mono); font-size:2.5rem; font-weight:700; line-height:1;
+    margin-top:14px; color:var(--accent, var(--text)); font-variant-numeric:tabular-nums;
+  }
+  .card .foot{ font-size:.78rem; color:var(--muted-2); margin-top:8px; }
+  .card.teal{ --accent:var(--teal); }
+  .card.indigo{ --accent:var(--indigo); }
+  .card.amber{ --accent:var(--amber); }
+  .card.plain{ --accent:#9aa7b4; }
+
+  .grid{ display:grid; grid-template-columns:340px 1fr; gap:16px; margin-top:16px; align-items:start; }
+  .panel{
+    background:linear-gradient(180deg, var(--bg-2), var(--panel));
+    border:1px solid var(--border); border-radius:18px;
+    box-shadow:var(--shadow); overflow:hidden;
+  }
+  .panel-head{
+    display:flex; align-items:center; gap:12px;
+    padding:16px 20px; border-bottom:1px solid var(--border);
+  }
+  .panel-head h2{ font-size:.94rem; font-weight:700; letter-spacing:.01em; }
+  .count-badge{
+    font-family:var(--mono); font-size:.8rem; font-weight:600;
+    background:var(--teal-dim); color:var(--teal);
+    padding:3px 11px; border-radius:20px; margin-left:auto;
+    border:1px solid rgba(53,208,168,.28);
+  }
+
+  .inside-list{ padding:10px 12px; max-height:560px; overflow-y:auto; }
+  .person{
+    display:flex; align-items:center; gap:13px;
+    padding:11px 12px; border-radius:12px; transition:.15s;
+  }
+  .person:hover{ background:var(--bg-3); }
+  .avatar{
+    width:40px; height:40px; border-radius:11px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:.9rem; color:#06120c;
+    background:linear-gradient(135deg, var(--teal), #1fae87);
+    box-shadow:0 4px 14px -4px rgba(53,208,168,.5);
+    overflow:hidden;
+  }
+  .avatar img{ width:100%; height:100%; object-fit:cover; border-radius:11px; }
+  .person .info{ min-width:0; }
+  .person .pname{ font-weight:600; font-size:.91rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .person .ptime{ font-family:var(--mono); font-size:.74rem; color:var(--muted); margin-top:2px; }
+
+  .search{
+    flex:1; max-width:240px; margin-left:auto;
+    background:var(--bg-3); border:1px solid var(--border-2);
+    border-radius:10px; padding:8px 13px; color:var(--text);
+    font-family:var(--sans); font-size:.85rem; outline:none; transition:.18s;
+  }
+  .search:focus{ border-color:var(--teal); }
+  .search::placeholder{ color:var(--muted-2); }
+
+  .tbl-scroll{ max-height:560px; overflow-y:auto; }
+  table{ width:100%; border-collapse:collapse; }
+  thead th{
+    position:sticky; top:0; z-index:1;
+    text-align:left; font-size:.7rem; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--muted); font-weight:700; padding:13px 20px;
+    background:var(--panel); border-bottom:1px solid var(--border);
+  }
+  tbody td{ padding:13px 20px; border-bottom:1px solid rgba(32,42,53,.6); font-size:.89rem; }
+  tbody tr{ transition:.12s; }
+  tbody tr:hover{ background:var(--bg-3); }
+  tbody tr:last-child td{ border-bottom:none; }
+  .td-name{ font-weight:600; }
+  .td-time{ font-family:var(--mono); color:var(--muted); font-size:.83rem; }
+  .pill{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:.75rem; font-weight:700; padding:4px 11px; border-radius:20px;
+  }
+  .pill::before{ content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
+  .pill.present{ color:var(--teal); background:var(--teal-dim); }
+  .pill.exit{ color:var(--amber); background:var(--amber-dim); }
+  .pill.other{ color:var(--muted); background:rgba(132,146,163,.12); }
+  .cam{
+    font-family:var(--mono); font-size:.77rem; color:var(--indigo);
+    background:rgba(124,156,245,.1); padding:3px 9px; border-radius:7px;
+    border:1px solid rgba(124,156,245,.22);
+  }
+
+  .thumb{
+    width:38px; height:38px; border-radius:10px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:.8rem; color:#06120c;
+    background:linear-gradient(135deg, var(--indigo), #4f6fd8);
+    overflow:hidden; cursor:pointer;
+    border:1px solid var(--border-2);
+  }
+  .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  #photoLightbox{
+    position:fixed; inset:0; z-index:1000; display:none;
+    align-items:center; justify-content:center;
+    background:rgba(5,7,10,.84); backdrop-filter:blur(3px);
+    cursor:zoom-out;
+  }
+  #photoLightbox img{
+    max-width:min(90vw, 520px); max-height:80vh; border-radius:16px;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,.9); border:1px solid var(--border-2);
+  }
+  #photoLightbox .lb-cap{
+    position:absolute; bottom:6%; left:50%; transform:translateX(-50%);
+    font-family:var(--mono); font-size:.85rem; color:var(--text);
+    background:rgba(18,23,31,.92); padding:8px 16px; border-radius:20px;
+    border:1px solid var(--border-2);
+  }
+
+  .cams{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; padding:16px 20px; }
+  .cam-stat{ background:var(--bg-3); border:1px solid var(--border); border-radius:12px; padding:13px 15px; }
+  .cam-stat .cn{ font-family:var(--mono); font-size:.8rem; color:var(--indigo); margin-bottom:8px; }
+  .cam-stat .cv{ font-family:var(--mono); font-size:1.45rem; font-weight:700; }
+  .cam-stat .bar{ height:5px; border-radius:4px; background:var(--border); margin-top:9px; overflow:hidden; }
+  .cam-stat .bar i{ display:block; height:100%; border-radius:4px; background:linear-gradient(90deg,var(--indigo),var(--teal)); transition:width .6s; }
+
+  .empty{ padding:50px 20px; text-align:center; color:var(--muted-2); }
+  .empty .ic{ font-size:2rem; opacity:.4; margin-bottom:10px; }
+  .empty p{ font-size:.89rem; }
+
+  .footer-note{ text-align:center; color:var(--muted-2); font-size:.75rem; margin-top:26px; font-family:var(--mono); }
+
+  .tabs{ display:flex; gap:8px; margin-top:18px; }
+  .tab{
+    font-family:var(--sans); font-size:.88rem; font-weight:700; letter-spacing:.01em;
+    color:var(--muted); background:var(--bg-2); border:1px solid var(--border);
+    border-radius:12px; padding:11px 20px; cursor:pointer; transition:.18s;
+    display:flex; align-items:center; gap:8px;
+  }
+  .tab:hover{ color:var(--text); border-color:var(--border-2); }
+  .tab.active{ color:var(--teal); background:var(--teal-dim); border-color:rgba(53,208,168,.4); }
+  .view{ display:none; }
+  .view.active{ display:block; }
+
+  .month-bar{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:16px;
+    padding:16px 20px; background:linear-gradient(180deg,var(--bg-2),var(--panel));
+    border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow);
+  }
+  .month-bar .mtitle{ font-weight:700; font-size:1.02rem; letter-spacing:.01em; margin-right:auto; }
+  .mode-note{ font-size:.74rem; color:var(--muted); font-family:var(--mono); }
+
+  .seg{ display:flex; background:var(--bg-3); border:1px solid var(--border-2); border-radius:11px; padding:3px; }
+  .seg button{
+    font-family:var(--sans); font-size:.81rem; font-weight:700; color:var(--muted);
+    background:transparent; border:none; border-radius:8px; padding:7px 14px; cursor:pointer; transition:.15s;
+  }
+  .seg button.on{ color:#06120c; background:var(--teal); }
+
+  .bar-wrap{ display:flex; align-items:center; gap:9px; }
+  .mini-bar{ flex:1; height:7px; background:var(--border); border-radius:5px; overflow:hidden; min-width:60px; }
+  .mini-bar i{ display:block; height:100%; border-radius:5px; transition:width .5s; }
+  .pct{ font-family:var(--mono); font-size:.85rem; font-weight:700; width:54px; text-align:right; }
+  .pct.hi{ color:var(--teal); } .pct.mid{ color:var(--amber); } .pct.lo{ color:var(--red); }
+  .fill-hi{ background:var(--teal); } .fill-mid{ background:var(--amber); } .fill-lo{ background:var(--red); }
+
+  td.num-c{ font-family:var(--mono); text-align:center; }
+
+  .grid-scroll{ overflow:auto; max-height:600px; }
+  table.gridtbl{ border-collapse:separate; border-spacing:0; }
+  table.gridtbl th, table.gridtbl td{ white-space:nowrap; }
+  table.gridtbl thead th{ padding:10px 8px; text-align:center; min-width:30px; font-size:.68rem; }
+  table.gridtbl thead th.dcol{ vertical-align:bottom; line-height:1.25; }
+  table.gridtbl thead th.dcol .dn{ display:block; font-size:.58rem; font-weight:700; color:var(--muted-2); letter-spacing:.02em; }
+  table.gridtbl thead th.dcol .dnum{ display:block; font-size:.74rem; }
+  table.gridtbl thead th.wknd{ background:rgba(236,111,116,.055); }
+  table.gridtbl thead th.wknd .dn{ color:var(--red); }
+  table.gridtbl .nm{
+    position:sticky; left:0; z-index:3; background:var(--panel);
+    text-align:left; min-width:150px; border-right:1px solid var(--border);
+  }
+  table.gridtbl thead .nm{ z-index:4; }
+  table.gridtbl tbody td{ padding:0; text-align:center; }
+  .cell{ width:30px; height:34px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:.72rem; font-weight:700; margin:2px auto; border-radius:6px; position:relative; cursor:default; }
+  .cell.p{ background:var(--teal-dim); color:var(--teal); }
+  .cell.a{ background:var(--red-dim); color:var(--red); }
+
+  table.gridtbl thead th.today{ background:rgba(53,208,168,.1); }
+  table.gridtbl thead th.today .dn{ color:var(--teal); }
+  table.gridtbl td.today-col{ background:rgba(53,208,168,.045); }
+
+  table.gridtbl tfoot td{
+    position:sticky; bottom:0; background:var(--panel);
+    border-top:1px solid var(--border); padding:8px 0;
+    font-family:var(--mono); font-size:.68rem; color:var(--muted); text-align:center;
+  }
+  table.gridtbl tfoot td.nm{ position:sticky; left:0; bottom:0; z-index:5; text-align:left; padding-left:20px; color:var(--muted); font-weight:700; }
+
+  .glegend{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding:12px 20px 4px; font-size:.76rem; color:var(--muted); }
+  .glegend .gi{ display:flex; align-items:center; gap:7px; }
+  .glegend .sw{ width:14px; height:14px; border-radius:5px; flex-shrink:0; }
+  .glegend .sw.p{ background:var(--teal-dim); border:1px solid rgba(53,208,168,.4); }
+  .glegend .sw.a{ background:var(--red-dim); border:1px solid rgba(236,111,116,.4); }
+  .glegend .sw.wknd{ background:rgba(236,111,116,.055); border:1px solid var(--border-2); }
+  .glegend .sw.today{ background:rgba(53,208,168,.1); border:1px solid rgba(53,208,168,.4); }
+
+  #celltip{
+    position:fixed; z-index:999; display:none; pointer-events:none;
+    background:#0c1218; border:1px solid var(--border-2); border-radius:10px;
+    padding:9px 12px; box-shadow:0 12px 34px -10px rgba(0,0,0,.85);
+    font-family:var(--mono); font-size:.78rem; min-width:128px;
+  }
+  #celltip .tt-d{ color:var(--muted); font-size:.7rem; letter-spacing:.05em; margin-bottom:6px; font-family:var(--sans); }
+  #celltip .tt-row{ display:flex; align-items:center; gap:8px; padding:2px 0; color:var(--text); }
+  #celltip .tag{ font-size:.62rem; font-weight:700; padding:2px 7px; border-radius:5px; letter-spacing:.05em; font-family:var(--sans); }
+  #celltip .tag.in{ color:var(--teal); background:var(--teal-dim); }
+  #celltip .tag.out{ color:var(--amber); background:var(--amber-dim); }
+
+  ::-webkit-scrollbar{ width:9px; height:9px; }
+  ::-webkit-scrollbar-thumb{ background:var(--border-2); border-radius:6px; }
+  ::-webkit-scrollbar-thumb:hover{ background:#3d4a56; }
+  ::-webkit-scrollbar-track{ background:transparent; }
+
+  button:focus-visible, select:focus-visible, input:focus-visible, .thumb:focus-visible{
+    outline:2px solid var(--teal); outline-offset:2px;
+  }
+
+  @media(max-width:980px){
+    .stats{ grid-template-columns:repeat(2,1fr); }
+    .grid{ grid-template-columns:1fr; }
+    .inside-list, .tbl-scroll{ max-height:420px; }
+  }
+  @media(max-width:560px){
+    .wrap{ padding:16px 12px 40px; }
+    .clock{ font-size:1.15rem; }
+    .stats{ gap:10px; }
+    .card .num{ font-size:1.9rem; }
+    thead th:nth-child(5), tbody td:nth-child(5){ display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo-mark">CT</div>
+      <div>
+        <h1>Attendance Intelligence</h1>
+        <div class="sub">Cyamsys Technologies · Face Recognition System</div>
+      </div>
+    </div>
+
+    <div class="clock">
+      <span id="clock">--:--:--</span>
+      <span class="small" id="clock-date">—</span>
+    </div>
+
+    <div class="ctrls">
+      <span class="live-tag" id="liveTag"><span class="dot"></span> Live</span>
+      <select id="dateSel" title="Select a date"></select>
+      <button class="btn btn-accent" id="exportBtn">⤓ Export CSV</button>
+      <a class="btn" href="/portal/login">Admin / Login</a>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="live">● Live Monitor</button>
+    <button class="tab" data-tab="monthly">▤ Monthly Report</button>
+  </div>
+
+  <div class="view active" id="view-live">
+    <div class="stats">
+    <div class="card teal"><div class="lbl">Currently Inside</div><div class="num" id="s-inside">0</div><div class="foot">On the premises right now</div></div>
+    <div class="card indigo"><div class="lbl">Present Today</div><div class="num" id="s-present">0</div><div class="foot">Unique check-ins today</div></div>
+    <div class="card amber"><div class="lbl">Total Entries</div><div class="num" id="s-entries">0</div><div class="foot">All detections logged</div></div>
+    <div class="card plain"><div class="lbl">Last Entry</div><div class="num" id="s-last" style="font-size:1.55rem;">—</div><div class="foot" id="s-last-foot">No entries yet</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Currently Inside</h2>
+        <span class="count-badge" id="inside-count">0</span>
+      </div>
+      <div class="inside-list" id="insideList"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Activity Feed</h2>
+        <input class="search" id="search" placeholder="Search name…">
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Photo</th><th>Name</th><th>Time</th><th>Status</th><th>Camera</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:16px;">
+    <div class="panel-head"><h2>Per-Camera Activity</h2></div>
+    <div class="cams" id="cams"></div>
+  </div>
+
+  </div>
+
+  <div class="view" id="view-monthly">
+
+    <div class="month-bar">
+      <span class="mtitle">Monthly Report</span>
+      <span class="mode-note" id="modeNote">—</span>
+      <select id="monthSel" title="Select a month"></select>
+      <button class="btn btn-accent" id="expSummary">⤓ Summary CSV</button>
+      <button class="btn" id="expGrid">⤓ P/A Grid CSV</button>
+    </div>
+
+    <div class="stats" style="margin-top:16px;">
+      <div class="card plain"><div class="lbl">Total Employees</div><div class="num" id="m-emp">0</div><div class="foot">Registered employees</div></div>
+      <div class="card indigo"><div class="lbl">Working Days</div><div class="num" id="m-days">0</div><div class="foot" id="m-days-foot">This month</div></div>
+      <div class="card teal"><div class="lbl">Avg Attendance</div><div class="num" id="m-avg">0%</div><div class="foot">Across the whole team</div></div>
+      <div class="card amber"><div class="lbl">Low (&lt;75%)</div><div class="num" id="m-low">0</div><div class="foot">Need follow-up</div></div>
+    </div>
+
+    <div class="panel" style="margin-top:16px;">
+      <div class="panel-head">
+        <h2>Employee Attendance</h2>
+        <div class="seg" id="segView" style="margin-left:auto;">
+          <button class="on" data-mv="summary">Summary</button>
+          <button data-mv="grid">Day-by-Day</button>
+        </div>
+        <input class="search" id="msearch" placeholder="Search name…" style="margin-left:12px; max-width:200px;">
+      </div>
+
+      <div id="mv-summary">
+        <div class="tbl-scroll" style="max-height:620px;">
+          <table>
+            <thead><tr>
+              <th>Name</th><th style="text-align:center;">Present</th>
+              <th style="text-align:center;">Absent</th><th style="text-align:center;">Avg Hrs</th><th>Attendance</th>
+            </tr></thead>
+            <tbody id="mtbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="mv-grid" style="display:none;">
+        <div class="glegend">
+          <span class="gi"><span class="sw p"></span> Present</span>
+          <span class="gi"><span class="sw a"></span> Absent</span>
+          <span class="gi"><span class="sw wknd"></span> Weekend</span>
+          <span class="gi"><span class="sw today"></span> Today</span>
+          <span class="gi" style="margin-left:auto; color:var(--muted-2);">Hover a cell for entry/exit time &amp; hours worked</span>
+        </div>
+        <div class="grid-scroll">
+          <table class="gridtbl" id="gridtbl"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note" id="footnote">connecting…</div>
+</div>
+
+<div id="photoLightbox">
+  <img id="lbImg" src="" alt="">
+  <div class="lb-cap" id="lbCap"></div>
+</div>
+
+<script>
+  const POLL_MS = 3000;
+  let currentDate = "";
+  let allRecords = [];
+  let pollTimer = null;
+
+  const $ = id => document.getElementById(id);
+
+  function debounce(fn, wait){
+    let t;
+    return (...args) => { clearTimeout(t); t = setTimeout(()=>fn(...args), wait); };
+  }
+
+  function toMinutes(hms){
+    if(!hms || hms === "—") return null;
+    const p = hms.split(":");
+    if(p.length < 2) return null;
+    const h = parseInt(p[0],10), m = parseInt(p[1],10);
+    if(Number.isNaN(h) || Number.isNaN(m)) return null;
+    return h*60 + m;
+  }
+
+  function durationLabel(tin, tout){
+    const a = toMinutes(tin), b = toMinutes(tout);
+    if(a === null || b === null || b < a) return "—";
+    const mins = b - a;
+    return `${Math.floor(mins/60)}h ${mins%60}m`;
+  }
+
+  function initials(name){
+    const p = name.trim().split(/\s+/);
+    return ((p[0]?.[0]||"") + (p[1]?.[0]||"")).toUpperCase() || name[0]?.toUpperCase() || "?";
+  }
+  function avatarHTML(photo, name){
+    if(!photo) return `<span class="fallback">${initials(name)}</span>`;
+    const ini = initials(name);
+    return `<img src="/photos/${photo}" alt="${name}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'${ini}'}))">`;
+  }
+  function pillClass(s){
+    s = (s||"").toLowerCase();
+    if(s === "present") return "present";
+    if(s === "exit")    return "exit";
+    return "other";
+  }
+
+  setInterval(()=>{
+    const n = new Date();
+    $("clock").textContent = n.toLocaleTimeString("en-GB");
+    $("clock-date").textContent = n.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"short"});
+  }, 1000);
+
+  function renderInside(inside, records){
+    const list = $("insideList");
+    $("inside-count").textContent = inside.length;
+    if(!inside.length){
+      list.innerHTML = `<div class="empty"><div class="ic">○</div><p>No one is currently inside</p></div>`;
+      return;
+    }
+    const firstMap = {};
+    const profileMap = {};
+    const capturedMap = {};
+    records.forEach(r => {
+      firstMap[r.name] = r.first || r.time;
+      if(r.profile_photo && !profileMap[r.name]) profileMap[r.name] = r.profile_photo;
+      if(r.photo && !capturedMap[r.name]) capturedMap[r.name] = r.photo;
+    });
+    list.innerHTML = inside.map(name => {
+      const photo = profileMap[name] || capturedMap[name];
+      const avatarInner = avatarHTML(photo, name);
+      return `
+      <div class="person">
+        <div class="avatar">${avatarInner}</div>
+        <div class="info">
+          <div class="pname">${name}</div>
+          <div class="ptime">in · ${firstMap[name] || "—"}</div>
+        </div>
+      </div>`;
+    }).join("");
+  }
+
+  function renderTable(records){
+    const q = $("search").value.trim().toLowerCase();
+    const rows = q ? records.filter(r => r.name.toLowerCase().includes(q)) : records;
+    const tb = $("tbody");
+    if(!rows.length){
+      tb.innerHTML = `<tr><td colspan="5"><div class="empty"><div class="ic">⌀</div><p>${q ? "No matching results" : "No entries recorded for this day"}</p></div></td></tr>`;
+      return;
+    }
+    tb.innerHTML = rows.map(r => {
+      const thumb = r.photo || r.profile_photo;
+      const thumbInner = avatarHTML(thumb, r.name);
+      const thumbClick = thumb
+        ? ` onclick="openLightbox('/photos/${thumb}', '${r.name.replace(/'/g,"\\'")} · ${r.time}')"`
+        : "";
+      return `
+      <tr>
+        <td><div class="thumb"${thumbClick}>${thumbInner}</div></td>
+        <td class="td-name">${r.name}</td>
+        <td class="td-time">${r.time}</td>
+        <td><span class="pill ${pillClass(r.status)}">${r.status||"—"}</span></td>
+        <td><span class="cam">${r.camera||"—"}</span></td>
+      </tr>`;
+    }).join("");
+  }
+
+  function openLightbox(src, caption){
+    $("lbImg").src = src;
+    $("lbCap").textContent = caption;
+    $("photoLightbox").style.display = "flex";
+  }
+  $("photoLightbox").addEventListener("click", ()=>{ $("photoLightbox").style.display = "none"; });
+
+  function renderCams(perCam){
+    const wrap = $("cams");
+    const entries = Object.entries(perCam||{});
+    if(!entries.length){ wrap.innerHTML = `<div class="empty" style="grid-column:1/-1;"><p>No camera data available</p></div>`; return; }
+    const max = Math.max(...entries.map(([,v])=>v), 1);
+    wrap.innerHTML = entries.map(([cam,val]) => `
+      <div class="cam-stat">
+        <div class="cn">${cam}</div>
+        <div class="cv">${val}</div>
+        <div class="bar"><i style="width:${(val/max*100).toFixed(0)}%"></i></div>
+      </div>`).join("");
+  }
+
+  function renderDateOptions(dates, selected){
+    const sel = $("dateSel");
+    const today = new Date().toISOString().slice(0,10);
+    const opts = [...new Set([today, ...dates])];
+    sel.innerHTML = opts.map(d =>
+      `<option value="${d}" ${d===selected?"selected":""}>${d===today ? "Today · "+d : d}</option>`
+    ).join("");
+  }
+
+  async function fetchData(){
+    try{
+      const url = "/api/data" + (currentDate ? "?date="+encodeURIComponent(currentDate) : "");
+      const res = await fetch(url);
+      const d = await res.json();
+
+      currentDate = d.date;
+      allRecords  = d.records;
+      const isToday = d.date === d.today;
+
+      $("s-inside").textContent  = d.stats.currently_inside;
+      $("s-present").textContent = d.stats.present_today;
+      $("s-entries").textContent = d.stats.total_entries;
+      if(d.last_entry){
+        $("s-last").textContent = d.last_entry.time;
+        $("s-last-foot").textContent = d.last_entry.name + " · " + d.last_entry.camera;
+      } else {
+        $("s-last").textContent = "—";
+        $("s-last-foot").textContent = "No entries yet";
+      }
+
+      renderInside(d.inside, d.records);
+      renderTable(d.records);
+      renderCams(d.per_camera);
+      if($("dateSel").options.length === 0) renderDateOptions(d.available_dates, d.date);
+
+      const tag = $("liveTag");
+      if(isToday){ tag.className="live-tag"; tag.innerHTML = `<span class="dot"></span> Live`; }
+      else { tag.className="live-tag paused"; tag.innerHTML = `<span class="dot"></span> History`; }
+
+      $("footnote").textContent = `Last updated ${d.server_time}` + (d.csv_exists ? "" : "  ·  ⚠ Attendance log not yet created — start the recognition service");
+    }catch(e){
+      $("footnote").textContent = "⚠ Unable to reach the server — please confirm the dashboard service is running";
+    }
+  }
+
+  $("search").addEventListener("input", debounce(()=>renderTable(allRecords), 150));
+  $("dateSel").addEventListener("change", e=>{
+    currentDate = e.target.value;
+    fetchData();
+    restartPoll();
+  });
+  $("exportBtn").addEventListener("click", ()=>{
+    window.location = "/api/export" + (currentDate ? "?date="+encodeURIComponent(currentDate) : "");
+  });
+
+  function restartPoll(){
+    clearInterval(pollTimer);
+    const today = new Date().toISOString().slice(0,10);
+    if(activeTab === "live" && (!currentDate || currentDate === today) && !document.hidden){
+      pollTimer = setInterval(fetchData, POLL_MS);
+    }
+  }
+
+  document.addEventListener("visibilitychange", ()=>{
+    if(document.hidden){ clearInterval(pollTimer); }
+    else { fetchData(); restartPoll(); }
+  });
+
+  let activeTab = "live";
+  let monthlyData = null;
+  let monthView = "summary";
+
+  document.querySelectorAll(".tab").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      activeTab = btn.dataset.tab;
+      document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+      $("view-"+activeTab).classList.add("active");
+      if(activeTab === "monthly"){ clearInterval(pollTimer); if(!monthlyData) fetchMonthly(); }
+      else { fetchData(); restartPoll(); }
+    });
+  });
+
+  function pctClass(p){ return p>=90 ? "hi" : p>=75 ? "mid" : "lo"; }
+
+  function empAvgHours(e){
+    if(!e.days) return null;
+    let total = 0, n = 0;
+    for(const d of (e.present_dates||[])){
+      const io = e.days[d];
+      if(!io) continue;
+      const a = toMinutes(io.in), b = toMinutes(io.out);
+      if(a === null || b === null || b < a) continue;
+      total += (b - a); n++;
+    }
+    return n ? total / n : null;
+  }
+  function fmtHours(mins){
+    if(mins === null) return "—";
+    const h = Math.floor(mins/60), m = Math.round(mins%60);
+    return `${h}h ${m}m`;
+  }
+
+  function renderMonthSummary(){
+    const q = $("msearch").value.trim().toLowerCase();
+    let emps = monthlyData.employees;
+    if(q) emps = emps.filter(e=>e.name.toLowerCase().includes(q));
+    emps = [...emps].sort((a,b)=>a.attendance_pct-b.attendance_pct);
+    const tb = $("mtbody");
+    if(!emps.length){ tb.innerHTML = `<tr><td colspan="5"><div class="empty"><p>No matching results</p></div></td></tr>`; return; }
+    tb.innerHTML = emps.map(e=>{
+      const c = pctClass(e.attendance_pct);
+      const avg = fmtHours(empAvgHours(e));
+      return `<tr>
+        <td class="td-name">${e.name}</td>
+        <td class="num-c" style="color:var(--teal)">${e.present_days}</td>
+        <td class="num-c" style="color:${e.absent_days?'var(--red)':'var(--muted)'}">${e.absent_days}</td>
+        <td class="num-c" style="color:var(--muted)">${avg}</td>
+        <td><div class="bar-wrap">
+          <div class="mini-bar"><i class="fill-${c}" style="width:${e.attendance_pct}%"></i></div>
+          <span class="pct ${c}">${e.attendance_pct}%</span>
+        </div></td>
+      </tr>`;
+    }).join("");
+  }
+
+  function renderMonthGrid(){
+    const q = $("msearch").value.trim().toLowerCase();
+    let emps = monthlyData.employees;
+    if(q) emps = emps.filter(e=>e.name.toLowerCase().includes(q));
+    const dates = monthlyData.working_dates;
+    const tbl = $("gridtbl");
+    if(!dates.length){ tbl.innerHTML = `<tbody><tr><td><div class="empty"><p>No working days this month</p></div></td></tr></tbody>`; return; }
+
+    const todayStr = new Date().toISOString().slice(0,10);
+
+    const head = `<thead><tr>
+      <th class="nm">Name</th>
+      ${dates.map(d=>{
+        const dt = new Date(d + "T00:00:00");
+        const wd = dt.toLocaleDateString("en-GB",{weekday:"short"});
+        const we = (dt.getDay()===0 || dt.getDay()===6) ? " wknd" : "";
+        const td = d === todayStr ? " today" : "";
+        return `<th class="dcol${we}${td}" title="${d}"><span class="dn">${wd}</span><span class="dnum">${d.slice(-2)}</span></th>`;
+      }).join("")}
+      <th>P</th><th>A</th><th>%</th>
+    </tr></thead>`;
+
+    const dayCounts = Object.fromEntries(dates.map(d=>[d,0]));
+
+    const body = `<tbody>${emps.map(e=>{
+      const pres = new Set(e.present_dates);
+      const cells = dates.map(d=>{
+        const todayCls = d === todayStr ? " today-col" : "";
+        if(pres.has(d)){
+          dayCounts[d]++;
+          const io   = (e.days && e.days[d]) || {};
+          const tin  = io.in  || "—";
+          const tout = io.out || "—";
+          return `<td class="${todayCls.trim()}"><div class="cell p" data-d="${d}" data-in="${tin}" data-out="${tout}">P</div></td>`;
+        }
+        return `<td class="${todayCls.trim()}"><div class="cell a">A</div></td>`;
+      }).join("");
+      const c = pctClass(e.attendance_pct);
+      return `<tr>
+        <td class="nm td-name">${e.name}</td>
+        ${cells}
+        <td class="gtot" style="color:var(--teal)">${e.present_days}</td>
+        <td class="gtot" style="color:${e.absent_days?'var(--red)':'var(--muted)'}">${e.absent_days}</td>
+        <td class="gtot ${c}" style="color:var(--${c==='hi'?'teal':c==='mid'?'amber':'red'})">${e.attendance_pct}</td>
+      </tr>`;
+    }).join("")}</tbody>`;
+
+    const foot = `<tfoot><tr>
+      <td class="nm">Present that day</td>
+      ${dates.map(d=>`<td>${dayCounts[d]}</td>`).join("")}
+      <td colspan="3"></td>
+    </tr></tfoot>`;
+
+    tbl.innerHTML = head + body + foot;
+  }
+
+  function renderMonthly(){
+    if(!monthlyData) return;
+    $("m-emp").textContent  = monthlyData.summary.total_employees;
+    $("m-days").textContent = monthlyData.working_days;
+    $("m-avg").textContent  = monthlyData.summary.avg_attendance + "%";
+    $("m-low").textContent  = monthlyData.summary.low_attendance;
+    const modeTxt = monthlyData.mode === "calendar" ? "calendar days (weekends excluded)" : "office-open days";
+    const srcWarn = monthlyData.source === "csv-fallback" ? "  ⚠ embeddings.pkl not found — built from roster CSV (absences may be incomplete)" : "";
+    $("modeNote").textContent = `Working days basis: ${modeTxt}${srcWarn}`;
+    if(monthView === "summary"){ $("mv-summary").style.display=""; $("mv-grid").style.display="none"; renderMonthSummary(); }
+    else { $("mv-summary").style.display="none"; $("mv-grid").style.display=""; renderMonthGrid(); }
+  }
+
+  async function fetchMonthly(month){
+    try{
+      const url = "/api/monthly" + (month ? "?month="+encodeURIComponent(month) : "");
+      const res = await fetch(url);
+      monthlyData = await res.json();
+      const sel = $("monthSel");
+      if(sel.options.length === 0){
+        const thisM = new Date().toISOString().slice(0,7);
+        const months = [...new Set([thisM, ...monthlyData.available_months])];
+        sel.innerHTML = months.map(m=>`<option value="${m}" ${m===monthlyData.month?"selected":""}>${m}</option>`).join("");
+      }
+      $("m-days-foot").textContent = monthlyData.month;
+      renderMonthly();
+    }catch(e){
+      $("modeNote").textContent = "⚠ Unable to load monthly data";
+    }
+  }
+
+  $("monthSel").addEventListener("change", e=>fetchMonthly(e.target.value));
+  $("msearch").addEventListener("input", debounce(renderMonthly, 150));
+  $("segView").querySelectorAll("button").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      $("segView").querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+      b.classList.add("on");
+      monthView = b.dataset.mv;
+      renderMonthly();
+    });
+  });
+
+  const tip = document.createElement("div");
+  tip.id = "celltip";
+  document.body.appendChild(tip);
+
+  const gridBox = $("mv-grid");
+  gridBox.addEventListener("mouseover", e=>{
+    const cell = e.target.closest(".cell.p");
+    if(!cell) return;
+    const dt = new Date(cell.dataset.d + "T00:00:00");
+    const wd = dt.toLocaleDateString("en-GB",{weekday:"long"});
+    const dur  = durationLabel(cell.dataset.in, cell.dataset.out);
+    tip.innerHTML =
+      `<div class="tt-d">${cell.dataset.d} · ${wd}</div>
+       <div class="tt-row"><span class="tag in">IN</span> ${cell.dataset.in}</div>
+       <div class="tt-row"><span class="tag out">OUT</span> ${cell.dataset.out}</div>
+       <div class="tt-row" style="color:var(--muted); border-top:1px solid var(--border); margin-top:4px; padding-top:6px;">⏱ ${dur}</div>`;
+    tip.style.display = "block";
+  });
+  gridBox.addEventListener("mousemove", e=>{
+    if(tip.style.display !== "block") return;
+    let x = e.clientX + 14, y = e.clientY + 16;
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    if(x + w > window.innerWidth)  x = e.clientX - w - 14;
+    if(y + h > window.innerHeight) y = e.clientY - h - 16;
+    tip.style.left = x + "px";
+    tip.style.top  = y + "px";
+  });
+  gridBox.addEventListener("mouseout", e=>{
+    if(e.target.closest(".cell.p")) tip.style.display = "none";
+  });
+
+  $("expSummary").addEventListener("click", ()=>{
+    window.location = "/api/monthly/export?month=" + encodeURIComponent($("monthSel").value);
+  });
+  $("expGrid").addEventListener("click", ()=>{
+    window.location = "/api/monthly/grid-export?month=" + encodeURIComponent($("monthSel").value);
+  });
+
+  fetchData().then(restartPoll);
+</script>
+</body>
+</html>

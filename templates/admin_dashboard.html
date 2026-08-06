@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Attendance Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e13; --bg-2:#10151c; --bg-3:#161d26; --panel:#12171f;
+    --border:#202a35; --border-2:#2c3843; --text:#eef2f6; --muted:#8492a3; --muted-2:#5b6774;
+    --teal:#35d0a8; --teal-dim:rgba(53,208,168,.12);
+    --indigo:#7c9cf5; --indigo-dim:rgba(124,156,245,.12);
+    --amber:#f0b856; --amber-dim:rgba(240,184,86,.12);
+    --red:#ec6f74; --red-dim:rgba(236,111,116,.12);
+    --shadow:0 20px 60px -24px rgba(0,0,0,.85);
+    --mono:'JetBrains Mono',ui-monospace,monospace; --sans:'Manrope',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:var(--sans); background:var(--bg); color:var(--text); min-height:100vh;
+    background-image: radial-gradient(1200px 620px at 88% -8%, rgba(53,208,168,.055), transparent 60%),
+      radial-gradient(900px 520px at -4% 108%, rgba(124,156,245,.05), transparent 58%);}
+  .wrap{max-width:1360px; margin:0 auto; padding:26px 22px 60px;}
+  .topbar{display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding:16px 22px;
+    background:linear-gradient(180deg,var(--bg-2),var(--panel)); border:1px solid var(--border);
+    border-radius:18px; box-shadow:var(--shadow);}
+  .brand{display:flex; align-items:center; gap:13px; margin-right:auto;}
+  .logo-mark{width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:700; font-size:.9rem; color:#06120c;
+    background:linear-gradient(135deg,var(--teal),var(--indigo));}
+  .brand h1{font-size:1.08rem; font-weight:700;}
+  .brand .sub{font-size:.72rem; color:var(--muted);}
+  .who{font-size:.85rem; color:var(--muted); font-family:var(--mono);}
+  .btn{font-family:var(--sans); font-size:.85rem; font-weight:600; color:var(--text);
+    background:var(--bg-3); border:1px solid var(--border-2); border-radius:10px;
+    padding:9px 14px; cursor:pointer; transition:.15s; text-decoration:none; display:inline-flex; align-items:center; gap:6px;}
+  .btn:hover{border-color:var(--teal); background:#18222d;}
+  .btn-accent{background:var(--teal-dim); border-color:rgba(53,208,168,.4); color:var(--teal);}
+  .tabs{display:flex; gap:8px; margin-top:18px; flex-wrap:wrap;}
+  .tab{font-size:.87rem; font-weight:700; color:var(--muted); background:var(--bg-2);
+    border:1px solid var(--border); border-radius:12px; padding:10px 18px; cursor:pointer; transition:.15s;}
+  .tab.active{color:var(--teal); background:var(--teal-dim); border-color:rgba(53,208,168,.4);}
+  .view{display:none; margin-top:16px;} .view.active{display:block;}
+  .stats{display:grid; grid-template-columns:repeat(6,1fr); gap:12px;}
+  .card{background:linear-gradient(180deg,var(--bg-2),var(--panel)); border:1px solid var(--border);
+    border-radius:16px; padding:16px; position:relative; overflow:hidden;}
+  .card::before{content:""; position:absolute; top:0; left:0; width:100%; height:3px; background:var(--accent,var(--teal)); opacity:.85;}
+  .card .lbl{font-size:.68rem; color:var(--muted); letter-spacing:.06em; text-transform:uppercase; font-weight:600;}
+  .card .num{font-family:var(--mono); font-size:1.9rem; font-weight:700; margin-top:8px; color:var(--accent,var(--text));}
+  .card.teal{--accent:var(--teal);} .card.indigo{--accent:var(--indigo);} .card.amber{--accent:var(--amber);}
+  .card.red{--accent:var(--red);} .card.plain{--accent:#9aa7b4;}
+  .panel{background:linear-gradient(180deg,var(--bg-2),var(--panel)); border:1px solid var(--border);
+    border-radius:18px; box-shadow:var(--shadow); overflow:hidden; margin-top:16px;}
+  .panel-head{display:flex; align-items:center; gap:12px; padding:16px 20px; border-bottom:1px solid var(--border); flex-wrap:wrap;}
+  .panel-head h2{font-size:.94rem; font-weight:700;}
+  .search, select, input[type=date], input[type=month], input[type=text], input[type=email], input[type=password]{
+    background:var(--bg-3); border:1px solid var(--border-2); border-radius:10px; padding:8px 13px;
+    color:var(--text); font-family:var(--sans); font-size:.85rem; outline:none;}
+  .search{flex:1; max-width:220px; margin-left:auto;}
+  table{width:100%; border-collapse:collapse;}
+  thead th{text-align:left; font-size:.68rem; letter-spacing:.07em; text-transform:uppercase; color:var(--muted);
+    font-weight:700; padding:12px 18px; background:var(--panel); border-bottom:1px solid var(--border);}
+  tbody td{padding:11px 18px; border-bottom:1px solid rgba(32,42,53,.6); font-size:.87rem;}
+  tbody tr:hover{background:var(--bg-3);}
+  .avatar{width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:.78rem; color:#06120c; background:linear-gradient(135deg,var(--teal),#1fae87); overflow:hidden;}
+  .avatar img{width:100%; height:100%; object-fit:cover;}
+  .pill{display:inline-flex; align-items:center; gap:6px; font-size:.74rem; font-weight:700; padding:4px 10px; border-radius:20px;}
+  .pill::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor;}
+  .pill.Present{color:var(--teal); background:var(--teal-dim);}
+  .pill.Exit{color:var(--amber); background:var(--amber-dim);}
+  .pill.WFH{color:var(--indigo); background:var(--indigo-dim);}
+  .pill.Leave{color:var(--amber); background:var(--amber-dim);}
+  .pill.HalfDay{color:#c9a53b; background:rgba(201,165,59,.12);}
+  .pill.Absent{color:var(--red); background:var(--red-dim);}
+  .pill.unmarked{color:var(--muted-2); background:rgba(132,146,163,.1);}
+  .pill.ready{color:var(--teal); background:var(--teal-dim);}
+  .pill.missing{color:var(--red); background:var(--red-dim);}
+  .pill.active{color:var(--teal); background:var(--teal-dim);}
+  .pill.inactive{color:var(--muted); background:rgba(132,146,163,.12);}
+  .quickmark{display:flex; gap:5px; flex-wrap:wrap;}
+  .qm-btn{font-size:.7rem; font-weight:700; padding:5px 9px; border-radius:8px; cursor:pointer; border:1px solid transparent;
+    background:var(--bg-3); color:var(--muted); transition:.12s;}
+  .qm-btn:hover{filter:brightness(1.25);}
+  .qm-btn.p{color:var(--teal); border-color:rgba(53,208,168,.3);}
+  .qm-btn.w{color:var(--indigo); border-color:rgba(124,156,245,.3);}
+  .qm-btn.l{color:var(--amber); border-color:rgba(240,184,86,.3);}
+  .qm-btn.a{color:var(--red); border-color:rgba(236,111,116,.3);}
+  .qm-btn.h{color:#c9a53b; border-color:rgba(201,165,59,.3);}
+  .icon-btn{background:none; border:none; color:var(--muted); cursor:pointer; font-size:.95rem; padding:4px 7px; border-radius:7px;}
+  .icon-btn:hover{color:var(--text); background:var(--bg-3);} .icon-btn.danger:hover{color:var(--red);}
+  .empty{padding:44px 20px; text-align:center; color:var(--muted-2); font-size:.88rem;}
+  .modal-backdrop{position:fixed; inset:0; background:rgba(5,7,10,.7); display:none; align-items:center; justify-content:center; z-index:1000; padding:20px;}
+  .modal-backdrop.open{display:flex;}
+  .modal{width:100%; max-width:460px; max-height:88vh; overflow-y:auto; background:linear-gradient(180deg,var(--bg-2),var(--panel));
+    border:1px solid var(--border-2); border-radius:16px; padding:24px; box-shadow:var(--shadow);}
+  .modal h3{font-size:1.05rem; margin-bottom:16px;}
+  .modal label{font-size:.74rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; font-weight:600; display:block; margin-top:12px; margin-bottom:5px;}
+  .modal input, .modal select{width:100%;}
+  .modal .row{display:flex; gap:10px;} .modal .row > div{flex:1;}
+  .modal-actions{display:flex; gap:10px; margin-top:20px; justify-content:flex-end;}
+  .modal .warn{background:var(--amber-dim); border:1px solid rgba(240,184,86,.3); color:var(--amber); font-size:.8rem; padding:9px 12px; border-radius:10px; margin-top:14px;}
+  .modal .errbox{background:var(--red-dim); border:1px solid rgba(236,111,116,.3); color:var(--red); font-size:.8rem; padding:9px 12px; border-radius:10px; margin-top:14px; display:none;}
+  .toast{position:fixed; bottom:24px; right:24px; background:var(--panel); border:1px solid var(--border-2);
+    border-radius:12px; padding:12px 18px; font-size:.85rem; box-shadow:var(--shadow); z-index:1100; display:none; max-width:340px;}
+  .toast.ok{color:var(--teal); border-color:rgba(53,208,168,.35);}
+  .toast.err{color:var(--red); border-color:rgba(236,111,116,.35);}
+  .seg{display:flex; background:var(--bg-3); border:1px solid var(--border-2); border-radius:11px; padding:3px;}
+  .seg button{font-size:.8rem; font-weight:700; color:var(--muted); background:transparent; border:none; border-radius:8px; padding:7px 14px; cursor:pointer;}
+  .seg button.on{color:#06120c; background:var(--teal);}
+  tbody tr.clickable{cursor:pointer;}
+  .avatar .fallback, .profile-avatar .fallback{width:100%; height:100%; display:flex; align-items:center; justify-content:center;}
+
+  /* ---- Employee profile card ---- */
+  .profile-modal{max-width:460px; padding:0; overflow:hidden; border-radius:22px;}
+  .profile-topbar{height:4px; background:linear-gradient(90deg,var(--teal),var(--indigo));}
+  .profile-banner{margin:16px 22px 0; padding:18px; position:relative; border-radius:16px; border:1px solid var(--border);
+    background:linear-gradient(135deg,rgba(53,208,168,.16),rgba(124,156,245,.13));}
+  .profile-close{position:absolute; top:18px; right:18px; width:28px; height:28px; border-radius:9px; border:1px solid var(--border-2);
+    background:var(--bg-3); color:var(--muted); font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:.15s; z-index:2;}
+  .profile-close:hover{color:var(--text); border-color:var(--teal);}
+  .profile-head{display:flex; align-items:center; gap:15px; position:relative;}
+  .profile-avatar{width:76px; height:76px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:1.5rem; color:var(--teal); background:var(--teal-dim); overflow:hidden; position:relative;
+    box-shadow:0 0 0 2px rgba(53,208,168,.55); cursor:pointer; transition:transform .15s;}
+  .profile-avatar:hover{transform:scale(1.04);}
+  .profile-avatar.inactive-ring{box-shadow:0 0 0 2px var(--border-2); color:var(--muted); background:var(--bg-3);}
+  .profile-avatar img{width:100%; height:100%; object-fit:cover; object-position:center 28%;}
+  .profile-avatar-dot{position:absolute; bottom:2px; right:2px; width:14px; height:14px; border-radius:50%;
+    background:var(--teal); border:3px solid var(--panel);}
+  .profile-avatar.inactive-ring + .profile-avatar-dot, .profile-avatar-dot.off{background:var(--muted-2);}
+  .profile-name{font-size:1.2rem; font-weight:800;}
+  .profile-role{font-size:.72rem; font-weight:700; color:var(--indigo); text-transform:uppercase; letter-spacing:.04em; margin-top:2px;}
+  .profile-sub{font-size:.78rem; color:var(--muted); margin-top:3px;}
+  .profile-pills{display:flex; gap:6px; flex-wrap:wrap; margin-top:14px;}
+  .profile-pills .pill{background:transparent; border:1px solid var(--border-2); color:var(--muted);}
+  .profile-pills .pill.active, .profile-pills .pill.ready{border-color:rgba(53,208,168,.4); color:var(--teal);}
+  .profile-pills .pill.missing{border-color:rgba(240,184,86,.4); color:var(--amber);}
+  .profile-pills .pill.inactive, .profile-pills .pill.unmarked{border-color:var(--border-2); color:var(--muted);}
+
+  .profile-body{padding:18px 22px 22px;}
+  .profile-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:9px;}
+  .profile-stats .card{padding:11px 10px; border-radius:12px;}
+  .profile-stats .num{font-size:1.35rem; margin-top:4px;}
+  .profile-ratebar{margin-top:14px;}
+  .ratetrack{height:6px; border-radius:5px; background:var(--bg-3); overflow:hidden;}
+  .ratefill{height:100%; border-radius:5px; background:linear-gradient(90deg,var(--indigo),var(--teal));}
+  .profile-ratebar .rt-lbls{display:flex; justify-content:space-between; font-size:.68rem; color:var(--muted-2); margin-top:6px;}
+  .profile-ratebar .rt-lbls b{font-weight:700; color:var(--teal); font-size:.74rem;}
+
+  .profile-section-lbl{display:flex; align-items:center; justify-content:space-between; margin:22px 0 10px;}
+  .profile-section-lbl span:first-child{font-size:.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; font-weight:700;}
+  .profile-monthsel{display:flex; gap:4px;}
+  select.profile-monthbadge{font-size:.72rem; font-family:var(--mono); color:var(--text); background:var(--bg-3);
+    border:1px solid var(--border-2); border-radius:8px; padding:5px 8px; cursor:pointer; outline:none;}
+  select.profile-monthbadge:hover{border-color:var(--teal);}
+  .info-list{display:grid; grid-template-columns:1fr 1fr; background:var(--bg-3); border:1px solid var(--border); border-radius:14px; overflow:hidden;}
+  .info-row{display:flex; align-items:center; gap:11px; padding:13px 14px; min-width:0; border-color:var(--border); border-style:solid; border-width:0;}
+  .info-row:nth-child(odd){border-right-width:1px;}
+  .info-row:nth-child(-n+2){border-bottom-width:1px;}
+  .info-row .ic{width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center;
+    font-size:.9rem; flex-shrink:0; color:#fff;}
+  .info-row > div:last-child{min-width:0;}
+  .info-row .fld{font-size:.68rem; color:var(--muted);}
+  .info-row .val{font-size:.87rem; margin-top:2px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+
+  .calwrap{background:var(--bg-3); border:1px solid var(--border); border-radius:13px; padding:11px;}
+  .cal-legend{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:9px; font-size:.63rem; color:var(--muted); justify-content:flex-end;}
+  .cal-legend span{display:inline-flex; align-items:center; gap:4px;}
+  .cal-legend i{width:7px; height:7px; border-radius:2px; display:inline-block;}
+  .cal-wdays{display:grid; grid-template-columns:repeat(7,1fr); gap:3px; margin-bottom:5px;}
+  .cal-wdays span{text-align:center; font-size:.58rem; font-weight:700; color:var(--muted-2); text-transform:uppercase;}
+  .cal-wdays span:nth-child(6), .cal-wdays span:nth-child(7){color:#dba43f;}
+  .daygrid{display:grid; grid-template-columns:repeat(7,1fr); gap:3px;}
+  .daycell{aspect-ratio:1; max-height:25px; border-radius:6px; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:.66rem; font-weight:600; background:transparent; color:var(--muted-2); position:relative;}
+  .daycell.blank{background:transparent;}
+  .daycell.off{background:transparent; color:var(--muted-2); opacity:.5;}
+  .daycell.future{background:transparent; color:var(--muted-2); opacity:.35;}
+  .daycell.off:nth-child(7n+6), .daycell.future:nth-child(7n+6),
+  .daycell.off:nth-child(7n), .daycell.future:nth-child(7n){background:rgba(240,184,86,.07); color:#c9a35f; opacity:.8;}
+  .daycell.Present{background:rgba(53,208,168,.22); color:#7fe6c8;}
+  .daycell.WFH{background:var(--indigo-dim); color:var(--indigo);}
+  .daycell.Leave{background:var(--amber-dim); color:var(--amber);}
+  .daycell.HalfDay{background:rgba(201,165,59,.18); color:#dcb75a;}
+  .daycell.Absent{background:rgba(236,111,116,.26); color:#f7b3b6;}
+  .daycell.istoday{color:#06120c; font-weight:800; box-shadow:0 0 0 2px var(--bg-3), 0 0 10px -1px currentColor;}
+  .profile-loading{padding:50px 20px; text-align:center; color:var(--muted-2); font-size:.85rem;}
+  ::-webkit-scrollbar{width:9px; height:9px;} ::-webkit-scrollbar-thumb{background:var(--border-2); border-radius:6px;}
+  @media(max-width:980px){ .stats{grid-template-columns:repeat(3,1fr);} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo-mark">CT</div>
+      <div><h1>Admin Panel</h1><div class="sub">Attendance Intelligence · Cyamsys Technologies</div></div>
+    </div>
+    <span class="who">{{ username }} · admin</span>
+    <a class="btn" href="/">Live Dashboard</a>
+    <a class="btn" href="/portal/logout">Logout</a>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="overview">● Today</button>
+    <button class="tab" data-tab="employees">◈ Employees</button>
+    <button class="tab" data-tab="monthly">▤ Monthly</button>
+    <button class="tab" data-tab="requests">✎ Requests</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="view active" id="view-overview">
+    <div class="stats">
+      <div class="card teal"><div class="lbl">Present</div><div class="num" id="ov-present">0</div></div>
+      <div class="card indigo"><div class="lbl">WFH</div><div class="num" id="ov-wfh">0</div></div>
+      <div class="card amber"><div class="lbl">Leave</div><div class="num" id="ov-leave">0</div></div>
+      <div class="card red"><div class="lbl">Absent</div><div class="num" id="ov-absent">0</div></div>
+      <div class="card plain"><div class="lbl">Exited</div><div class="num" id="ov-exited">0</div></div>
+      <div class="card plain"><div class="lbl">Unmarked</div><div class="num" id="ov-unmarked">0</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Mark Attendance</h2>
+        <input type="date" id="attDate">
+        <input class="search" id="attSearch" placeholder="Search name…">
+      </div>
+      <table>
+        <thead><tr><th></th><th>Name</th><th>Status</th><th>Time / Camera</th><th>Quick mark</th></tr></thead>
+        <tbody id="attBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- EMPLOYEES -->
+  <div class="view" id="view-employees">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>All Employees</h2>
+        <input class="search" id="empSearch" placeholder="Search name…">
+        <button class="btn btn-accent" id="btnAddEmployee">+ Add Employee</button>
+      </div>
+      <table>
+        <thead><tr><th></th><th>Name</th><th>Department</th><th>Designation</th><th>Email</th><th>Face ID</th><th>Login</th><th>Status</th><th></th></tr></thead>
+        <tbody id="empBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MONTHLY -->
+  <div class="view" id="view-monthly">
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Monthly Report</h2>
+        <input type="month" id="monthSel">
+        <div class="seg" id="segView" style="margin-left:10px;">
+          <button class="on" data-mv="summary">Summary</button>
+          <button data-mv="grid">Day-by-Day</button>
+        </div>
+        <a class="btn" id="expCsv" style="margin-left:auto;" href="#">⤓ Export CSV</a>
+      </div>
+      <div class="stats" style="padding:16px 20px 0; grid-template-columns:repeat(4,1fr);">
+        <div class="card plain"><div class="lbl">Employees</div><div class="num" id="m-emp">0</div></div>
+        <div class="card indigo"><div class="lbl">Working Days</div><div class="num" id="m-days">0</div></div>
+        <div class="card teal"><div class="lbl">Avg Attendance</div><div class="num" id="m-avg">0%</div></div>
+        <div class="card amber"><div class="lbl">Low (&lt;75%)</div><div class="num" id="m-low">0</div></div>
+      </div>
+      <div id="mv-summary" style="margin-top:10px;">
+        <table>
+          <thead><tr><th>Name</th><th>Present</th><th>Absent</th><th>Attendance</th></tr></thead>
+          <tbody id="mtbody"></tbody>
+        </table>
+      </div>
+      <div id="mv-grid" style="display:none; overflow:auto; max-height:600px; margin-top:10px;">
+        <table id="gridtbl"></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- REQUESTS -->
+  <div class="view" id="view-requests">
+    <div class="panel">
+      <div class="panel-head"><h2>Pending WFH / Leave Requests</h2>
+        <span id="reqCount" style="margin-left:auto; font-family:var(--mono); font-size:.8rem; color:var(--teal);"></span>
+      </div>
+      <table>
+        <thead><tr><th>Employee</th><th>Type</th><th>Date</th><th>Reason</th><th>Action</th></tr></thead>
+        <tbody id="reqBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Employee Modal -->
+<div class="modal-backdrop" id="empModal">
+  <div class="modal" style="max-width:520px;">
+    <h3 id="empModalTitle">Add Employee</h3>
+    <div class="errbox" id="empErr"></div>
+    <input type="hidden" id="empId">
+
+    <label>Full Name *</label>
+    <input type="text" id="f-name">
+
+    <div class="row">
+      <div><label>Email</label><input type="email" id="f-email"></div>
+      <div><label>Phone</label><input type="text" id="f-phone"></div>
+    </div>
+    <div class="row">
+      <div><label>Department</label><input type="text" id="f-department"></div>
+      <div><label>Designation</label><input type="text" id="f-designation"></div>
+    </div>
+
+    <label>Join Date</label>
+    <input type="date" id="f-join_date">
+
+    <!-- MULTIPLE PHOTOS UPLOAD -->
+    <label>Face Photos <span style="color:var(--teal); font-size:.7rem;">(3-5 photos recommended — better accuracy)</span></label>
+    <div id="photoDropZone" style="
+      border:2px dashed var(--border-2); border-radius:12px; padding:18px;
+      text-align:center; cursor:pointer; transition:.2s; position:relative;
+      background:var(--bg-3);">
+      <div id="photoDropLabel" style="color:var(--muted); font-size:.85rem;">
+        📷 Click to select or drag &amp; drop photos<br>
+        <span style="font-size:.72rem; color:var(--muted-2);">JPG, PNG, WEBP · Max 10 photos · Front-facing, good lighting</span>
+      </div>
+      <input type="file" id="f-photos" accept=".jpg,.jpeg,.png,.webp"
+             multiple style="position:absolute; inset:0; opacity:0; cursor:pointer;">
+    </div>
+
+    <!-- Photo preview grid -->
+    <div id="photoPreviewGrid" style="
+      display:none; display:grid; grid-template-columns:repeat(5,1fr);
+      gap:8px; margin-top:10px;">
+    </div>
+    <div id="photoCount" style="font-size:.72rem; color:var(--muted); margin-top:6px; display:none;">
+      0 photos selected
+    </div>
+
+    <!-- Login fields (only for Add, not Edit) -->
+    <div id="empLoginFields">
+      <label>Login Username <span style="color:var(--muted-2); font-size:.7rem;">(optional — creates employee portal login)</span></label>
+      <input type="text" id="f-username">
+      <label>Login Password <span style="color:var(--muted-2); font-size:.7rem;">(min 6 chars)</span></label>
+      <input type="password" id="f-password">
+    </div>
+
+    <div class="warn" id="empWarn" style="display:none;"></div>
+
+    <!-- Embedding result info -->
+    <div id="embResult" style="
+      display:none; background:var(--teal-dim); border:1px solid rgba(53,208,168,.3);
+      border-radius:10px; padding:10px 13px; margin-top:12px; font-size:.8rem; color:var(--teal);">
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" id="empCancel">Cancel</button>
+      <button class="btn btn-accent" id="empSave">
+        <span id="empSaveLabel">Save Employee</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Employee Profile Card -->
+<div class="modal-backdrop" id="profileModal">
+  <div class="modal profile-modal">
+    <div class="profile-topbar"></div>
+    <div class="profile-banner">
+      <button class="profile-close" id="pfClose" title="Close">×</button>
+      <div class="profile-head">
+        <div style="position:relative;">
+          <div class="profile-avatar" id="pf-avatar"></div>
+          <div class="profile-avatar-dot" id="pf-avatar-dot"></div>
+        </div>
+        <div>
+          <div class="profile-name" id="pf-name"></div>
+          <div class="profile-role" id="pf-role"></div>
+          <div class="profile-sub" id="pf-sub"></div>
+        </div>
+      </div>
+      <div class="profile-pills" id="pf-pills"></div>
+    </div>
+    <div class="profile-body">
+      <div class="profile-section-lbl"><span>Employee Details</span></div>
+      <div class="info-list">
+        <div class="info-row"><div class="ic" style="background:#3b82f6">✉</div><div><div class="fld">Email address</div><div class="val" id="pf-email">—</div></div></div>
+        <div class="info-row"><div class="ic" style="background:#22c55e">☎</div><div><div class="fld">Phone number</div><div class="val" id="pf-phone">—</div></div></div>
+        <div class="info-row"><div class="ic" style="background:#8b5cf6">◷</div><div><div class="fld">Joined</div><div class="val" id="pf-join">—</div></div></div>
+        <div class="info-row"><div class="ic" style="background:#f0b856">◈</div><div><div class="fld">Department</div><div class="val" id="pf-dept">—</div></div></div>
+      </div>
+
+      <div class="profile-section-lbl"><span>Monthly Attendance</span>
+        <span class="profile-monthsel">
+          <select id="pf-month-sel" class="profile-monthbadge"></select>
+          <select id="pf-year-sel" class="profile-monthbadge"></select>
+        </span>
+      </div>
+      <div id="pf-stats-wrap"><div class="profile-loading">Loading…</div></div>
+
+      <div class="profile-section-lbl" style="margin-top:22px;"><span>Attendance Log · <span id="pf-cal-monthlabel"></span></span></div>
+      <div id="pf-cal-wrap"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Photo Lightbox (profile card avatar zoom) -->
+<div class="modal-backdrop" id="pfLightbox" style="z-index:1200;">
+  <img id="pfLightboxImg" style="max-width:min(90vw,480px); max-height:80vh; border-radius:18px; box-shadow:var(--shadow); object-fit:cover;">
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const todayStr = () => new Date().toISOString().slice(0,10);
+function toast(msg, ok=true){ const t=$("toast"); t.textContent=msg; t.className="toast "+(ok?"ok":"err"); t.style.display="block"; setTimeout(()=>t.style.display="none", 4000); }
+function initials(n){ const p=(n||"").trim().split(/\s+/); return ((p[0]?.[0]||"")+(p[1]?.[0]||"")).toUpperCase()||"?"; }
+const statusLabel = s => ({Present:"present",Exit:"exited",WFH:"WFH",Leave:"leave",Absent:"absent",HalfDay:"half-day"}[s]||s);
+function avatarHTML(photo, name){
+  if(!photo) return `<span class="fallback">${initials(name)}</span>`;
+  const ini = initials(name);
+  return `<img src="/photos/${photo}" alt="${name}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'${ini}'}))">`;
+}
+
+let activeTab="overview";
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active"); activeTab=btn.dataset.tab;
+    document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+    $("view-"+activeTab).classList.add("active");
+    if(activeTab==="overview") loadOverview();
+    if(activeTab==="employees") loadEmployees();
+    if(activeTab==="monthly") loadMonthly();
+    if(activeTab==="requests") loadRequests();
+  });
+});
+
+/* OVERVIEW */
+let attData=null;
+$("attDate").value = todayStr();
+async function loadOverview(){
+  const res = await fetch("/api/portal/attendance?date="+$("attDate").value);
+  attData = await res.json();
+  const c = attData.counts;
+  $("ov-present").textContent=c.present; $("ov-wfh").textContent=c.wfh;
+  $("ov-leave").textContent=c.leave; $("ov-absent").textContent=c.absent;
+  $("ov-exited").textContent=c.exited; $("ov-unmarked").textContent=c.unmarked;
+  renderAtt();
+}
+function renderAtt(){
+  if(!attData) return;
+  const q=$("attSearch").value.trim().toLowerCase();
+  const marked = attData.marked.map(r=>({...r,_m:true}));
+  const unmarked = attData.unmarked.map(n=>({name:n,_m:false}));
+  let rows=[...marked,...unmarked];
+  if(q) rows=rows.filter(r=>r.name.toLowerCase().includes(q));
+  rows.sort((a,b)=>a.name.localeCompare(b.name));
+  const tb=$("attBody");
+  if(!rows.length){ tb.innerHTML=`<tr><td colspan="5"><div class="empty">No employees</div></td></tr>`; return; }
+  tb.innerHTML=rows.map(r=>{
+    const av = avatarHTML(r.photo, r.name);
+    const pill = r._m?`<span class="pill ${r.status}">${statusLabel(r.status)}</span>`:`<span class="pill unmarked">unmarked</span>`;
+    const meta = r._m?`${r.time||'—'} · ${r.camera||'—'}`:'—';
+    return `<tr>
+      <td><div class="avatar">${av}</div></td>
+      <td>${r.name}</td>
+      <td>${pill}</td>
+      <td style="font-family:var(--mono); font-size:.78rem; color:var(--muted);">${meta}</td>
+      <td><div class="quickmark">
+        <button class="qm-btn p" onclick="mark('${r.name.replace(/'/g,"\\'")}','Present')">Present</button>
+        <button class="qm-btn w" onclick="mark('${r.name.replace(/'/g,"\\'")}','WFH')">WFH</button>
+        <button class="qm-btn h" onclick="mark('${r.name.replace(/'/g,"\\'")}','HalfDay')">Half</button>
+        <button class="qm-btn l" onclick="mark('${r.name.replace(/'/g,"\\'")}','Leave')">Leave</button>
+        <button class="qm-btn a" onclick="mark('${r.name.replace(/'/g,"\\'")}','Absent')">Absent</button>
+      </div></td></tr>`;
+  }).join("");
+}
+async function mark(name,status){
+  const res=await fetch("/api/portal/attendance/mark",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({name,status,date:$("attDate").value})});
+  if(res.ok){ toast(`${name}: ${statusLabel(status)}`); loadOverview(); }
+  else { const d=await res.json(); toast(d.error||"Failed",false); }
+}
+$("attDate").addEventListener("change",loadOverview);
+$("attSearch").addEventListener("input",renderAtt);
+
+/* EMPLOYEES */
+let employees=[];
+async function loadEmployees(){ employees=await (await fetch("/api/portal/employees")).json(); renderEmployees(); }
+function renderEmployees(){
+  const q=$("empSearch").value.trim().toLowerCase();
+  let rows=employees; if(q) rows=rows.filter(e=>e.name.toLowerCase().includes(q));
+  const tb=$("empBody");
+  if(!rows.length){ tb.innerHTML=`<tr><td colspan="9"><div class="empty">No employees yet — add your first one.</div></td></tr>`; return; }
+  tb.innerHTML=rows.map(e=>{
+    const av=avatarHTML(e.photo_path, e.name);
+    const face=e.has_embedding?`<span class="pill ready">ready</span>`:`<span class="pill missing">missing</span>`;
+    const login=e.has_login?`<span class="pill ready">yes</span>`:`<span class="pill unmarked">no</span>`;
+    const st=e.active?`<span class="pill active">active</span>`:`<span class="pill inactive">inactive</span>`;
+    return `<tr class="clickable" onclick="openProfile(${e.id})">
+      <td><div class="avatar">${av}</div></td>
+      <td>${e.name}</td><td>${e.department||'—'}</td><td>${e.designation||'—'}</td>
+      <td style="color:var(--muted); font-size:.82rem;">${e.email||'—'}</td>
+      <td>${face}</td><td>${login}</td><td>${st}</td>
+      <td onclick="event.stopPropagation()">
+        <button class="icon-btn" title="Edit" onclick="openEdit(${e.id})">✎</button>
+        <button class="icon-btn" title="Regenerate face embedding" onclick="regen(${e.id})">⟳</button>
+        <button class="icon-btn danger" title="Deactivate" onclick="del(${e.id},false)">⏻</button>
+        <button class="icon-btn danger" title="Delete permanently" onclick="del(${e.id},true)">🗑</button>
+      </td></tr>`;
+  }).join("");
+}
+$("empSearch").addEventListener("input",renderEmployees);
+
+/* ── Photo preview logic ── */
+function updatePhotoPreview(){
+  const files = Array.from($("f-photos").files);
+  const grid  = $("photoPreviewGrid");
+  const cnt   = $("photoCount");
+  const zone  = $("photoDropZone");
+
+  if(!files.length){
+    grid.style.display="none"; cnt.style.display="none";
+    zone.style.borderColor="var(--border-2)";
+    $("photoDropLabel").innerHTML='📷 Click to select or drag &amp; drop photos<br><span style="font-size:.72rem; color:var(--muted-2);">JPG, PNG, WEBP · Max 10 photos · Front-facing, good lighting</span>';
+    return;
+  }
+
+  zone.style.borderColor="var(--teal)";
+  cnt.style.display="block";
+  cnt.textContent=`${files.length} photo${files.length>1?"s":""} selected`;
+  grid.style.display="grid";
+
+  grid.innerHTML = files.slice(0,10).map((file,i)=>{
+    const url = URL.createObjectURL(file);
+    return `<div style="position:relative; aspect-ratio:1; border-radius:9px; overflow:hidden; border:1px solid var(--border-2);">
+      <img src="${url}" style="width:100%;height:100%;object-fit:cover;">
+      ${i===0?'<div style="position:absolute;bottom:0;left:0;right:0;background:rgba(53,208,168,.85);font-size:.55rem;font-weight:700;color:#06120c;text-align:center;padding:2px;">PROFILE</div>':''}
+    </div>`;
+  }).join("");
+}
+$("f-photos").addEventListener("change", updatePhotoPreview);
+
+/* Drag and drop */
+const dz = $("photoDropZone");
+dz.addEventListener("dragover", e=>{ e.preventDefault(); dz.style.borderColor="var(--teal)"; dz.style.background="rgba(53,208,168,.07)"; });
+dz.addEventListener("dragleave", ()=>{ dz.style.borderColor="var(--border-2)"; dz.style.background="var(--bg-3)"; });
+dz.addEventListener("drop", e=>{
+  e.preventDefault(); dz.style.background="var(--bg-3)";
+  const dt = e.dataTransfer;
+  if(dt.files.length){
+    // FileInput pe files set karo
+    const inp = $("f-photos");
+    const transfer = new DataTransfer();
+    Array.from(dt.files).filter(f=>f.type.startsWith("image/")).slice(0,10).forEach(f=>transfer.items.add(f));
+    inp.files = transfer.files;
+    updatePhotoPreview();
+  }
+});
+
+function _resetPhotoUI(){
+  $("f-photos").value="";
+  $("photoPreviewGrid").innerHTML="";
+  $("photoPreviewGrid").style.display="none";
+  $("photoCount").style.display="none";
+  $("photoDropZone").style.borderColor="var(--border-2)";
+  $("embResult").style.display="none";
+}
+
+function openAdd(){
+  $("empModalTitle").textContent="Add Employee";
+  $("empId").value="";
+  ["name","email","phone","department","designation","join_date","username","password"].forEach(f=>$("f-"+f).value="");
+  _resetPhotoUI();
+  $("empLoginFields").style.display="";
+  $("empErr").style.display="none";
+  $("empWarn").style.display="none";
+  $("empSaveLabel").textContent="Save Employee";
+  $("empModal").classList.add("open");
+}
+
+function openEdit(id){
+  const e=employees.find(x=>x.id===id); if(!e) return;
+  $("empModalTitle").textContent="Edit Employee";
+  $("empId").value=e.id;
+  $("f-name").value=e.name||""; $("f-email").value=e.email||""; $("f-phone").value=e.phone||"";
+  $("f-department").value=e.department||""; $("f-designation").value=e.designation||""; $("f-join_date").value=e.join_date||"";
+  _resetPhotoUI();
+  $("empLoginFields").style.display="none";
+  $("empErr").style.display="none";
+  $("empWarn").style.display="none";
+  $("empSaveLabel").textContent="Update Employee";
+  $("empModal").classList.add("open");
+}
+
+$("btnAddEmployee").addEventListener("click",openAdd);
+$("empCancel").addEventListener("click",()=>$("empModal").classList.remove("open"));
+
+$("empSave").addEventListener("click", async ()=>{
+  const id   = $("empId").value;
+  const name = $("f-name").value.trim();
+  if(!name){ $("empErr").textContent="Name is required"; $("empErr").style.display="block"; return; }
+
+  $("empErr").style.display="none";
+  $("empWarn").style.display="none";
+  $("embResult").style.display="none";
+  $("empSaveLabel").textContent="Saving…";
+  $("empSave").disabled=true;
+
+  const fd = new FormData();
+  ["name","email","phone","department","designation","join_date"].forEach(f=>fd.append(f,$("f-"+f).value.trim()));
+
+  // Multiple photos — "photos[]" ke naam se bhejo
+  const photos = Array.from($("f-photos").files);
+  photos.forEach(f=>fd.append("photos[]",f));
+
+  if(!id){
+    fd.append("username",$("f-username").value.trim());
+    fd.append("password",$("f-password").value);
+  }
+
+  const res  = await fetch(id?`/api/portal/employees/${id}`:"/api/portal/employees",
+                           {method:id?"PUT":"POST", body:fd});
+  const data = await res.json();
+
+  $("empSaveLabel").textContent = id?"Update Employee":"Save Employee";
+  $("empSave").disabled=false;
+
+  if(!res.ok){
+    $("empErr").textContent=data.error||"Failed";
+    $("empErr").style.display="block";
+    return;
+  }
+
+  // Embedding result show karo
+  if(data.embedded !== undefined){
+    const msg = data.embedded > 0
+      ? `✅ ${data.embedded} face embedding${data.embedded>1?"s":""} generated from ${data.photos} photo${data.photos>1?"s":""}. Camera will recognize this employee within 10 seconds.`
+      : `⚠️ ${data.photos} photo${data.photos>1?"s":""} saved but no face detected. Upload clear front-facing photos.`;
+    $("embResult").textContent=msg;
+    $("embResult").style.display="block";
+    $("embResult").style.background = data.embedded>0?"var(--teal-dim)":"var(--amber-dim)";
+    $("embResult").style.color       = data.embedded>0?"var(--teal)":"var(--amber)";
+    $("embResult").style.borderColor = data.embedded>0?"rgba(53,208,168,.3)":"rgba(240,184,86,.3)";
+  }
+
+  if(data.warnings && data.warnings.length){
+    $("empWarn").textContent = data.warnings.join(" | ");
+    $("empWarn").style.display="block";
+  }
+
+  // Agar no issues, modal close karo
+  if(!data.warnings?.length && data.embedded > 0){
+    setTimeout(()=>$("empModal").classList.remove("open"), 1800);
+  }
+
+  toast(id?"Employee updated ✅":"Employee added ✅");
+  loadEmployees();
+});
+
+async function regen(id){
+  const res=await fetch(`/api/portal/employees/${id}/regenerate-embedding`,{method:"POST"});
+  const d=await res.json();
+  if(res.ok){
+    const msg = d.message || `${d.embedded} embedding(s) regenerated`;
+    toast("✅ "+msg);
+    loadEmployees();
+  } else {
+    toast(d.error||"Failed",false);
+  }
+}
+async function del(id,hard){
+  if(!confirm(hard?"Permanently delete this employee, their attendance history AND face embedding? Cannot be undone.":"Deactivate this employee? Live cameras will stop counting them.")) return;
+  const res=await fetch(`/api/portal/employees/${id}`+(hard?"?hard=1":""),{method:"DELETE"});
+  if(res.ok){ toast(hard?"Deleted":"Deactivated"); loadEmployees(); } else toast("Failed",false);
+}
+
+/* EMPLOYEE PROFILE CARD */
+let profileEmp=null;
+function openProfile(id){
+  profileEmp=employees.find(x=>x.id===id); if(!profileEmp) return;
+  const e=profileEmp;
+  $("pf-avatar").innerHTML = avatarHTML(e.photo_path, e.name);
+  $("pf-avatar").classList.toggle("inactive-ring", !e.active);
+  $("pf-avatar-dot").classList.toggle("off", !e.active);
+  $("pf-avatar").onclick = e.photo_path ? ()=>{
+    $("pfLightboxImg").src = "/photos/"+e.photo_path;
+    $("pfLightbox").classList.add("open");
+  } : null;
+  $("pf-name").textContent = e.name;
+  $("pf-role").textContent = e.designation || "";
+  $("pf-role").style.display = e.designation ? "" : "none";
+  $("pf-sub").textContent = [e.department, "EMP-"+String(e.id).padStart(4,"0")].filter(Boolean).join(" · ");
+  $("pf-pills").innerHTML = [
+    e.active?`<span class="pill active">active</span>`:`<span class="pill inactive">inactive</span>`,
+    e.has_embedding?`<span class="pill ready">face ready</span>`:`<span class="pill missing">face missing</span>`,
+    e.has_login?`<span class="pill ready">login yes</span>`:`<span class="pill unmarked">login no</span>`,
+  ].join("");
+  $("pf-email").textContent = e.email||"—";
+  $("pf-phone").textContent = e.phone||"—";
+  const joinTxt = e.join_date ? `${fmtDate(e.join_date)} · ${tenure(e.join_date)}` : "—";
+  $("pf-join").textContent = joinTxt;
+  $("pf-join").title = joinTxt;
+  $("pf-email").title = e.email||"";
+  $("pf-dept").textContent = e.department||"—";
+  const now = new Date();
+  $("pf-month-sel").value = now.getMonth()+1;
+  $("pf-year-sel").value = now.getFullYear();
+  $("profileModal").classList.add("open");
+  loadProfileMonth();
+}
+const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+(function initMonthYearSelects(){
+  const mSel = $("pf-month-sel"), ySel = $("pf-year-sel");
+  mSel.innerHTML = MONTH_NAMES.map((n,i)=>`<option value="${i+1}">${n}</option>`).join("");
+  const curYear = new Date().getFullYear();
+  const years = []; for(let y=curYear; y>=curYear-5; y--) years.push(y);
+  ySel.innerHTML = years.map(y=>`<option value="${y}">${y}</option>`).join("");
+})();
+function selectedMonthStr(){
+  return `${$("pf-year-sel").value}-${String($("pf-month-sel").value).padStart(2,"0")}`;
+}
+function fmtDate(iso){
+  const d = new Date(iso+"T00:00:00");
+  return d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
+}
+function tenure(iso){
+  const start = new Date(iso+"T00:00:00"), now = new Date();
+  let months = (now.getFullYear()-start.getFullYear())*12 + (now.getMonth()-start.getMonth());
+  if(now.getDate() < start.getDate()) months--;
+  if(months < 1) return "new";
+  const yrs = Math.floor(months/12), mo = months%12;
+  if(yrs<1) return `${mo}mo`;
+  return mo ? `${yrs}y ${mo}mo` : `${yrs}y`;
+}
+function rateLabel(p){ return p>=90?"Excellent":p>=75?"Good":p>=50?"Average":"Needs attention"; }
+const WDAY_LABELS = ["Mo","Tu","We","Th","Fr","Sa","Su"];
+function buildCalendar(monthStr, todayStr_, workingSet, s){
+  const [y,m] = monthStr.split("-").map(Number);
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const firstWeekday = (new Date(y, m-1, 1).getDay() + 6) % 7; // 0=Mon
+  const presentSet = new Set(s.present_dates);
+  let cells = "";
+  for(let i=0;i<firstWeekday;i++) cells += `<div class="daycell blank"></div>`;
+  for(let d=1; d<=daysInMonth; d++){
+    const ds = `${monthStr}-${String(d).padStart(2,"0")}`;
+    let cls, label = "";
+    if(ds > todayStr_) cls = "future";
+    else if(!workingSet.has(ds)) cls = "off";
+    else {
+      const info = s.days[ds];
+      cls = info ? info.status : (presentSet.has(ds) ? "Present" : "Absent");
+      label = cls;
+    }
+    const isToday = ds===todayStr_;
+    const solidColor = {Present:"var(--teal)",WFH:"var(--indigo)",Leave:"var(--amber)",HalfDay:"#c9a53b",Absent:"var(--red)"}[cls] || "var(--teal)";
+    const style = isToday ? ` style="background:${solidColor}"` : "";
+    cells += `<div class="daycell ${cls}${isToday?" istoday":""}"${style} title="${ds}${label?" · "+label:""}">${d}</div>`;
+  }
+  return cells;
+}
+async function loadProfileMonth(){
+  if(!profileEmp) return;
+  $("pf-stats-wrap").innerHTML = `<div class="profile-loading">Loading…</div>`;
+  $("pf-cal-wrap").innerHTML = "";
+  const month = selectedMonthStr();
+  const res = await fetch(`/api/portal/employees/${profileEmp.id}/monthly?month=${month}`);
+  if(!res.ok){ $("pf-stats-wrap").innerHTML = `<div class="profile-loading">Failed to load</div>`; return; }
+  const data = await res.json();
+  const s = data.stats;
+  const c = pctClass(s.attendance_pct);
+  const workingSet = new Set(data.working_dates);
+  const cal = buildCalendar(data.month, data.today, workingSet, s);
+  $("pf-cal-monthlabel").textContent = new Date(data.month+"-01T00:00:00").toLocaleDateString("en-GB",{month:"long",year:"numeric"});
+
+  $("pf-stats-wrap").innerHTML = `
+    <div class="profile-stats">
+      <div class="card teal"><div class="lbl">Present</div><div class="num">${s.present_days}</div></div>
+      <div class="card red"><div class="lbl">Absent</div><div class="num">${s.absent_days}</div></div>
+      <div class="card ${c}"><div class="lbl">Rate</div><div class="num">${s.attendance_pct}%</div></div>
+    </div>
+    <div class="profile-ratebar">
+      <div class="ratetrack"><div class="ratefill" style="width:${s.attendance_pct}%"></div></div>
+      <div class="rt-lbls"><span>0%</span><span><b>${s.attendance_pct}% · ${rateLabel(s.attendance_pct)}</b></span><span>100%</span></div>
+    </div>`;
+
+  $("pf-cal-wrap").innerHTML = `
+    <div class="calwrap">
+      <div class="cal-legend">
+        <span><i style="background:var(--teal)"></i>Present</span>
+        <span><i style="background:var(--red)"></i>Absent</span>
+        <span><i style="background:var(--indigo)"></i>Today</span>
+      </div>
+      <div class="cal-wdays">${WDAY_LABELS.map(w=>`<span>${w}</span>`).join("")}</div>
+      <div class="daygrid">${cal}</div>
+    </div>`;
+}
+$("pf-month-sel").addEventListener("change",loadProfileMonth);
+$("pf-year-sel").addEventListener("change",loadProfileMonth);
+$("pfClose").addEventListener("click",()=>$("profileModal").classList.remove("open"));
+$("profileModal").addEventListener("click",e=>{ if(e.target.id==="profileModal") $("profileModal").classList.remove("open"); });
+$("pfLightbox").addEventListener("click",()=>$("pfLightbox").classList.remove("open"));
+
+/* MONTHLY */
+let monthlyData=null, monthView="summary";
+$("monthSel").value=todayStr().slice(0,7);
+const pctClass=p=>p>=90?"teal":p>=75?"amber":"red";
+async function loadMonthly(){
+  monthlyData=await (await fetch("/api/portal/monthly?month="+$("monthSel").value)).json();
+  $("m-emp").textContent=monthlyData.summary.total_employees;
+  $("m-days").textContent=monthlyData.working_days;
+  $("m-avg").textContent=monthlyData.summary.avg_attendance+"%";
+  $("m-low").textContent=monthlyData.summary.low_attendance;
+  renderMonthly();
+}
+function renderMonthly(){
+  if(monthView==="summary"){ $("mv-summary").style.display=""; $("mv-grid").style.display="none"; renderSummary(); }
+  else { $("mv-summary").style.display="none"; $("mv-grid").style.display=""; renderGrid(); }
+}
+function renderSummary(){
+  const emps=[...monthlyData.employees].sort((a,b)=>a.attendance_pct-b.attendance_pct);
+  const tb=$("mtbody");
+  if(!emps.length){ tb.innerHTML=`<tr><td colspan="4"><div class="empty">No data</div></td></tr>`; return; }
+  tb.innerHTML=emps.map(e=>{ const c=pctClass(e.attendance_pct);
+    return `<tr><td>${e.name}</td><td style="color:var(--teal)">${e.present_days}</td>
+      <td style="color:${e.absent_days?'var(--red)':'var(--muted)'}">${e.absent_days}</td>
+      <td style="color:var(--${c})">${e.attendance_pct}%</td></tr>`; }).join("");
+}
+function renderGrid(){
+  const dates=monthlyData.working_dates, tbl=$("gridtbl");
+  if(!dates.length){ tbl.innerHTML=`<tbody><tr><td><div class="empty">No working days</div></td></tr></tbody>`; return; }
+  const head=`<thead><tr><th style="position:sticky;left:0;background:var(--panel);text-align:left;">Name</th>
+    ${dates.map(d=>`<th style="font-size:.68rem;">${d.slice(-2)}</th>`).join("")}<th>P</th><th>A</th><th>%</th></tr></thead>`;
+  const body=`<tbody>${monthlyData.employees.map(e=>{
+    const pres=new Set(e.present_dates);
+    const cells=dates.map(d=>pres.has(d)?`<td style="text-align:center;color:var(--teal);font-family:var(--mono);">P</td>`:`<td style="text-align:center;color:var(--red);font-family:var(--mono);">A</td>`).join("");
+    const c=pctClass(e.attendance_pct);
+    return `<tr><td style="position:sticky;left:0;background:var(--panel);">${e.name}</td>${cells}
+      <td style="text-align:center;color:var(--teal);font-family:var(--mono);">${e.present_days}</td>
+      <td style="text-align:center;color:var(--red);font-family:var(--mono);">${e.absent_days}</td>
+      <td style="text-align:center;color:var(--${c});font-family:var(--mono);">${e.attendance_pct}</td></tr>`;
+  }).join("")}</tbody>`;
+  tbl.innerHTML=head+body;
+}
+$("monthSel").addEventListener("change",loadMonthly);
+$("segView").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{
+  $("segView").querySelectorAll("button").forEach(x=>x.classList.remove("on")); b.classList.add("on");
+  monthView=b.dataset.mv; renderMonthly();
+}));
+$("expCsv").addEventListener("click",e=>{ e.preventDefault(); window.location="/api/monthly/export?month="+$("monthSel").value; });
+
+/* REQUESTS */
+async function loadRequests(){
+  const rows=await (await fetch("/api/portal/requests?status=pending")).json();
+  $("reqCount").textContent=rows.length+" pending";
+  const tb=$("reqBody");
+  if(!rows.length){ tb.innerHTML=`<tr><td colspan="5"><div class="empty">No pending requests</div></td></tr>`; return; }
+  tb.innerHTML=rows.map(r=>`<tr><td>${r.emp_name}</td>
+    <td><span class="pill ${r.type==='wfh'?'WFH':'Leave'}">${r.type.toUpperCase()}</span></td>
+    <td style="font-family:var(--mono);">${r.req_date}</td>
+    <td style="color:var(--muted);">${r.reason||'—'}</td>
+    <td><button class="qm-btn p" onclick="review(${r.id},'approved')">Approve</button>
+        <button class="qm-btn a" onclick="review(${r.id},'rejected')">Reject</button></td></tr>`).join("");
+}
+async function review(id,decision){
+  const res=await fetch(`/api/portal/requests/${id}/review`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({decision})});
+  if(res.ok){ toast(`Request ${decision}`); loadRequests(); } else toast("Failed",false);
+}
+
+loadOverview();
+</script>
+</body>
+</html>

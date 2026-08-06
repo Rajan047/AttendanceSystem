@@ -1,0 +1,21 @@
+[cache] Startup: 0 employee(s) ka status SQLite se load kiya.
+[db] Supabase connection OK.
+[db] Sync worker started:
+     Interval : 300s (5 min)
+     Purge    : 7 din baad (synced rows only)
+     Queue    : /home/cyamsys/Desktop/test_Attendance/HR_attendance/offline_queue.db
+============================================================
+  ATTENDANCE DASHBOARD  (Postgres / Supabase)
+  Photos dir : /home/cyamsys/Desktop/test_Attendance/HR_attendance/photos
+  Local      : http://localhost:5400
+  Portal     : http://localhost:5400/portal/login
+  Network    : http://<this-machine-ip>:5400
+============================================================
+ * Serving Flask app 'server'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5400
+ * Running on http://192.168.1.13:5400
+Press CTRL+C to quit
+127.0.0.1 - - [31/Jul/2026 16:03:35] "GET /api/data?date=2026-07-31 HTTP/1.1" 200 -

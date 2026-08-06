@@ -1,0 +1,6 @@
+[ WARN:0@10.087] global cap_gstreamer.cpp:1750 open OpenCV | GStreamer warning: frame count is estimated by duration and fps
+[ WARN:0@10.832] global cap_gstreamer.cpp:1750 open OpenCV | GStreamer warning: frame count is estimated by duration and fps
+[ WARN:0@11.554] global cap_gstreamer.cpp:1750 open OpenCV | GStreamer warning: frame count is estimated by duration and fps
+[ WARN:0@12.307] global cap_gstreamer.cpp:1750 open OpenCV | GStreamer warning: frame count is estimated by duration and fps
+/home/cyamsys/miniforge3/envs/camera/lib/python3.12/site-packages/insightface/utils/face_align.py:23: FutureWarning: `estimate` is deprecated since version 0.26 and will be removed in version 2.2. Please use `SimilarityTransform.from_estimate` class constructor instead.
+  tform.estimate(lmk, dst)
