@@ -204,9 +204,9 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
     if not FACE_EMBEDDING_AVAILABLE:
         warnings.append(
             "Face recognition is not available on this server — photo(s) "
-            "saved and queued for embedding. The Jetson will pick them up "
-            "and generate the embedding automatically within a minute or "
-            "so (no action needed here)."
+            "saved, but no embedding was generated. Enroll this employee's "
+            "face from a machine that has face_embedding installed (e.g. "
+            "the Jetson) for camera recognition to pick them up."
         )
 
     if clear_existing and FACE_EMBEDDING_AVAILABLE:
@@ -232,16 +232,7 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
             first_photo = rel_path
 
         if not FACE_EMBEDDING_AVAILABLE:
-            # Queue the raw bytes for a machine that HAS the model (e.g. the
-            # Jetson) to pick up and embed — see db.py's pending_photos.
-            try:
-                with open(abs_path, "rb") as f:
-                    photo_bytes = f.read()
-                db.queue_pending_photo(emp_id, emp_name, photo.filename,
-                                       photo_bytes, is_profile=(i == 0))
-            except Exception as e:
-                warnings.append(f"Photo {i+1}: could not queue for remote embedding — {e}")
-            continue
+            continue   # photo saved, embedding intentionally skipped (see warning above)
 
         # Embedding generate karo
         try:
