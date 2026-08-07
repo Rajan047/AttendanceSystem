@@ -1,6 +1,6 @@
 """
 portal.py — login + admin panel + employee panel, Flask Blueprint.
-UPDATED: Multiple photos upload + embedding generation + live reload signal.
+UPDATED: Supabase Storage mein photos upload karo.
 """
 import os
 import uuid
@@ -10,7 +10,8 @@ from datetime import datetime, date
 from collections import defaultdict
 
 from flask import (
-    Blueprint, request, session, redirect, url_for, render_template, jsonify
+    Blueprint, request, session, redirect, url_for,
+    render_template, jsonify
 )
 from werkzeug.utils import secure_filename
 
@@ -18,12 +19,15 @@ import config
 import db
 import auth_db
 
-# face_embedding (and the insightface/opencv/onnxruntime stack it needs) is
-# intentionally NOT a hard dependency of the portal — this server may be
-# running on a memory-capped host (Render free tier: 512MB) that can't fit
-# the face model. When it's not installed, photo uploads still save the
-# file; embedding generation is just skipped with a clear message telling
-# the admin to enroll that photo from a machine that has the model instead.
+# Supabase Storage helper
+try:
+    import supabase_storage as _storage
+    STORAGE_AVAILABLE = True
+except ImportError:
+    _storage = None
+    STORAGE_AVAILABLE = False
+
+# face_embedding — Render pe available nahi hogi, Jetson pe hogi
 try:
     import face_embedding as _fe
     FACE_EMBEDDING_AVAILABLE = True
@@ -35,7 +39,7 @@ portal = Blueprint("portal", __name__, template_folder="templates")
 
 ALLOWED_EXT   = {"jpg", "jpeg", "png", "webp"}
 LOW_THRESHOLD = 75
-MAX_PHOTOS    = 10   # ek employee ke liye max photos
+MAX_PHOTOS    = 10
 
 
 # =============================================================================
@@ -102,7 +106,8 @@ def login():
     session["emp_name"] = user["emp_name"]
     session.permanent   = True
 
-    dest = url_for("portal.admin_home") if user["role"] == "admin" else url_for("portal.employee_home")
+    dest = (url_for("portal.admin_home") if user["role"] == "admin"
+            else url_for("portal.employee_home"))
     return jsonify({"ok": True, "role": user["role"], "redirect": dest})
 
 
@@ -159,54 +164,51 @@ def employee_home():
 # =============================================================================
 def _save_photo(photo, emp_name, prefix="profile"):
     """
-    Save photo under PHOTOS_DIR/<SafeName>/<prefix>_<uuid>.<ext>
-    Returns (rel_path, abs_path) or (None, error_msg)
+    Photo save karo — Supabase Storage mein (preferred) ya local fallback.
+    Returns (storage_path, public_url_or_abs_path) or (None, error_msg)
     """
     ext = photo.filename.rsplit(".", 1)[-1].lower()
     if ext not in ALLOWED_EXT:
         return None, "Photo must be jpg/jpeg/png/webp"
-    safe    = _safe_name(emp_name)
-    abs_dir = os.path.join(config.PHOTOS_DIR, safe)
+
+    safe         = _safe_name(emp_name)
+    fname        = f"{prefix}_{uuid.uuid4().hex}.{ext}"
+    storage_path = f"{safe}/{fname}"
+
+    # ── Supabase Storage (Render + Jetson dono ke liye persistent) ──────────
+    if STORAGE_AVAILABLE:
+        file_bytes   = photo.read()
+        content_type = "image/jpeg" if ext == "jpg" else f"image/{ext}"
+        public_url   = _storage.upload_photo(file_bytes, storage_path, content_type)
+        if public_url:
+            print(f"[storage] ✅ Uploaded to Supabase: {storage_path}")
+            return storage_path, public_url
+
+    # ── Local fallback (Jetson pe direct run karte waqt) ────────────────────
+    abs_dir  = os.path.join(config.PHOTOS_DIR, safe)
     os.makedirs(abs_dir, exist_ok=True)
-    fname    = f"{prefix}_{uuid.uuid4().hex}.{ext}"
     abs_path = os.path.join(abs_dir, fname)
+    photo.seek(0)
     photo.save(abs_path)
-    return f"{safe}/{fname}", abs_path
+    print(f"[storage] local save (Supabase unavailable): {abs_path}")
+    return storage_path, abs_path
 
 
 def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
     """
-    Multiple photos se embeddings generate karo aur pkl mein save karo.
-
-    Args:
-        photos        : list of werkzeug FileStorage objects
-        emp_name      : employee name (pkl key)
-        emp_id        : Supabase employee id
-        clear_existing: True hone pe pehle existing embeddings hata do
-                        (fresh re-generation ke liye)
-
-    Returns dict:
-        {
-          "saved":        int,   # photos saved to disk
-          "embedded":     int,   # embeddings generated
-          "failed":       int,   # photos jisme face nahi mila
-          "first_photo":  str,   # pehli photo ki rel_path (profile ke liye)
-          "warnings":     list,  # per-photo warnings
-        }
+    Multiple photos process karo — save + embedding generate.
+    Returns result dict.
     """
-    saved      = 0
-    embedded   = 0
-    failed     = 0
-    warnings   = []
+    saved, embedded, failed = 0, 0, 0
+    warnings    = []
     first_photo = None
-    new_embeddings = []   # batch — pickle file written once at the end, not per-photo
+    new_embeddings = []
 
     if not FACE_EMBEDDING_AVAILABLE:
         warnings.append(
             "Face recognition is not available on this server — photo(s) "
-            "saved, but no embedding was generated. Enroll this employee's "
-            "face from a machine that has face_embedding installed (e.g. "
-            "the Jetson) for camera recognition to pick them up."
+            "saved to Supabase Storage. Jetson ka photo_sync.py automatically "
+            "download karke embedding generate kar dega (30s mein)."
         )
 
     if clear_existing and FACE_EMBEDDING_AVAILABLE:
@@ -219,50 +221,46 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
             warnings.append(f"Max {MAX_PHOTOS} photos — baaki skip ho gayi.")
             break
 
-        prefix   = "profile" if i == 0 else f"face_{i}"
-        rel_path, abs_path = _save_photo(photo, emp_name, prefix=prefix)
+        prefix = "profile" if i == 0 else f"face_{i}"
+        storage_path, result = _save_photo(photo, emp_name, prefix=prefix)
 
-        if rel_path is None:
-            warnings.append(f"Photo {i+1}: {abs_path}")  # abs_path = error msg here
+        if storage_path is None:
+            warnings.append(f"Photo {i+1}: {result}")
             failed += 1
             continue
 
         saved += 1
         if first_photo is None:
-            first_photo = rel_path
+            first_photo = storage_path
 
         if not FACE_EMBEDDING_AVAILABLE:
-            continue   # photo saved, embedding intentionally skipped (see warning above)
+            # Photo Supabase mein save ho gayi — Jetson sync karega
+            continue
 
-        # Embedding generate karo
+        # Embedding generate karo (sirf Jetson pe)
         try:
-            emb = _fe.generate_embedding(abs_path)
-            if emb is None:
-                warnings.append(
-                    f"Photo {i+1} ({photo.filename}): face detect nahi hua — "
-                    f"clear front-facing photo use karo."
-                )
-                failed += 1
-            else:
-                new_embeddings.append(emb)
-                # Supabase mein bhi daalo (APPEND, replace nahi) — yahi woh
-                # data hai jo entry_cameras.py Supabase se poll karke, chahe
-                # yeh request kisi bhi machine se aayi ho (Jetson ya remote
-                # admin panel), naye chehre ko camera pe recognizable banata
-                # hai bina local embeddings.pkl file share kiye.
-                try:
-                    auth_db.add_employee_embedding(emp_id, _fe.embedding_to_bytes(emb))
-                except Exception:
-                    pass
-                embedded += 1
+            # result = abs_path ya public_url
+            abs_path = result if result.startswith("/") else None
+            if abs_path:
+                emb = _fe.generate_embedding(abs_path)
+                if emb is None:
+                    warnings.append(f"Photo {i+1}: face detect nahi hua.")
+                    failed += 1
+                else:
+                    new_embeddings.append(emb)
+                    try:
+                        auth_db.add_employee_embedding(
+                            emp_id, _fe.embedding_to_bytes(emb)
+                        )
+                    except Exception:
+                        pass
+                    embedded += 1
         except Exception as e:
             warnings.append(f"Photo {i+1}: embedding error — {e}")
             failed += 1
 
-    # Saare embeddings ek hi read-modify-write mein pickle file mein daalo
     if new_embeddings:
         _fe.add_many_to_pickle(emp_name, new_embeddings)
-        # Live cameras ko signal karo ki embeddings.pkl update ho gaya
         _touch_embeddings_file()
 
     return {
@@ -275,16 +273,13 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
 
 
 def _touch_embeddings_file():
-    """
-    embeddings.pkl ka mtime update karo — entry_cameras.py ka file-watcher
-    isse detect karega aur _known_matrix live reload karega bina restart ke.
-    """
+    """embeddings.pkl ka mtime update karo — file-watcher detect karega."""
     try:
         path = config.EMBEDDINGS_FILE
         if os.path.exists(path):
-            os.utime(path, None)   # mtime = now
+            os.utime(path, None)
     except Exception as e:
-        print(f"[portal] embeddings touch failed (non-fatal): {e}")
+        print(f"[portal] embeddings touch failed: {e}")
 
 
 # =============================================================================
@@ -306,20 +301,11 @@ def api_get_employee(emp_id):
 @portal.route("/api/portal/employees", methods=["POST"])
 @admin_required
 def api_add_employee():
-    """
-    UPDATED: Multiple photos support.
-
-    Form fields:
-      name, department, designation, email, phone, join_date  (text)
-      photos[]   — multiple file inputs (1 se MAX_PHOTOS tak)
-      username, password  — optional login creation
-    """
     f    = request.form
     name = (f.get("name") or "").strip()
     if not name:
         return jsonify({"error": "Name is required"}), 400
 
-    # Employee Supabase mein add karo (photo_path baad mein update hongi)
     emp_id = auth_db.add_employee(
         name=name,
         department=f.get("department") or None,
@@ -330,12 +316,9 @@ def api_add_employee():
         photo_path=None,
     )
 
-    # Roster ensure karo
     db.sync_roster([name])
 
-    # Multiple photos process karo
-    photos  = request.files.getlist("photos[]")
-    # Single photo backward compat
+    photos = request.files.getlist("photos[]")
     if not photos or not any(p.filename for p in photos):
         single = request.files.get("photo")
         if single and single.filename:
@@ -344,11 +327,9 @@ def api_add_employee():
     result   = _process_photos_and_embed(photos, name, emp_id, clear_existing=False)
     warnings = result["warnings"]
 
-    # Pehli photo profile photo set karo
     if result["first_photo"]:
         auth_db.update_employee(emp_id, photo_path=result["first_photo"])
 
-    # Optional login
     username = (f.get("username") or "").strip()
     password = f.get("password") or ""
     if username:
@@ -369,30 +350,25 @@ def api_add_employee():
     }
     if warnings:
         resp["warnings"] = warnings
-    if result["embedded"] == 0 and result["saved"] > 0:
-        resp["warning"] = (
-            f"{result['saved']} photo(s) save hui lekin kisi mein bhi face "
-            f"detect nahi hua. Clear, front-facing photos use karo."
-        )
     return jsonify(resp)
 
 
 @portal.route("/api/portal/employees/<int:emp_id>", methods=["PUT"])
 @admin_required
 def api_update_employee(emp_id):
-    """
-    UPDATED: Multiple photos support on update.
-    photos[] send karo to add more embeddings.
-    """
     f      = request.form if request.form else (request.get_json(silent=True) or {})
     fields = {k: f.get(k) for k in
               ("name", "department", "designation", "email", "phone", "join_date", "active")
               if f.get(k) is not None}
 
+    # Date fields mein empty string → None (PostgreSQL fix)
+    for date_field in ("join_date", "resignation"):
+        if date_field in fields and fields[date_field] == "":
+            fields[date_field] = None
+
     if "active" in fields:
         fields["active"] = str(fields["active"]).lower() in ("1", "true", "yes")
 
-    # Multiple photos
     photos = request.files.getlist("photos[]") if request.files else []
     if not photos or not any(p.filename for p in photos):
         single = request.files.get("photo") if request.files else None
@@ -407,13 +383,8 @@ def api_update_employee(emp_id):
             result = _process_photos_and_embed(
                 photos, emp["name"], emp_id, clear_existing=False
             )
-            # Pehli photo profile update karo (sirf agar abhi koi nahi hai)
             if result["first_photo"] and not emp.get("photo_path"):
                 fields["photo_path"] = result["first_photo"]
-
-            # Add-employee jaisa hi response shape — taaki frontend ka
-            # "✅ N embeddings generated" confirmation edit pe bhi dikhe,
-            # pehle sirf {"ok": true} aata tha, koi feedback nahi milta tha.
             resp["photos"]   = result["saved"]
             resp["embedded"] = result["embedded"]
             resp["failed"]   = result["failed"]
@@ -427,35 +398,26 @@ def api_update_employee(emp_id):
 @portal.route("/api/portal/employees/<int:emp_id>/regenerate-embedding", methods=["POST"])
 @admin_required
 def api_regen_embedding(emp_id):
-    """
-    UPDATED: Saari photos se fresh embedding generate karo.
-    Employee ke photos folder se saari images padho, sabki embeddings banao.
-    """
     if not FACE_EMBEDDING_AVAILABLE:
         return jsonify({
             "error": "Face recognition is not available on this server. "
-                     "Regenerate embeddings from a machine that has "
-                     "face_embedding installed (e.g. the Jetson)."
+                     "Jetson ka photo_sync.py automatically embeddings generate karta hai."
         }), 503
-    fe = _fe
 
     emp = auth_db.get_employee(emp_id)
     if not emp:
         return jsonify({"error": "Employee not found"}), 404
 
-    safe      = _safe_name(emp["name"])
-    emp_dir   = os.path.join(config.PHOTOS_DIR, safe)
-    IMG_EXT   = (".jpg", ".jpeg", ".png", ".webp")
+    safe    = _safe_name(emp["name"])
+    emp_dir = os.path.join(config.PHOTOS_DIR, safe)
+    IMG_EXT = (".jpg", ".jpeg", ".png", ".webp")
 
-    # Employee ke sare photos collect karo
     all_photos = []
     if os.path.isdir(emp_dir):
         for fname in sorted(os.listdir(emp_dir)):
             fpath = os.path.join(emp_dir, fname)
             if os.path.isfile(fpath) and fname.lower().endswith(IMG_EXT):
                 all_photos.append(fpath)
-
-        # Sub-folders (date-wise) bhi check karo (entry camera captures)
         for sub in sorted(os.listdir(emp_dir)):
             sub_path = os.path.join(emp_dir, sub)
             if os.path.isdir(sub_path):
@@ -465,54 +427,34 @@ def api_regen_embedding(emp_id):
                         all_photos.append(fpath)
 
     if not all_photos:
-        return jsonify({"error": "Koi photo nahi mili — pehle photos upload karo"}), 400
+        return jsonify({"error": "Koi photo nahi mili"}), 400
 
-    # Fresh re-generate — pehle clear karo
-    fe.remove_from_pickle(emp["name"])
-
-    embedded = 0
-    failed   = 0
-    warnings = []
+    _fe.remove_from_pickle(emp["name"])
+    embedded, failed, warnings = 0, 0, []
 
     for fpath in all_photos[:MAX_PHOTOS]:
         try:
-            emb = fe.generate_embedding(fpath)
+            emb = _fe.generate_embedding(fpath)
             if emb is None:
                 failed += 1
                 warnings.append(f"{os.path.basename(fpath)}: face detect nahi hua")
             else:
-                fe.add_to_pickle(emp["name"], emb)
+                _fe.add_to_pickle(emp["name"], emb)
                 embedded += 1
         except Exception as e:
             failed += 1
             warnings.append(f"{os.path.basename(fpath)}: {e}")
 
     if embedded == 0:
-        return jsonify({
-            "error": f"{len(all_photos)} photo(s) mili lekin kisi mein face nahi mila.",
-            "warnings": warnings
-        }), 422
-
-    # Supabase mein last embedding store karo
-    try:
-        import pickle
-        with open(config.EMBEDDINGS_FILE, "rb") as f_pkl:
-            data = pickle.load(f_pkl)
-        if emp["name"] in data and data[emp["name"]]:
-            import numpy as np
-            last_emb = np.asarray(data[emp["name"]][-1], dtype=np.float32)
-            auth_db.set_employee_embedding(emp_id, fe.embedding_to_bytes(last_emb))
-    except Exception:
-        pass
+        return jsonify({"error": "Kisi photo mein face nahi mila.", "warnings": warnings}), 422
 
     _touch_embeddings_file()
-
     return jsonify({
         "ok":       True,
         "embedded": embedded,
         "failed":   failed,
         "warnings": warnings if warnings else None,
-        "message":  f"{embedded} embedding(s) generate ho gayi from {len(all_photos)} photo(s). Camera reload ho jayega.",
+        "message":  f"{embedded} embedding(s) generate ho gayi. Camera reload ho jayega.",
     })
 
 
@@ -593,7 +535,7 @@ def api_admin_mark():
 
 
 # =============================================================================
-#  ADMIN + EMPLOYEE API — MONTHLY REPORT
+#  MONTHLY REPORT
 # =============================================================================
 def _calendar_working_dates(month, today):
     y, m = int(month[:4]), int(month[5:7])
@@ -665,24 +607,24 @@ def _build_monthly(month, only_name=None):
         if pct < LOW_THRESHOLD and wd > 0:
             low += 1
         employees.append({
-            "name":            name,
-            "photo":           db.get_employee_photo(name),
-            "present_days":    pd,
-            "absent_days":     ad,
-            "attendance_pct":  pct,
-            "present_dates":   pres,
-            "days":            days_by.get(name, {}),
+            "name":           name,
+            "photo":          db.get_employee_photo(name),
+            "present_days":   pd,
+            "absent_days":    ad,
+            "attendance_pct": pct,
+            "present_dates":  pres,
+            "days":           days_by.get(name, {}),
         })
 
     return {
-        "month":             month,
-        "today":             today,
-        "mode":              config.WORKING_DAYS_MODE,
-        "source":            source,
-        "working_days":      wd,
-        "working_dates":     working_dates,
-        "employees":         employees,
-        "available_months":  db.available_months(),
+        "month":            month,
+        "today":            today,
+        "mode":             config.WORKING_DAYS_MODE,
+        "source":           source,
+        "working_days":     wd,
+        "working_dates":    working_dates,
+        "employees":        employees,
+        "available_months": db.available_months(),
         "summary": {
             "total_employees": len(everyone),
             "avg_attendance":  round(sum_pct / len(everyone), 1) if everyone else 0.0,
@@ -710,10 +652,10 @@ def api_employee_monthly(emp_id):
         "present_dates": [], "days": {},
     }
     return jsonify({
-        "month":        data["month"],
-        "working_days": data["working_days"],
+        "month":         data["month"],
+        "working_days":  data["working_days"],
         "working_dates": data["working_dates"],
-        "stats":        stats,
+        "stats":         stats,
     })
 
 
@@ -737,7 +679,7 @@ def api_admin_review(req_id):
 
 
 # =============================================================================
-#  EMPLOYEE API — OWN DATA ONLY
+#  EMPLOYEE API
 # =============================================================================
 @portal.route("/api/portal/me", methods=["GET"])
 @employee_required
