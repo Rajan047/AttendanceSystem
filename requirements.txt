@@ -9,16 +9,14 @@ Werkzeug>=3.0
 psycopg2-binary>=2.9
 gunicorn>=21.0            # production WSGI server (Render uses this via Procfile)
 
-# --- Face recognition (needed here too — admin panel enrollment can run
-#     from Render now, not just the Jetson; face_embedding.py always uses
-#     CPU-only inference so it works without a GPU) ---
-numpy>=1.24
-opencv-python-headless>=4.8   # no GUI bindings (imshow/etc) — nothing here
-                              # needs them, and the full opencv-python build
-                              # costs real memory we can't spare on a
-                              # 512MB Render instance.
-insightface>=0.7.3
-onnxruntime>=1.16    # CPU-only package — Render has no GPU. The Jetson's
-                     # camera processes use their own separately-managed
-                     # conda env with onnxruntime-gpu; this file doesn't
-                     # affect them.
+# --- Face recognition (ONLY needed on a machine that does photo enrollment
+#     with enough memory for it, e.g. the Jetson — NOT installed here.
+#     portal.py detects their absence (FACE_EMBEDDING_AVAILABLE) and skips
+#     embedding generation gracefully; the dashboard/API/portal don't need
+#     these at all. Tried running this stack on Render's 512MB free tier —
+#     it OOM-crash-looped even after trimming to CPU-only + 2 of 5 model
+#     modules + headless opencv. Not worth the memory on a host this size.
+# numpy>=1.24
+# opencv-python-headless>=4.8
+# insightface>=0.7.3
+# onnxruntime>=1.16

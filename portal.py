@@ -18,6 +18,19 @@ import config
 import db
 import auth_db
 
+# face_embedding (and the insightface/opencv/onnxruntime stack it needs) is
+# intentionally NOT a hard dependency of the portal — this server may be
+# running on a memory-capped host (Render free tier: 512MB) that can't fit
+# the face model. When it's not installed, photo uploads still save the
+# file; embedding generation is just skipped with a clear message telling
+# the admin to enroll that photo from a machine that has the model instead.
+try:
+    import face_embedding as _fe
+    FACE_EMBEDDING_AVAILABLE = True
+except ImportError:
+    _fe = None
+    FACE_EMBEDDING_AVAILABLE = False
+
 portal = Blueprint("portal", __name__, template_folder="templates")
 
 ALLOWED_EXT   = {"jpg", "jpeg", "png", "webp"}
@@ -181,17 +194,23 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
           "warnings":     list,  # per-photo warnings
         }
     """
-    import face_embedding as fe
-
-    if clear_existing:
-        fe.remove_from_pickle(emp_name)
-
     saved      = 0
     embedded   = 0
     failed     = 0
     warnings   = []
     first_photo = None
     new_embeddings = []   # batch — pickle file written once at the end, not per-photo
+
+    if not FACE_EMBEDDING_AVAILABLE:
+        warnings.append(
+            "Face recognition is not available on this server — photo(s) "
+            "saved, but no embedding was generated. Enroll this employee's "
+            "face from a machine that has face_embedding installed (e.g. "
+            "the Jetson) for camera recognition to pick them up."
+        )
+
+    if clear_existing and FACE_EMBEDDING_AVAILABLE:
+        _fe.remove_from_pickle(emp_name)
 
     for i, photo in enumerate(photos):
         if not photo or not photo.filename:
@@ -212,9 +231,12 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
         if first_photo is None:
             first_photo = rel_path
 
+        if not FACE_EMBEDDING_AVAILABLE:
+            continue   # photo saved, embedding intentionally skipped (see warning above)
+
         # Embedding generate karo
         try:
-            emb = fe.generate_embedding(abs_path)
+            emb = _fe.generate_embedding(abs_path)
             if emb is None:
                 warnings.append(
                     f"Photo {i+1} ({photo.filename}): face detect nahi hua — "
@@ -229,7 +251,7 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
                 # admin panel), naye chehre ko camera pe recognizable banata
                 # hai bina local embeddings.pkl file share kiye.
                 try:
-                    auth_db.add_employee_embedding(emp_id, fe.embedding_to_bytes(emb))
+                    auth_db.add_employee_embedding(emp_id, _fe.embedding_to_bytes(emb))
                 except Exception:
                     pass
                 embedded += 1
@@ -239,7 +261,7 @@ def _process_photos_and_embed(photos, emp_name, emp_id, clear_existing=False):
 
     # Saare embeddings ek hi read-modify-write mein pickle file mein daalo
     if new_embeddings:
-        fe.add_many_to_pickle(emp_name, new_embeddings)
+        _fe.add_many_to_pickle(emp_name, new_embeddings)
         # Live cameras ko signal karo ki embeddings.pkl update ho gaya
         _touch_embeddings_file()
 
@@ -409,7 +431,13 @@ def api_regen_embedding(emp_id):
     UPDATED: Saari photos se fresh embedding generate karo.
     Employee ke photos folder se saari images padho, sabki embeddings banao.
     """
-    import face_embedding as fe
+    if not FACE_EMBEDDING_AVAILABLE:
+        return jsonify({
+            "error": "Face recognition is not available on this server. "
+                     "Regenerate embeddings from a machine that has "
+                     "face_embedding installed (e.g. the Jetson)."
+        }), 503
+    fe = _fe
 
     emp = auth_db.get_employee(emp_id)
     if not emp:
@@ -495,10 +523,9 @@ def api_delete_employee(emp_id):
     emp  = auth_db.get_employee(emp_id)
     if hard:
         auth_db.delete_employee(emp_id)
-        if emp:
+        if emp and FACE_EMBEDDING_AVAILABLE:
             try:
-                import face_embedding as fe
-                fe.remove_from_pickle(emp["name"])
+                _fe.remove_from_pickle(emp["name"])
                 _touch_embeddings_file()
             except Exception:
                 pass
