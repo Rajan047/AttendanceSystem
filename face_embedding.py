@@ -148,3 +148,43 @@ def embedding_to_bytes(embedding):
 # For (b), the rebuild is just the same 6 lines already at the top of
 # entry_cameras.py wrapped in a function and called when mtime changes.
 # ---------------------------------------------------------------------------
+
+
+def _cli():
+    """
+    Command-line use: python face_embedding.py <photo_path> "<Employee Name>"
+    Generates an embedding from the photo and appends it to embeddings.pkl —
+    the same file entry_cameras.py reads for live recognition. This is a
+    standalone alternative to the admin portal's photo-upload flow.
+    """
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Generate a face embedding from a photo and add it to "
+                     "embeddings.pkl (the same store entry_cameras.py reads)."
+    )
+    parser.add_argument("photo", help="Path to a photo file (jpg/jpeg/png/webp)")
+    parser.add_argument("name", help="Employee name — must match exactly how "
+                                     "they're stored/recognized elsewhere")
+    args = parser.parse_args()
+
+    if not os.path.isfile(args.photo):
+        print(f"Error: photo not found: {args.photo}")
+        raise SystemExit(1)
+
+    print("Loading face model (first run may take a while — downloads "
+          "model weights on first use) ...")
+    emb = generate_embedding(args.photo)
+    if emb is None:
+        print(f"No face detected in {args.photo}. Try a clearer, front-facing photo.")
+        raise SystemExit(1)
+
+    count = add_to_pickle(args.name, emb)
+    print(f"✅ Embedding added for '{args.name}' — {count} total embedding(s) "
+          f"now stored in {config.EMBEDDINGS_FILE}")
+    print("entry_cameras.py's file-watcher will pick this up automatically "
+          "within ~10s (no restart needed) if it's currently running.")
+
+
+if __name__ == "__main__":
+    _cli()
