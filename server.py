@@ -2,27 +2,6 @@
 =============================================================================
   ATTENDANCE DASHBOARD  —  Postgres(Supabase)-backed REST API + dashboard
 =============================================================================
-  entry_cameras.py (local machine) attendance Supabase Postgres me likhta
-  hai, ye server (Render pe deployed) usi database ko padhke dashboard pe
-  live dikhata hai, aur React (ya kisi bhi frontend) ke liye REST JSON
-  APIs bhi deta hai.
-
-  CHALANE KA TARIKA (local test):
-    pip install -r requirements.txt
-    1) Supabase SQL editor me schema.sql run karo
-    2) export DATABASE_URL='<supabase transaction pooler string>'
-    3) export SECRET_KEY='<koi lambi random string>'
-    4) python server.py
-
-  CLOUD (Render): DATABASE_URL + SECRET_KEY env vars set karo Render dashboard
-  me, Procfile automatically `gunicorn server:app` chalata hai.
-
-  Phir browser me kholo:  http://localhost:5400  (ya Render URL)
-    - /               -> public live dashboard (jaisa pehle tha)
-    - /portal/login   -> login screen (admin + employee)
-    - /portal/admin   -> admin panel
-    - /portal/employee-> employee self-service
-=============================================================================
 """
 
 import os
@@ -32,69 +11,43 @@ import calendar
 from datetime import datetime, date
 from collections import defaultdict
 
-from flask import Flask, jsonify, send_file, send_from_directory, request, Response
+from flask import Flask, jsonify, send_file, send_from_directory, request, Response, redirect
 from flask_cors import CORS
 
 import config
 import db
-
-# ============ PORTAL ADD-ON: import (ADDITION 1 of 3) =======================
 import auth_db
 from portal import portal as portal_bp
-# ===========================================================================
 
 app = Flask(__name__)
-
-# ============ PORTAL ADD-ON: secret key (ADDITION 2 of 3) ===================
-#  Sessions need this. Set a real value via env var in production (Render:
-#  add SECRET_KEY in the Environment tab). Falls back to a dev value locally.
 app.secret_key = os.environ.get("SECRET_KEY", "change-me-please-in-production")
-# ===========================================================================
-
-CORS(app)   # React (ya kisi bhi origin) se API calls allow karo
+CORS(app)
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 
-# Module-load-time init (works both for `python server.py` locally AND for
-# `gunicorn server:app` on Render, since gunicorn never runs the __main__
-# block below — it only imports this module and uses the `app` object).
 db.init_db()
 
-# ============ PORTAL ADD-ON: schema + blueprint (ADDITION 3 of 3) ===========
-#  Creates the users/requests tables, extends the attendance_status enum with
-#  WFH/Leave/Absent/HalfDay, adds email/phone/join_date columns to employees,
-#  and seeds a default admin (admin / admin123) on first run. Idempotent.
 try:
     auth_db.init_auth_schema()
 except Exception as e:
-    print(f"[auth_db] WARNING: schema init skipped ({e}). "
-          f"Will retry when Supabase is reachable.")
+    print(f"[auth_db] WARNING: schema init skipped ({e}).")
+
 app.register_blueprint(portal_bp)
-# ===========================================================================
 
 _n = db.sync_employee_photos_from_dir()
 if _n:
     print(f"[photos] {_n} employee profile photo(s) linked from {config.PHOTOS_DIR}")
 
-# Face-embedding model (InsightFace/buffalo_l) is intentionally NOT loaded or
-# warmed up here. This server may run on a memory-capped host (Render free
-# tier: 512MB) that can't fit it — it was previously crash-looping on OOM
-# because of exactly this. portal.py's routes check
-# `FACE_EMBEDDING_AVAILABLE` and skip embedding generation gracefully
-# (photo still saves) when the face_embedding package isn't installed here.
-# Enroll employee photos from a machine that DOES have it (e.g. the Jetson)
-# for camera recognition to pick them up.
-
 
 # =============================================================================
-#  PAYLOAD BUILDERS  (same JSON shape as the original CSV version, + "photo")
+#  PAYLOAD BUILDERS
 # =============================================================================
 def _build_payload(target_date):
     if not target_date:
         target_date = datetime.now().strftime("%Y-%m-%d")
 
     all_dates = db.all_dates()
-    day_rows  = db.read_day_rows(target_date)   # already sorted newest-first
+    day_rows  = db.read_day_rows(target_date)
     profile_photo_by_name = {e["name"]: e["photo_path"] for e in db.list_employees()}
 
     last_status = {}
@@ -147,7 +100,7 @@ def _build_payload(target_date):
         },
         "per_camera": dict(sorted(per_camera.items())),
         "last_entry": last_entry,
-        "csv_exists": True,   # kept for frontend backward-compat
+        "csv_exists": True,
     }
 
 
@@ -249,7 +202,7 @@ def _build_monthly(month):
 
 
 # =============================================================================
-#  DASHBOARD ROUTES  (unchanged from original — dashboard.html compatible)
+#  ROUTES
 # =============================================================================
 @app.route("/")
 def index():
@@ -258,8 +211,18 @@ def index():
 
 @app.route("/photos/<path:filename>")
 def serve_photo(filename):
-    """Captured/profile photos, served straight from PHOTOS_DIR."""
-    return send_from_directory(config.PHOTOS_DIR, filename)
+    """
+    Photos Supabase Storage se serve karo.
+    Render pe local filesystem mein photos nahi hoti — Supabase public URL pe redirect karo.
+    """
+    SUPABASE_URL = os.environ.get(
+        "SUPABASE_URL", "https://bjgiirtpqfjaaxnftptf.supabase.co"
+    )
+    BUCKET = "employee-photos"
+    return redirect(
+        f"{SUPABASE_URL}/storage/v1/object/public/{BUCKET}/{filename}",
+        code=302
+    )
 
 
 @app.route("/api/data")
@@ -346,10 +309,6 @@ def api_monthly_grid_export():
     )
 
 
-# =============================================================================
-#  REACT-COMPATIBLE REST API  — plain JSON, CORS-enabled, for a separate
-#  frontend (React/Vue/mobile app) to consume independently of dashboard.html
-# =============================================================================
 @app.route("/api/employees", methods=["GET"])
 def api_employees():
     return jsonify(db.list_employees())
@@ -368,7 +327,6 @@ def api_attendance_by_date():
 
 @app.route("/api/attendance/mark", methods=["POST"])
 def api_attendance_mark():
-    """Manual/API-driven mark — e.g. from a kiosk app or React admin panel."""
     payload = request.get_json(force=True, silent=True) or {}
     name      = payload.get("name")
     camera_id = payload.get("camera_id", "Manual")
@@ -389,6 +347,5 @@ if __name__ == "__main__":
     print(f"  Photos dir : {config.PHOTOS_DIR}")
     print(f"  Local      : http://localhost:{config.PORT}")
     print(f"  Portal     : http://localhost:{config.PORT}/portal/login")
-    print(f"  Network    : http://<this-machine-ip>:{config.PORT}")
     print("=" * 60)
     app.run(host=config.HOST, port=config.PORT, debug=False, threaded=True)
