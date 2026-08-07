@@ -24,6 +24,7 @@ _env_url = os.environ.get("DATABASE_URL", "").strip()
 if _env_url and _THIS_PROJECT_REF not in _env_url:
     print(
         f"[config] WARNING: DATABASE_URL env var points to a different "
+        
         f"Supabase project (expected '{_THIS_PROJECT_REF}'). Ignoring it and "
         f"using this project's own database instead. "
         f"If this is unexpected, run: unset DATABASE_URL"
@@ -69,4 +70,4 @@ WEEKEND_DAYS      = [5, 6]   # 0=Mon ... 6=Sun
 #  FLASK SERVER
 # =============================================================================
 HOST = os.environ.get("FLASK_HOST", "0.0.0.0")
-PORT = int(os.environ.get("PORT", os.environ.get("FLASK_PORT", 5400)))
+PORT = int(os.environ.get("PORT", os.environ.get("FLASK_PORT", 5500)))

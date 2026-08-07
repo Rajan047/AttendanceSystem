@@ -1,7 +1,22 @@
 {
   "permissions": {
     "allow": [
-      "Bash(timeout 15 python server.py)"
+      "Bash(timeout 15 python server.py)",
+      "Bash(rm -f /home/cyamsys/Documents/HR_attendance/photos/Aakash/profile_2864ab7c50014005a8680185c1fc2234.jpg *)",
+      "Bash(/home/cyamsys/miniforge3/envs/ai/bin/python -m py_compile /home/cyamsys/Documents/HR_attendance/db.py /home/cyamsys/Documents/HR_attendance/portal.py /home/cyamsys/Documents/HR_attendance/entry_cameras.py)",
+      "Bash(systemctl status *)",
+      "Bash(ps -o pid,ppid,cmd -p 130688)",
+      "Bash(kill 130688)",
+      "Bash(nohup /home/cyamsys/miniforge3/envs/ai/bin/python -u entry_cameras.py)",
+      "Bash(disown)",
+      "Bash(echo \"started PID $!\")",
+      "Bash(ps -eo pid,ppid,lstart,cmd)",
+      "Bash(ls -la /proc/250339/fd/ 2>&1 | grep -E \"1|2\" *)",
+      "Read(//proc/250339/fd/**)",
+      "Bash(/home/cyamsys/miniforge3/envs/ai/bin/python -c ' *)"
+    ],
+    "additionalDirectories": [
+      "/home/cyamsys/Documents/HR_attendance/photos/Aakash"
     ]
   }
 }
