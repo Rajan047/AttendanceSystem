@@ -49,7 +49,16 @@ def _get_face_app():
                 # one-off admin action, not latency-critical, so CPU is the
                 # reliable choice here even though it's a bit slower per photo.
                 providers = ["CPUExecutionProvider"]
-                app = FaceAnalysis(name="buffalo_l", providers=providers)
+                # buffalo_l bundles 5 sub-models (detection, landmark_3d_68,
+                # landmark_2d_106, genderage, recognition); generate_embedding()
+                # below only ever reads face.bbox (from detection) and
+                # face.embedding (from recognition) — the other 3 loaded ONNX
+                # sessions just sit in memory unused. On a memory-capped host
+                # (Render free tier: 512MB) that's the difference between
+                # fitting and OOM-crash-looping. allowed_modules restricts
+                # FaceAnalysis to only the 2 we actually use.
+                app = FaceAnalysis(name="buffalo_l", providers=providers,
+                                   allowed_modules=["detection", "recognition"])
                 app.prepare(ctx_id=-1, det_size=(320, 320))
                 _face_app = app
     return _face_app
