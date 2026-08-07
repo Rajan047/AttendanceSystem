@@ -218,6 +218,11 @@ def add_employee(name, department=None, designation=None, email=None,
 
 
 def update_employee(emp_id, **fields):
+    # Date fields mein empty string = NULL
+    for date_field in ('join_date', 'resignation'):
+        if date_field in fields and fields[date_field] == '':
+            fields[date_field] = None
+
     allowed = {"name", "department", "designation", "email", "phone",
                "join_date", "photo_path", "active"}
     sets, params = [], []
