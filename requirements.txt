@@ -13,7 +13,10 @@ gunicorn>=21.0            # production WSGI server (Render uses this via Procfil
 #     from Render now, not just the Jetson; face_embedding.py always uses
 #     CPU-only inference so it works without a GPU) ---
 numpy>=1.24
-opencv-python>=4.8
+opencv-python-headless>=4.8   # no GUI bindings (imshow/etc) — nothing here
+                              # needs them, and the full opencv-python build
+                              # costs real memory we can't spare on a
+                              # 512MB Render instance.
 insightface>=0.7.3
 onnxruntime>=1.16    # CPU-only package — Render has no GPU. The Jetson's
                      # camera processes use their own separately-managed
