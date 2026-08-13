@@ -7,7 +7,7 @@ from insightface.app import FaceAnalysis
 # =========================
 # CONFIG
 # =========================
-DATASET_DIR = "dataset"
+DATASET_DIR = "/home/cyamsys/Documents/HR_attendance/dataset"
 OUTPUT_FILE = "embeddings/embeddings.pkl"
 
 # Create output folder if not exists
