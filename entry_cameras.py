@@ -2035,27 +2035,60 @@ def _log_event_to_csv(name, camera_id, confidence, result, event_type):
 
 def _cleanup_old_logs():
     try:
-        if not os.path.exists(LOG_FILE):
-            return
-        cutoff = datetime.now() - timedelta(days=2)
-        rows = []
-        with open(LOG_FILE, "r", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                try:
-                    ts = datetime.strptime(row["timestamp"], "%Y-%m-%d %H:%M:%S")
-                    if ts >= cutoff:
-                        rows.append(row)
-                except Exception:
-                    continue
-        with open(LOG_FILE, "w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=["timestamp", "name", "camera_id", "event_type", "confidence", "result"])
-            writer.writeheader()
-            writer.writerows(rows)
-        print(f"[log] Cleanup done — {len(rows)} rows remaining")
+        # Existing CSV cleanup
+        if os.path.exists(LOG_FILE):
+            cutoff = datetime.now() - timedelta(days=2)
+            rows = []
+
+            with open(LOG_FILE, "r", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    try:
+                        ts = datetime.strptime(
+                            row["timestamp"],
+                            "%Y-%m-%d %H:%M:%S"
+                        )
+                        if ts >= cutoff:
+                            rows.append(row)
+                    except Exception:
+                        continue
+
+            with open(LOG_FILE, "w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(
+                    f,
+                    fieldnames=[
+                        "timestamp",
+                        "name",
+                        "camera_id",
+                        "event_type",
+                        "confidence",
+                        "result"
+                    ]
+                )
+                writer.writeheader()
+                writer.writerows(rows)
+
+            print(f"[log] CSV cleanup done — {len(rows)} rows remaining")
+
+        # entry_camera.log cleanup
+        ENTRY_LOG_FILE = os.path.join(
+            os.path.dirname(__file__),
+            "entry_camera.log"
+        )
+
+        if os.path.exists(ENTRY_LOG_FILE):
+            file_time = datetime.fromtimestamp(
+                os.path.getmtime(ENTRY_LOG_FILE)
+            )
+
+            cutoff = datetime.now() - timedelta(days=2)
+
+            if file_time < cutoff:
+                os.remove(ENTRY_LOG_FILE)
+                print("[log] entry_camera.log deleted — older than 2 days")
+
     except Exception as e:
         print(f"[log] Cleanup failed: {e}")
-
 def _log_cleanup_loop():
     while True:
         time.sleep(3600)
