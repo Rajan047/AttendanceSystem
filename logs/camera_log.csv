@@ -1,0 +1,18 @@
+timestamp,name,camera_id,event_type,confidence,result
+2026-08-13 16:59:12,Aakash,Entry-1,entry,0.55,already_present
+2026-08-13 16:59:20,Rajan,Entry-1,entry,0.62,already_present
+2026-08-13 16:59:23,Aakash,Entry-1,entry,0.77,already_present
+2026-08-13 16:59:35,Aakash,Entry-1,entry,0.60,already_present
+2026-08-13 16:59:45,Aakash,Entry-1,entry,0.64,already_present
+2026-08-13 17:00:32,Aakash,Entry-1,entry,0.62,already_present
+2026-08-13 17:00:44,Aakash,Entry-1,entry,0.57,already_present
+2026-08-13 17:00:56,Aakash,Entry-1,entry,0.62,already_present
+2026-08-13 17:01:08,Rajan,Entry-1,entry,0.55,already_present
+2026-08-13 17:01:10,Aakash,Entry-1,entry,0.65,already_present
+2026-08-13 17:01:19,Rajan,Entry-1,entry,0.71,already_present
+2026-08-13 17:01:35,Rajan,Entry-1,entry,0.73,already_present
+2026-08-13 17:02:14,Rajan,Entry-1,entry,0.52,already_present
+2026-08-13 17:02:16,shashwat,Entry-1,entry,0.60,already_present
+2026-08-13 17:03:27,Aakash,Entry-1,entry,0.51,already_present
+2026-08-13 17:03:38,Aakash,Entry-1,entry,0.66,already_present
+2026-08-13 17:03:49,Aakash,Entry-1,entry,0.58,already_present

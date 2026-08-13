@@ -362,16 +362,11 @@ def api_update_employee(emp_id):
 
     fields = {k: f.get(k) for k in
           ("name", "department", "designation", "email", "phone",
-           "join_date", "active", "username", "password")
-          if f.get(k) is not None}
-    # Password ko hash karke database mein save karo
-    if "password" in fields:
-        password = str(fields["password"]).strip()
+           "join_date", "active")
+           if f.get(k) is not None}
 
-    if password:
-        fields["password"] = generate_password_hash(password)
-    else:
-        fields.pop("password")
+    username = (f.get("username") or "").strip()
+    password = f.get("password") or ""
     # Date fields mein empty string → None
     for date_field in ("join_date", "resignation"):
         if date_field in fields and fields[date_field] == "":
@@ -382,17 +377,6 @@ def api_update_employee(emp_id):
         fields["active"] = str(fields["active"]).lower() in (
             "1", "true", "yes"
         )
-
-    # Password ko hash karke save karo
-    if "password" in fields:
-        password = str(fields["password"]).strip()
-
-        if password:
-            from werkzeug.security import generate_password_hash
-            fields["password"] = generate_password_hash(password)
-        else:
-            # Empty password aaye to existing password ko change mat karo
-            fields.pop("password")
 
     photos = request.files.getlist("photos[]") if request.files else []
 
@@ -427,6 +411,13 @@ def api_update_employee(emp_id):
                 resp["warnings"] = result["warnings"]
 
     auth_db.update_employee(emp_id, **fields)
+
+    if username:
+        emp = auth_db.get_employee(emp_id)
+        if emp:
+            login_warnings = auth_db.set_employee_login(emp["name"], username, password)
+            if login_warnings:
+                resp["warnings"] = (resp.get("warnings") or []) + login_warnings
 
     return jsonify(resp)
 

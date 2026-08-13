@@ -1074,8 +1074,9 @@ import os
 import time
 import pickle
 import threading
+import csv
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timedelta
 from insightface.app import FaceAnalysis
 from urllib.parse import quote
 
@@ -1104,6 +1105,55 @@ MARK_COOLDOWN_SECONDS = config.MARK_COOLDOWN_SECONDS
 TARGET_FPS            = 15
 
 EXIT_REGION = (0, 252, 1200, 718)
+
+# =============================================================================
+#  LOG BOOK — CSV entry/exit log with 2-day auto-cleanup
+# =============================================================================
+LOG_DIR = os.path.join(os.path.dirname(__file__), "logs")
+LOG_FILE = os.path.join(LOG_DIR, "camera_log.csv")
+_LOG_LOCK = threading.Lock()
+
+def _log_event_to_csv(name, camera_id, confidence, result, event_type):
+    try:
+        os.makedirs(LOG_DIR, exist_ok=True)
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        with _LOG_LOCK:
+            write_header = not os.path.exists(LOG_FILE) or os.path.getsize(LOG_FILE) == 0
+            with open(LOG_FILE, "a", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                if write_header:
+                    writer.writerow(["timestamp", "name", "camera_id", "event_type", "confidence", "result"])
+                writer.writerow([now, name, camera_id, event_type, f"{confidence:.2f}", result])
+    except Exception as e:
+        print(f"[log] CSV log failed: {e}")
+
+def _cleanup_old_logs():
+    try:
+        if not os.path.exists(LOG_FILE):
+            return
+        cutoff = datetime.now() - timedelta(days=2)
+        rows = []
+        with open(LOG_FILE, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    ts = datetime.strptime(row["timestamp"], "%Y-%m-%d %H:%M:%S")
+                    if ts >= cutoff:
+                        rows.append(row)
+                except Exception:
+                    continue
+        with open(LOG_FILE, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=["timestamp", "name", "camera_id", "event_type", "confidence", "result"])
+            writer.writeheader()
+            writer.writerows(rows)
+        print(f"[log] Cleanup done — {len(rows)} rows remaining")
+    except Exception as e:
+        print(f"[log] Cleanup failed: {e}")
+
+def _log_cleanup_loop():
+    while True:
+        time.sleep(3600)
+        _cleanup_old_logs()
 
 # =============================================================================
 #  VECTORIZED RECOGNITION MATRIX
@@ -1333,10 +1383,12 @@ def mark_exit(name, frame, bbox, confidence):
 
     if last_status is None:
         db.log_detection(name, EXIT_CAMERA_ID, confidence, "not_inside")
+        _log_event_to_csv(name, EXIT_CAMERA_ID, confidence, "not_inside", "exit")
         return "not_inside"
 
     if last_status == "Exit":
         db.log_detection(name, EXIT_CAMERA_ID, confidence, "already_exited")
+        _log_event_to_csv(name, EXIT_CAMERA_ID, confidence, "already_exited", "exit")
         return "already_exited"
 
     # last_status == "Present" → exit mark karo
@@ -1348,6 +1400,7 @@ def mark_exit(name, frame, bbox, confidence):
     )
 
     db.log_detection(name, EXIT_CAMERA_ID, confidence, result)
+    _log_event_to_csv(name, EXIT_CAMERA_ID, confidence, result, "exit")
 
     if result == "marked":
         # exit_cache update — overlay pe turant dikhega
@@ -1462,6 +1515,11 @@ def main():
 
     db.init_db()              # SQLite init + in-memory cache seed + sync worker
     _rebuild_caches_from_db() # exit_cache seed from SQLite
+
+    _cleanup_old_logs()
+    cleanup_t = threading.Thread(target=_log_cleanup_loop, daemon=True, name="log-cleanup")
+    cleanup_t.start()
+    print("[log] Log book cleanup started (every 1h, keeps 2 days)")
 
     capture_thread = threading.Thread(target=capture_frames, daemon=True)
     capture_thread.start()
