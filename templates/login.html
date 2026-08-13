@@ -1,222 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login — Attendance Intelligence</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
-    rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0a0e13;
-      --bg-2: #10151c;
-      --panel: #12171f;
-      --border: #202a35;
-      --border-2: #2c3843;
-      --text: #eef2f6;
-      --muted: #8492a3;
-      --teal: #35d0a8;
-      --teal-dim: rgba(53, 208, 168, .12);
-      --red: #ec6f74;
-      --red-dim: rgba(236, 111, 116, .12);
-      --green-dim: rgba(53, 208, 168, .15);
-      --shadow: 0 20px 60px -24px rgba(0, 0, 0, .85);
-      --sans: 'Manrope', system-ui, sans-serif;
-      --mono: 'JetBrains Mono', ui-monospace, monospace;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: var(--sans);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-image:
-        radial-gradient(1200px 620px at 88% -8%, rgba(53, 208, 168, .06), transparent 60%),
-        radial-gradient(900px 520px at -4% 108%, rgba(124, 156, 245, .05), transparent 58%),
-        linear-gradient(rgba(255, 255, 255, .015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, .015) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 46px 46px, 46px 46px;
-    }
-
-    .card {
-      width: 100%;
-      max-width: 380px;
-      background: linear-gradient(180deg, var(--bg-2), var(--panel));
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      padding: 34px 30px;
-    }
-
-    .logo-mark {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--mono);
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: #06120c;
-      background: linear-gradient(135deg, #35d0a8, #7c9cf5);
-      margin-bottom: 16px;
-    }
-
-    h1 {
-      font-size: 1.3rem;
-      font-weight: 700;
-    }
-
-    .sub {
-      color: var(--muted);
-      font-size: .85rem;
-      margin-top: 4px;
-      margin-bottom: 22px;
-    }
-
-    label {
-      font-size: .76rem;
-      color: var(--muted);
-      letter-spacing: .04em;
-      text-transform: uppercase;
-      font-weight: 600;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    input {
-      width: 100%;
-      margin-bottom: 16px;
-      background: #161d26;
-      border: 1px solid var(--border-2);
-      border-radius: 10px;
-      padding: 11px 14px;
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: .94rem;
-      outline: none;
-      transition: .15s;
-    }
-
-    input:focus {
-      border-color: var(--teal);
-    }
-
-    .submit-btn {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(53, 208, 168, .4);
-      background: var(--teal-dim);
-      color: var(--teal);
-      font-weight: 700;
-      font-size: .95rem;
-      cursor: pointer;
-      transition: .15s;
-      font-family: var(--sans);
-    }
-
-    .submit-btn:hover {
-      background: rgba(53, 208, 168, .22);
-    }
-
-    .err {
-      display: none;
-      background: var(--red-dim);
-      border: 1px solid rgba(236, 111, 116, .3);
-      color: var(--red);
-      padding: 10px 13px;
-      border-radius: 10px;
-      font-size: .85rem;
-      margin-bottom: 16px;
-    }
-
-    .success {
-      display: none;
-      background: var(--green-dim);
-      border: 1px solid rgba(53, 208, 168, .3);
-      color: var(--teal);
-      padding: 10px 13px;
-      border-radius: 10px;
-      font-size: .85rem;
-      margin-bottom: 16px;
-    }
-
-    .foot {
-      text-align: center;
-      color: #5b6774;
-      font-size: .76rem;
-      margin-top: 20px;
-      font-family: var(--mono);
-    }
-
-    .auth-tabs {
-      display: flex;
-      gap: 0;
-      margin-bottom: 24px;
-      background: var(--bg);
-      border-radius: 12px;
-      padding: 4px;
-      border: 1px solid var(--border);
-    }
-
-    .auth-tab {
-      flex: 1;
-      text-align: center;
-      padding: 10px 16px;
-      font-size: .88rem;
-      font-weight: 700;
-      cursor: pointer;
-      border-radius: 9px;
-      transition: .15s;
-      color: var(--muted);
-      background: transparent;
-      border: none;
-      font-family: var(--sans);
-    }
-
-    .auth-tab.active {
-      color: var(--teal);
-      background: var(--teal-dim);
-    }
-
-    .auth-tab:hover:not(.active) {
-      color: var(--text);
-    }
-
-    .auth-panel {
-      display: none;
-    }
-
-    .auth-panel.active {
-      display: block;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Attendance Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e13; --bg-2:#10151c; --panel:#12171f; --border:#202a35; --border-2:#2c3843;
+    --text:#eef2f6; --muted:#8492a3; --teal:#35d0a8; --teal-dim:rgba(53,208,168,.12);
+    --red:#ec6f74; --red-dim:rgba(236,111,116,.12);
+    --green-dim:rgba(53,208,168,.15);
+    --shadow:0 20px 60px -24px rgba(0,0,0,.85);
+    --sans:'Manrope',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--sans); background:var(--bg); color:var(--text); min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    background-image:
+      radial-gradient(1200px 620px at 88% -8%, rgba(53,208,168,.06), transparent 60%),
+      radial-gradient(900px 520px at -4% 108%, rgba(124,156,245,.05), transparent 58%),
+      linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+    background-size:100% 100%, 100% 100%, 46px 46px, 46px 46px;}
+  .card{width:100%; max-width:380px; background:linear-gradient(180deg,var(--bg-2),var(--panel));
+    border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow); padding:34px 30px;}
+  .logo-mark{width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:700; font-size:1.05rem; color:#06120c;
+    background:linear-gradient(135deg,#35d0a8,#7c9cf5); margin-bottom:16px;}
+  h1{font-size:1.3rem; font-weight:700;}
+  .sub{color:var(--muted); font-size:.85rem; margin-top:4px; margin-bottom:22px;}
+  label{font-size:.76rem; color:var(--muted); letter-spacing:.04em; text-transform:uppercase; font-weight:600; display:block; margin-bottom:5px;}
+  input{width:100%; margin-bottom:16px; background:#161d26; border:1px solid var(--border-2);
+    border-radius:10px; padding:11px 14px; color:var(--text); font-family:var(--sans); font-size:.94rem; outline:none; transition:.15s;}
+  input:focus{border-color:var(--teal);}
+  .submit-btn{width:100%; padding:12px; border-radius:10px; border:1px solid rgba(53,208,168,.4);
+    background:var(--teal-dim); color:var(--teal); font-weight:700; font-size:.95rem; cursor:pointer; transition:.15s; font-family:var(--sans);}
+  .submit-btn:hover{background:rgba(53,208,168,.22);}
+  .err{display:none; background:var(--red-dim); border:1px solid rgba(236,111,116,.3); color:var(--red);
+    padding:10px 13px; border-radius:10px; font-size:.85rem; margin-bottom:16px;}
+  .success{display:none; background:var(--green-dim); border:1px solid rgba(53,208,168,.3); color:var(--teal);
+    padding:10px 13px; border-radius:10px; font-size:.85rem; margin-bottom:16px;}
+  .foot{text-align:center; color:#5b6774; font-size:.76rem; margin-top:20px; font-family:var(--mono);}
+</style>
 </head>
-
 <body>
   <div class="card">
     <div class="logo-mark">CT</div>
     <h1>Attendance Intelligence</h1>
     <div class="sub">Cyamsys Technologies</div>
-
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
-      <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
-    </div>
 
     <div class="err" id="err"></div>
     <div class="success" id="success"></div>
@@ -232,63 +65,20 @@
       </form>
     </div>
 
-    <!-- SIGN UP -->
-    <div class="auth-panel" id="panel-signup">
-      <form id="signupForm">
-        <label>Full Name</label>
-        <input type="text" id="s-name" placeholder="Name" required>
-        <label>Username</label>
-        <input type="text" id="s-username" placeholder="User Name" required>
-        <label>Password (min 6 chars)</label>
-        <input type="password" id="s-password" required>
-        <label>Confirm Password</label>
-        <input type="password" id="s-password2" required>
-        <button type="submit" class="submit-btn">Create Account</button>
-      </form>
-    </div>
-
     <div class="foot">Admins &amp; employees use the same login page</div>
   </div>
 
-  <script>
-    function switchTab(tab) {
-      document.querySelectorAll('.auth-tab').forEach((t, i) => {
-        t.classList.toggle('active', (tab === 'login' && i === 0) || (tab === 'signup' && i === 1));
-      });
-      document.getElementById('panel-login').classList.toggle('active', tab === 'login');
-      document.getElementById('panel-signup').classList.toggle('active', tab === 'signup');
-      document.getElementById('err').style.display = 'none';
-      document.getElementById('success').style.display = 'none';
-    }
-    function showErr(msg) { document.getElementById('err').textContent = msg; document.getElementById('err').style.display = 'block'; document.getElementById('success').style.display = 'none'; }
-    function showOk(msg) { document.getElementById('success').textContent = msg; document.getElementById('success').style.display = 'block'; document.getElementById('err').style.display = 'none'; }
+<script>
+  function showErr(msg){document.getElementById('err').textContent=msg; document.getElementById('err').style.display='block'; document.getElementById('success').style.display='none';}
+  function showOk(msg){document.getElementById('success').textContent=msg; document.getElementById('success').style.display='block'; document.getElementById('err').style.display='none';}
 
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault(); document.getElementById('err').style.display = 'none';
-      const res = await fetch("/portal/login", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: document.getElementById("l-username").value.trim(), password: document.getElementById("l-password").value })
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && data.redirect) { window.location = data.redirect; } else { showErr(data.error || "Login failed"); }
-    });
-
-    document.getElementById("signupForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const pw = document.getElementById("s-password").value, pw2 = document.getElementById("s-password2").value;
-      if (pw.length < 6) { showErr("Password must be at least 6 characters"); return; }
-      if (pw !== pw2) { showErr("Passwords do not match"); return; }
-      const name = document.getElementById("s-name").value.trim();
-      if (!name) { showErr("Name is required"); return; }
-      const res = await fetch("/portal/signup", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name, username: document.getElementById("s-username").value.trim(), password: pw })
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && data.ok) { showOk("Account created! Sign in now."); document.getElementById("signupForm").reset(); setTimeout(() => switchTab('login'), 1500); }
-      else { showErr(data.error || "Sign up failed"); }
-    });
-  </script>
+  document.getElementById("loginForm").addEventListener("submit", async(e)=>{
+    e.preventDefault(); document.getElementById('err').style.display='none';
+    const res=await fetch("/portal/login",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({username:document.getElementById("l-username").value.trim(),password:document.getElementById("l-password").value})});
+    const data=await res.json().catch(()=>({}));
+    if(res.ok&&data.redirect){window.location=data.redirect;} else{showErr(data.error||"Login failed");}
+  });
+</script>
 </body>
-
 </html>

@@ -163,6 +163,45 @@ def change_password(user_id, old_pw, new_pw):
         conn.close()
 
 
+def set_employee_login(emp_name, username, password):
+    """Create or update login credentials for an employee by name.
+    Returns list of warnings (empty if success)."""
+    warnings = []
+    conn = db.get_conn()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT id FROM users WHERE emp_name = %s", (emp_name,))
+        existing = cur.fetchone()
+
+        if existing:
+            if password:
+                cur.execute(
+                    "UPDATE users SET username = %s, password_hash = %s WHERE id = %s",
+                    (username, generate_password_hash(password), existing["id"])
+                )
+            else:
+                cur.execute(
+                    "UPDATE users SET username = %s WHERE id = %s",
+                    (username, existing["id"])
+                )
+        else:
+            if not password:
+                warnings.append("Login NOT created: password required for new login.")
+            else:
+                cur.execute(
+                    "INSERT INTO users (username, password_hash, role, emp_name) "
+                    "VALUES (%s, %s, 'employee', %s)",
+                    (username, generate_password_hash(password), emp_name)
+                )
+        conn.commit()
+        cur.close()
+    except Exception as e:
+        warnings.append(f"Login NOT updated: {e}")
+    finally:
+        conn.close()
+    return warnings
+
+
 # =============================================================================
 #  ADMIN — EMPLOYEE MANAGEMENT
 # =============================================================================
@@ -176,7 +215,8 @@ def list_employees_full():
             SELECT e.id, e.name, e.department, e.designation, e.email, e.phone,
                    e.join_date, e.photo_path, e.active,
                    EXISTS(SELECT 1 FROM face_embeddings f WHERE f.employee_id = e.id) AS has_embedding,
-                   EXISTS(SELECT 1 FROM users u WHERE u.emp_name = e.name) AS has_login
+                   EXISTS(SELECT 1 FROM users u WHERE u.emp_name = e.name) AS has_login,
+                   (SELECT u.username FROM users u WHERE u.emp_name = e.name LIMIT 1) AS username
             FROM employees e
             ORDER BY e.name
         """)
@@ -223,26 +263,46 @@ def update_employee(emp_id, **fields):
         if date_field in fields and fields[date_field] == '':
             fields[date_field] = None
 
-    allowed = {"name", "department", "designation", "email", "phone",
-               "join_date", "photo_path", "active"}
+    allowed = {
+        "name",
+        "department",
+        "designation",
+        "email",
+        "phone",
+        "join_date",
+        "photo_path",
+        "active",
+    }
+
     sets, params = [], []
+
     for k, v in fields.items():
         if k in allowed and v is not None:
             sets.append(f"{k} = %s")
             params.append(v)
+
     if not sets:
         return False
+
     params.append(emp_id)
+
     conn = db.get_conn()
+
     try:
         cur = conn.cursor()
-        cur.execute(f"UPDATE employees SET {', '.join(sets)} WHERE id = %s", params)
+
+        cur.execute(
+            f"UPDATE employees SET {', '.join(sets)} WHERE id = %s",
+            params
+        )
+
         conn.commit()
         cur.close()
+
         return True
+
     finally:
         conn.close()
-
 
 def set_employee_embedding(emp_id, embedding_bytes):
     """Replace ALL of this employee's face_embeddings rows with a single new

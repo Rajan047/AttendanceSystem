@@ -2,6 +2,7 @@
 portal.py — login + admin panel + employee panel, Flask Blueprint.
 UPDATED: Supabase Storage mein photos upload karo.
 """
+from dataclasses import fields
 import os
 import uuid
 import calendar
@@ -356,44 +357,78 @@ def api_add_employee():
 @portal.route("/api/portal/employees/<int:emp_id>", methods=["PUT"])
 @admin_required
 def api_update_employee(emp_id):
-    f      = request.form if request.form else (request.get_json(silent=True) or {})
-    fields = {k: f.get(k) for k in
-              ("name", "department", "designation", "email", "phone", "join_date", "active")
-              if f.get(k) is not None}
 
-    # Date fields mein empty string → None (PostgreSQL fix)
+    f = request.form if request.form else (request.get_json(silent=True) or {})
+
+    fields = {k: f.get(k) for k in
+          ("name", "department", "designation", "email", "phone",
+           "join_date", "active", "username", "password")
+          if f.get(k) is not None}
+    # Password ko hash karke database mein save karo
+    if "password" in fields:
+        password = str(fields["password"]).strip()
+
+    if password:
+        fields["password"] = generate_password_hash(password)
+    else:
+        fields.pop("password")
+    # Date fields mein empty string → None
     for date_field in ("join_date", "resignation"):
         if date_field in fields and fields[date_field] == "":
             fields[date_field] = None
 
+    # Active conversion
     if "active" in fields:
-        fields["active"] = str(fields["active"]).lower() in ("1", "true", "yes")
+        fields["active"] = str(fields["active"]).lower() in (
+            "1", "true", "yes"
+        )
+
+    # Password ko hash karke save karo
+    if "password" in fields:
+        password = str(fields["password"]).strip()
+
+        if password:
+            from werkzeug.security import generate_password_hash
+            fields["password"] = generate_password_hash(password)
+        else:
+            # Empty password aaye to existing password ko change mat karo
+            fields.pop("password")
 
     photos = request.files.getlist("photos[]") if request.files else []
+
     if not photos or not any(p.filename for p in photos):
         single = request.files.get("photo") if request.files else None
+
         if single and single.filename:
             photos = [single]
 
     resp = {"ok": True}
 
     if photos and any(p.filename for p in photos):
+
         emp = auth_db.get_employee(emp_id)
+
         if emp:
             result = _process_photos_and_embed(
-                photos, emp["name"], emp_id, clear_existing=False
+                photos,
+                emp["name"],
+                emp_id,
+                clear_existing=False
             )
+
             if result["first_photo"] and not emp.get("photo_path"):
                 fields["photo_path"] = result["first_photo"]
-            resp["photos"]   = result["saved"]
+
+            resp["photos"] = result["saved"]
             resp["embedded"] = result["embedded"]
-            resp["failed"]   = result["failed"]
+            resp["failed"] = result["failed"]
+
             if result["warnings"]:
                 resp["warnings"] = result["warnings"]
 
     auth_db.update_employee(emp_id, **fields)
-    return jsonify(resp)
 
+    return jsonify(resp)
 
 @portal.route("/api/portal/employees/<int:emp_id>/regenerate-embedding", methods=["POST"])
 @admin_required

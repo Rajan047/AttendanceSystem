@@ -66,6 +66,8 @@
   .avatar{width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center;
     font-weight:700; font-size:.78rem; color:#06120c; background:linear-gradient(135deg,var(--teal),#1fae87); overflow:hidden;}
   .avatar img{width:100%; height:100%; object-fit:cover;}
+  .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:0 0 18px 18px;}
+  .table-scroll table{min-width:420px;}
   .pill{display:inline-flex; align-items:center; gap:6px; font-size:.74rem; font-weight:700; padding:4px 10px; border-radius:20px;}
   .pill::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor;}
   .pill.Present{color:var(--teal); background:var(--teal-dim);}
@@ -681,7 +683,9 @@ function openEdit(id){
   $("f-name").value=e.name||""; $("f-email").value=e.email||""; $("f-phone").value=e.phone||"";
   $("f-department").value=e.department||""; $("f-designation").value=e.designation||""; $("f-join_date").value=e.join_date||"";
   _resetPhotoUI();
-  $("empLoginFields").style.display="none";
+  $("empLoginFields").style.display="";
+  $("f-username").value=e.username||"";
+  $("f-password").value="";
   $("empErr").style.display="none";
   $("empWarn").style.display="none";
   $("empSaveLabel").textContent="Update Employee";
@@ -709,10 +713,10 @@ $("empSave").addEventListener("click", async ()=>{
   const photos = Array.from($("f-photos").files);
   photos.forEach(f=>fd.append("photos[]",f));
 
-  if(!id){
-    fd.append("username",$("f-username").value.trim());
-    fd.append("password",$("f-password").value);
-  }
+  const username = $("f-username").value.trim();
+  const password = $("f-password").value;
+  if(username) fd.append("username", username);
+  if(password) fd.append("password", password);
 
   // try/catch/finally — pehle agar server 500 (ya koi non-JSON response)
   // deta tha, res.json() throw kar deta tha aur neeche wala button-reset
