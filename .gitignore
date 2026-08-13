@@ -5,7 +5,7 @@ __pycache__/
 .venv/
 venv/
 env/
-log/
+logs/
 
 # Local offline queue (db.py writes this)
 offline_queue.db
@@ -25,3 +25,4 @@ embeddings/
 .DS_Store
 Thumbs.db
 entry_camera.log
+logs/
