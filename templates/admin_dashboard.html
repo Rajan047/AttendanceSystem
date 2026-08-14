@@ -252,7 +252,8 @@
     .wrap{padding:16px 12px 40px;}
     #view-requests .table-scroll table{min-width:340px;}
     #view-requests tbody td{padding:6px 8px; font-size:.72rem;}
-    .profile-modal{border-radius:16px; max-height:100vh;}
+    .profile-modal{border-radius:16px; max-height:100vh; overflow-y:auto; scrollbar-width:none;}
+    .profile-modal::-webkit-scrollbar{display:none;}
     #view-employees .table-scroll table{min-width:540px;}
     #view-employees tbody td{padding:6px 8px; font-size:.72rem;}
     #view-employees .avatar{width:24px; height:24px; font-size:.62rem;}
