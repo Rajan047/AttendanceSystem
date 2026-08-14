@@ -719,6 +719,8 @@ $("empSave").addEventListener("click", async ()=>{
   const password = $("f-password").value;
   if(username) fd.append("username", username);
   if(password) fd.append("password", password);
+  const empId = $("empId").value;
+  if(empId) fd.append("emp_id", empId);
 
   // try/catch/finally — pehle agar server 500 (ya koi non-JSON response)
   // deta tha, res.json() throw kar deta tha aur neeche wala button-reset

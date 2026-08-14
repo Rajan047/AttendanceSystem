@@ -104,6 +104,7 @@ def login():
     session["user_id"]  = user["id"]
     session["username"] = user["username"]
     session["role"]     = user["role"]
+    session["emp_id"]   = user["emp_id"]
     session["emp_name"] = user["emp_name"]
     session.permanent   = True
 
@@ -136,10 +137,11 @@ def signup():
     name     = (data.get("name") or "").strip()
     username = (data.get("username") or "").strip()
     password = data.get("password") or ""
+    emp_id   = data.get("emp_id")
     if not name or not username or len(password) < 6:
         return jsonify({"error": "Name, username and password (>=6) required"}), 400
     try:
-        auth_db.create_login(username, password, role="employee", emp_name=name)
+        auth_db.create_login(username, password, role="employee", emp_id=emp_id, emp_name=name)
         return jsonify({"ok": True})
     except Exception:
         return jsonify({"error": "Signup failed (username may be taken)"}), 400
@@ -338,7 +340,7 @@ def api_add_employee():
             warnings.append("Login NOT created: password must be at least 6 characters.")
         else:
             try:
-                auth_db.create_login(username, password, role="employee", emp_name=name)
+                auth_db.create_login(username, password, role="employee", emp_id=emp_id, emp_name=name)
             except Exception:
                 warnings.append("Login NOT created: username already taken.")
 
@@ -413,11 +415,9 @@ def api_update_employee(emp_id):
     auth_db.update_employee(emp_id, **fields)
 
     if username:
-        emp = auth_db.get_employee(emp_id)
-        if emp:
-            login_warnings = auth_db.set_employee_login(emp["name"], username, password)
-            if login_warnings:
-                resp["warnings"] = (resp.get("warnings") or []) + login_warnings
+        login_warnings = auth_db.set_employee_login(emp_id, username, password)
+        if login_warnings:
+            resp["warnings"] = (resp.get("warnings") or []) + login_warnings
 
     return jsonify(resp)
 
@@ -578,7 +578,9 @@ def _calendar_working_dates(month, today):
     return out
 
 
-def _build_monthly(month, only_name=None):
+def _build_monthly(month, only_name=None, only_emp_id=None):
+    if only_emp_id and not only_name:
+        only_name = auth_db.get_employee_name(only_emp_id)
     if not month:
         month = datetime.now().strftime("%Y-%m")
     month_rows = db.read_month_rows(month)
@@ -710,9 +712,9 @@ def api_admin_review(req_id):
 @portal.route("/api/portal/me", methods=["GET"])
 @employee_required
 def api_me():
-    name = session.get("emp_name")
+    emp_id = session.get("emp_id")
     emps = auth_db.list_employees_full()
-    me   = next((e for e in emps if e["name"] == name), None)
+    me   = next((e for e in emps if e["id"] == emp_id), None)
     return (jsonify(me) if me else (jsonify({"error": "no employee record linked"}), 404))
 
 
@@ -720,13 +722,15 @@ def api_me():
 @employee_required
 def api_me_monthly():
     return jsonify(_build_monthly(request.args.get("month", "").strip(),
-                                  only_name=session.get("emp_name")))
+                                  only_emp_id=session.get("emp_id")))
 
 
 @portal.route("/api/portal/me/requests", methods=["GET"])
 @employee_required
 def api_me_requests():
-    return jsonify(auth_db.list_requests_for(session.get("emp_name")))
+    emp_id = session.get("emp_id")
+    name = auth_db.get_employee_name(emp_id) if emp_id else None
+    return jsonify(auth_db.list_requests_for(name))
 
 
 @portal.route("/api/portal/me/requests", methods=["POST"])
@@ -735,6 +739,8 @@ def api_me_submit_request():
     d = request.get_json(force=True)
     if d.get("type") not in ("wfh", "leave") or not d.get("date"):
         return jsonify({"error": "type must be wfh/leave and date required"}), 400
-    auth_db.submit_request(session.get("emp_name"), d["date"], d["type"],
+    emp_id = session.get("emp_id")
+    name = auth_db.get_employee_name(emp_id) if emp_id else None
+    auth_db.submit_request(name, d["date"], d["type"],
                            d.get("reason", ""))
     return jsonify({"ok": True})

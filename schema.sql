@@ -95,13 +95,14 @@ ALTER TYPE attendance_status ADD VALUE IF NOT EXISTS 'Leave';
 ALTER TYPE attendance_status ADD VALUE IF NOT EXISTS 'Absent';
 ALTER TYPE attendance_status ADD VALUE IF NOT EXISTS 'HalfDay';
 
--- login accounts (username/password/role, linked to employees by name)
+-- login accounts (username/password/role, linked to employees by id + name)
 CREATE TABLE IF NOT EXISTS users (
     id            SERIAL PRIMARY KEY,
     username      VARCHAR(150) NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     role          VARCHAR(20)  NOT NULL DEFAULT 'employee',
-    emp_name      VARCHAR(150),
+    emp_id        INT,                     -- links to employees.id
+    emp_name      VARCHAR(150),            -- denormalised copy for quick lookups
     created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

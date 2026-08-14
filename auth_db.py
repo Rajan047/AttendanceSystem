@@ -34,9 +34,23 @@ def init_auth_schema(seed_admin=True):
                 username      VARCHAR(150) NOT NULL UNIQUE,
                 password_hash TEXT NOT NULL,
                 role          VARCHAR(20)  NOT NULL DEFAULT 'employee',
-                emp_name      VARCHAR(150),   -- links to employees.name; NULL for pure admins
+                emp_id        INT,                     -- links to employees.id
+                emp_name      VARCHAR(150),            -- denormalised copy for quick lookups
                 created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
             )
+        """)
+
+        # migrate existing users table if emp_id column is missing
+        cur.execute("""
+            DO $$
+            BEGIN
+                IF NOT EXISTS (
+                    SELECT 1 FROM information_schema.columns
+                    WHERE table_name='users' AND column_name='emp_id'
+                ) THEN
+                    ALTER TABLE users ADD COLUMN emp_id INT;
+                END IF;
+            END $$;
         """)
 
         # 2) HR/leave request queue
@@ -115,7 +129,7 @@ def _seed_default_admin(conn):
 #  AUTH
 # =============================================================================
 def verify_login(username, password):
-    """Returns a dict {id, username, role, emp_name} on success, else None."""
+    """Returns a dict {id, username, role, emp_id, emp_name} on success, else None."""
     conn = db.get_conn()
     try:
         cur = conn.cursor()
@@ -127,17 +141,18 @@ def verify_login(username, password):
     if not row or not check_password_hash(row["password_hash"], password):
         return None
     return {"id": row["id"], "username": row["username"],
-            "role": row["role"], "emp_name": row["emp_name"]}
+            "role": row["role"], "emp_id": row["emp_id"],
+            "emp_name": row["emp_name"]}
 
 
-def create_login(username, password, role="employee", emp_name=None):
+def create_login(username, password, role="employee", emp_id=None, emp_name=None):
     conn = db.get_conn()
     try:
         cur = conn.cursor()
         cur.execute(
-            "INSERT INTO users (username, password_hash, role, emp_name) "
-            "VALUES (%s, %s, %s, %s)",
-            (username, generate_password_hash(password), role, emp_name),
+            "INSERT INTO users (username, password_hash, role, emp_id, emp_name) "
+            "VALUES (%s, %s, %s, %s, %s)",
+            (username, generate_password_hash(password), role, emp_id, emp_name),
         )
         conn.commit()
         cur.close()
@@ -163,35 +178,52 @@ def change_password(user_id, old_pw, new_pw):
         conn.close()
 
 
-def set_employee_login(emp_name, username, password):
-    """Create or update login credentials for an employee by name.
-    Returns list of warnings (empty if success)."""
-    warnings = []
+def get_employee_name(emp_id):
     conn = db.get_conn()
     try:
         cur = conn.cursor()
-        cur.execute("SELECT id FROM users WHERE emp_name = %s", (emp_name,))
+        cur.execute("SELECT name FROM employees WHERE id = %s", (emp_id,))
+        row = cur.fetchone()
+        cur.close()
+        return row["name"] if row else None
+    finally:
+        conn.close()
+
+
+def set_employee_login(emp_id, username, password):
+    """Create or update login credentials for an employee by id.
+    Returns list of warnings (empty if success)."""
+    warnings = []
+    emp_name = get_employee_name(emp_id)
+    if not emp_name:
+        warnings.append("Employee not found.")
+        return warnings
+
+    conn = db.get_conn()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT id FROM users WHERE emp_id = %s", (emp_id,))
         existing = cur.fetchone()
 
         if existing:
             if password:
                 cur.execute(
-                    "UPDATE users SET username = %s, password_hash = %s WHERE id = %s",
-                    (username, generate_password_hash(password), existing["id"])
+                    "UPDATE users SET username = %s, password_hash = %s, emp_name = %s WHERE id = %s",
+                    (username, generate_password_hash(password), emp_name, existing["id"])
                 )
             else:
                 cur.execute(
-                    "UPDATE users SET username = %s WHERE id = %s",
-                    (username, existing["id"])
+                    "UPDATE users SET username = %s, emp_name = %s WHERE id = %s",
+                    (username, emp_name, existing["id"])
                 )
         else:
             if not password:
                 warnings.append("Login NOT created: password required for new login.")
             else:
                 cur.execute(
-                    "INSERT INTO users (username, password_hash, role, emp_name) "
-                    "VALUES (%s, %s, 'employee', %s)",
-                    (username, generate_password_hash(password), emp_name)
+                    "INSERT INTO users (username, password_hash, role, emp_id, emp_name) "
+                    "VALUES (%s, %s, 'employee', %s, %s)",
+                    (username, generate_password_hash(password), emp_id, emp_name)
                 )
         conn.commit()
         cur.close()
@@ -215,8 +247,8 @@ def list_employees_full():
             SELECT e.id, e.name, e.department, e.designation, e.email, e.phone,
                    e.join_date, e.photo_path, e.active,
                    EXISTS(SELECT 1 FROM face_embeddings f WHERE f.employee_id = e.id) AS has_embedding,
-                   EXISTS(SELECT 1 FROM users u WHERE u.emp_name = e.name) AS has_login,
-                   (SELECT u.username FROM users u WHERE u.emp_name = e.name LIMIT 1) AS username
+                   EXISTS(SELECT 1 FROM users u WHERE u.emp_id = e.id) AS has_login,
+                   (SELECT u.username FROM users u WHERE u.emp_id = e.id LIMIT 1) AS username
             FROM employees e
             ORDER BY e.name
         """)
@@ -370,7 +402,7 @@ def delete_employee(emp_id):
         cur.execute("SELECT name FROM employees WHERE id = %s", (emp_id,))
         row = cur.fetchone()
         if row:
-            cur.execute("DELETE FROM users WHERE emp_name = %s", (row["name"],))
+            cur.execute("DELETE FROM users WHERE emp_id = %s", (emp_id,))
         cur.execute("DELETE FROM employees WHERE id = %s", (emp_id,))
         conn.commit()
         cur.close()
