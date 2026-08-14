@@ -599,7 +599,8 @@ def _build_monthly(month, only_name=None, only_emp_id=None):
     for r in month_rows:
         nm, dt = r["name"], r["date"]
         st     = (r.get("status") or "")
-        present_by[nm].add(dt)
+        if st in ("Present", "Exit"):
+            present_by[nm].add(dt)
         cell = io_map[nm][dt]
         if st == "Exit":
             cell["outs"].append(r.get("time", ""))

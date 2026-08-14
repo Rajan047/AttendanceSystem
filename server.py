@@ -138,7 +138,8 @@ def _build_monthly(month):
         nm, dt = r["name"], r["date"]
         tm = r.get("time", "")
         st = (r.get("status", "") or "").lower()
-        present_by[nm].add(dt)
+        if st in ("present", "exit"):
+            present_by[nm].add(dt)
         if st == "exit":
             io_map[nm][dt]["outs"].append(tm)
         else:
