@@ -336,7 +336,7 @@
       </div>
       <div class="table-scroll">
         <table>
-          <thead><tr><th></th><th>Name</th><th>Department</th><th>Designation</th><th>Email</th><th>Face ID</th><th>Login</th><th>Status</th><th></th></tr></thead>
+          <thead><tr><th></th><th>Name</th><th>Department</th><th>Designation</th><th>Email</th><th>Login</th><th>Status</th><th></th></tr></thead>
           <tbody id="empBody"></tbody>
         </table>
       </div>
@@ -590,17 +590,16 @@ function renderEmployees(){
   const q=$("empSearch").value.trim().toLowerCase();
   let rows=employees; if(q) rows=rows.filter(e=>e.name.toLowerCase().includes(q));
   const tb=$("empBody");
-  if(!rows.length){ tb.innerHTML=`<tr><td colspan="9"><div class="empty">No employees yet — add your first one.</div></td></tr>`; return; }
+  if(!rows.length){ tb.innerHTML=`<tr><td colspan="8"><div class="empty">No employees yet — add your first one.</div></td></tr>`; return; }
   tb.innerHTML=rows.map(e=>{
     const av=avatarHTML(e.photo_path, e.name);
-    const face=e.has_embedding?`<span class="pill ready">ready</span>`:`<span class="pill missing">missing</span>`;
     const login=e.has_login?`<span class="pill ready">yes</span>`:`<span class="pill unmarked">no</span>`;
     const st=e.active?`<span class="pill active">active</span>`:`<span class="pill inactive">inactive</span>`;
     return `<tr class="clickable" onclick="openProfile(${e.id})">
       <td><div class="avatar">${av}</div></td>
       <td>${e.name}</td><td>${e.department||'—'}</td><td>${e.designation||'—'}</td>
       <td style="color:var(--muted); font-size:.82rem;">${e.email||'—'}</td>
-      <td>${face}</td><td>${login}</td><td>${st}</td>
+      <td>${login}</td><td>${st}</td>
       <td onclick="event.stopPropagation()">
         <button class="icon-btn" title="Edit" onclick="openEdit(${e.id})">✎</button>
         <button class="icon-btn" title="Regenerate face embedding" onclick="regen(${e.id})">⟳</button>
@@ -814,7 +813,6 @@ function openProfile(id){
   $("pf-sub").textContent = [e.department, "EMP-"+String(e.id).padStart(4,"0")].filter(Boolean).join(" · ");
   $("pf-pills").innerHTML = [
     e.active?`<span class="pill active">active</span>`:`<span class="pill inactive">inactive</span>`,
-    e.has_embedding?`<span class="pill ready">face ready</span>`:`<span class="pill missing">face missing</span>`,
     e.has_login?`<span class="pill ready">login yes</span>`:`<span class="pill unmarked">login no</span>`,
   ].join("");
   $("pf-email").textContent = e.email||"—";
