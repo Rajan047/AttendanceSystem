@@ -35,6 +35,7 @@
     }
 
     * {
+      scrollbar-width: none;
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -313,7 +314,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: 280px 1fr 280px;
       gap: 16px;
       margin-top: 16px;
       align-items: start;
@@ -821,7 +822,7 @@
   overflow-y: auto;
 
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  scrollbar-width: none;
 }
 
 /* Keep the table wider than the mobile screen when required */
@@ -1121,21 +1122,8 @@ table.gridtbl tbody td.dcol {
     }
 
     ::-webkit-scrollbar {
-      width: 9px;
-      height: 9px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--border-2);
-      border-radius: 6px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #3d4a56;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
+      width: 0;
+      height: 0;
     }
 
     button:focus-visible,
@@ -1149,6 +1137,14 @@ table.gridtbl tbody td.dcol {
     @media(max-width:980px) {
       .stats {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      #view-live .stats .card {
+        cursor: pointer;
+        transition: border-color .15s;
+      }
+      #view-live .stats .card:active {
+        border-color: var(--teal);
       }
 
       .grid {
@@ -1178,12 +1174,71 @@ table.gridtbl tbody td.dcol {
         font-size: 1.9rem;
       }
 
-      #view-live table thead th:nth-child(5),
-      #view-live table tbody td:nth-child(5),
-      #mv-summary table thead th:nth-child(5),
-      #mv-summary table tbody td:nth-child(5) {
-        display: none;
+      #view-live .stats .card {
+        cursor: pointer;
+        transition: border-color .15s;
       }
+      #view-live .stats .card:active {
+        border-color: var(--teal);
+      }
+
+      #view-live .stats .card {
+        cursor: pointer;
+        transition: border-color .15s;
+      }
+      #view-live .stats .card:active {
+        border-color: var(--teal);
+      }
+
+      .month-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 14px;
+      }
+
+      .month-bar .mtitle {
+        font-size: 1.1rem;
+      }
+
+      #monthSel {
+        width: 100%;
+        font-size: 1rem;
+        padding: 10px 12px;
+      }
+
+      #msearch {
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        width: 100%;
+        font-size: 1rem;
+        padding: 10px 12px;
+      }
+
+      .month-bar .btn {
+        width: 100%;
+        text-align: center;
+        padding: 10px 12px;
+        font-size: .9rem;
+      }
+
+      .panel-head {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .panel-head h2 {
+        width: 100%;
+        margin-bottom: 4px;
+      }
+
+      #msearch {
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        flex: 1 1 100%;
+      }
+
+
     }
   </style>
 </head>
@@ -1475,6 +1530,37 @@ table.gridtbl tbody td.dcol {
       $("lbImg").src = src;
       $("lbCap").textContent = caption;
       $("photoLightbox").style.display = "flex";
+    }
+
+    function renderPresentToday(records) {
+      const list = $("presentList");
+      const present = records.filter(r => (r.status || "").toLowerCase() === "present");
+      const unique = [];
+      const seen = new Set();
+      present.forEach(r => {
+        if (!seen.has(r.name)) { seen.add(r.name); unique.push(r); }
+      });
+      $("present-count").textContent = unique.length;
+      if (!unique.length) {
+        list.innerHTML = `<div class="empty"><div class="ic">○</div><p>No present employees today</p></div>`;
+        return;
+      }
+      list.innerHTML = unique.map(r => {
+        const thumb = r.photo || r.profile_photo;
+        const thumbInner = avatarHTML(thumb, r.name);
+        const safeName = r.name.replace(/'/g, "&#39;");
+        const thumbClick = thumb
+          ? ` onclick="openLightbox('/photos/${thumb}', '${safeName} · ${r.time}')"`
+          : "";
+        return `
+      <div class="person">
+        <div class="avatar"${thumbClick}>${thumbInner}</div>
+        <div class="info">
+          <div class="pname">${r.name}</div>
+          <div class="ptime">in · ${r.time || "—"}</div>
+        </div>
+      </div>`;
+      }).join("");
     }
     $("photoLightbox").addEventListener("click", () => { $("photoLightbox").style.display = "none"; });
 
@@ -1799,6 +1885,7 @@ table.gridtbl tbody td.dcol {
     }
 
     * {
+      scrollbar-width: none;
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -2077,7 +2164,7 @@ table.gridtbl tbody td.dcol {
 
     .grid {
       display: grid;
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: 280px 1fr 280px;
       gap: 16px;
       margin-top: 16px;
       align-items: start;
@@ -2585,7 +2672,7 @@ table.gridtbl tbody td.dcol {
   overflow-y: auto;
 
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  scrollbar-width: none;
 }
 
 /* Keep the table wider than the mobile screen when required */
@@ -2885,21 +2972,8 @@ table.gridtbl tbody td.dcol {
     }
 
     ::-webkit-scrollbar {
-      width: 9px;
-      height: 9px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--border-2);
-      border-radius: 6px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #3d4a56;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
+      width: 0;
+      height: 0;
     }
 
     button:focus-visible,
@@ -2913,6 +2987,14 @@ table.gridtbl tbody td.dcol {
     @media(max-width:980px) {
       .stats {
         grid-template-columns: repeat(2, 1fr);
+      }
+
+      #view-live .stats .card {
+        cursor: pointer;
+        transition: border-color .15s;
+      }
+      #view-live .stats .card:active {
+        border-color: var(--teal);
       }
 
       .grid {
@@ -2942,12 +3024,66 @@ table.gridtbl tbody td.dcol {
         font-size: 1.9rem;
       }
 
+      #view-live .stats .card {
+        cursor: pointer;
+        transition: border-color .15s;
+      }
+      #view-live .stats .card:active {
+        border-color: var(--teal);
+      }
+
       /* Hide only the Camera column in the Live Monitor table.
          Do not affect the Monthly Day-by-Day attendance grid. */
-      #view-live .tbl-scroll table:not(.gridtbl) thead th:nth-child(5),
-      #view-live .tbl-scroll table:not(.gridtbl) tbody td:nth-child(5) {
-        display: none;
+
+      .month-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 14px;
       }
+
+      .month-bar .mtitle {
+        font-size: 1.1rem;
+      }
+
+      #monthSel {
+        width: 100%;
+        font-size: 1rem;
+        padding: 10px 12px;
+      }
+
+      #msearch {
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        width: 100%;
+        font-size: 1rem;
+        padding: 10px 12px;
+      }
+
+      .month-bar .btn {
+        width: 100%;
+        text-align: center;
+        padding: 10px 12px;
+        font-size: .9rem;
+      }
+
+      .panel-head {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .panel-head h2 {
+        width: 100%;
+        margin-bottom: 4px;
+      }
+
+      #msearch {
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        flex: 1 1 100%;
+      }
+
+
     }
   </style>
 </head>
@@ -3007,7 +3143,7 @@ table.gridtbl tbody td.dcol {
       </div>
 
       <div class="grid">
-        <div class="panel">
+        <div class="panel" id="panel-inside">
           <div class="panel-head">
             <h2>Currently Inside</h2>
             <span class="count-badge" id="inside-count">0</span>
@@ -3015,7 +3151,7 @@ table.gridtbl tbody td.dcol {
           <div class="inside-list" id="insideList"></div>
         </div>
 
-        <div class="panel">
+        <div class="panel" id="panel-activity">
           <div class="panel-head">
             <h2>Activity Feed</h2>
             <input class="search" id="search" placeholder="Search name…">
@@ -3034,6 +3170,14 @@ table.gridtbl tbody td.dcol {
               <tbody id="tbody"></tbody>
             </table>
           </div>
+        </div>
+
+        <div class="panel" id="panel-present">
+          <div class="panel-head">
+            <h2>Present Today</h2>
+            <span class="count-badge" id="present-count">0</span>
+          </div>
+          <div class="inside-list" id="presentList"></div>
         </div>
       </div>
 
@@ -3240,6 +3384,37 @@ table.gridtbl tbody td.dcol {
       $("lbCap").textContent = caption;
       $("photoLightbox").style.display = "flex";
     }
+
+    function renderPresentToday(records) {
+      const list = $("presentList");
+      const present = records.filter(r => (r.status || "").toLowerCase() === "present");
+      const unique = [];
+      const seen = new Set();
+      present.forEach(r => {
+        if (!seen.has(r.name)) { seen.add(r.name); unique.push(r); }
+      });
+      $("present-count").textContent = unique.length;
+      if (!unique.length) {
+        list.innerHTML = `<div class="empty"><div class="ic">○</div><p>No present employees today</p></div>`;
+        return;
+      }
+      list.innerHTML = unique.map(r => {
+        const thumb = r.photo || r.profile_photo;
+        const thumbInner = avatarHTML(thumb, r.name);
+        const safeName = r.name.replace(/'/g, "&#39;");
+        const thumbClick = thumb
+          ? ` onclick="openLightbox('/photos/${thumb}', '${safeName} · ${r.time}')"`
+          : "";
+        return `
+      <div class="person">
+        <div class="avatar"${thumbClick}>${thumbInner}</div>
+        <div class="info">
+          <div class="pname">${r.name}</div>
+          <div class="ptime">in · ${r.time || "—"}</div>
+        </div>
+      </div>`;
+      }).join("");
+    }
     $("photoLightbox").addEventListener("click", () => { $("photoLightbox").style.display = "none"; });
 
     function renderCams(perCam) {
@@ -3287,6 +3462,7 @@ table.gridtbl tbody td.dcol {
 
         renderInside(d.inside, d.records);
         renderTable(d.records);
+        renderPresentToday(d.records);
         renderCams(d.per_camera);
         if ($("dateSel").options.length === 0) renderDateOptions(d.available_dates, d.date);
 
@@ -3518,6 +3694,37 @@ table.gridtbl tbody td.dcol {
       window.location = "/api/monthly/grid-export?month=" + encodeURIComponent($("monthSel").value);
     });
 
+
+    const sInside = $("s-inside");
+    const sPresent = $("s-present");
+    const sEntries = $("s-entries");
+
+    if (sInside) {
+      sInside.style.cursor = "pointer";
+      sInside.title = "Tap to scroll to Currently Inside";
+      sInside.addEventListener("click", () => {
+        const panel = document.getElementById("panel-inside");
+        if (panel) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+
+    if (sPresent) {
+      sPresent.style.cursor = "pointer";
+      sPresent.title = "Tap to scroll to Present Today";
+      sPresent.addEventListener("click", () => {
+        const panel = document.getElementById("panel-present");
+        if (panel) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+
+    if (sEntries) {
+      sEntries.style.cursor = "pointer";
+      sEntries.title = "Tap to scroll to Activity Feed";
+      sEntries.addEventListener("click", () => {
+        const panel = document.getElementById("panel-activity");
+        if (panel) panel.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
     fetchData().then(restartPoll);
   </script>
 </body>
