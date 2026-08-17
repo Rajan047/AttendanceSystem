@@ -135,7 +135,8 @@ def _build_monthly(month):
     present_by = defaultdict(set)
     io_map = defaultdict(lambda: defaultdict(lambda: {"ins": [], "outs": []}))
     for r in month_rows:
-        nm, dt = r["name"], r["date"]
+        nm = " ".join(str(r.get("name", "")).split()).strip()
+        dt = r["date"]
         tm = r.get("time", "")
         st = (r.get("status", "") or "").lower()
         if st in ("present", "exit"):
@@ -153,6 +154,13 @@ def _build_monthly(month):
             times_by[nm][dt] = {"in": first_in, "out": last_out}
 
     roster, source = db.get_roster()
+    roster = [
+        " ".join(str(name).split()).strip()
+        for name in roster
+        if str(name).strip()
+]
+
+    
     everyone = sorted(set(roster) | set(present_by.keys()))
 
     wd = len(working_dates)
