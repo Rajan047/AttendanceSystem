@@ -76,6 +76,15 @@ def init_auth_schema(seed_admin=True):
         ]:
             cur.execute(ddl)
 
+        for col in ("email", "phone"):
+            try:
+                cur.execute(
+                    f"CREATE UNIQUE INDEX IF NOT EXISTS idx_employees_{col} "
+                    f"ON employees({col}) WHERE {col} IS NOT NULL"
+                )
+            except Exception as e:
+                print(f"[auth_db] {col} unique index note: {e}")
+
         conn.commit()
         cur.close()
 
@@ -123,6 +132,46 @@ def _seed_default_admin(conn):
         print("[auth_db] Seeded default admin -> admin / admin123 "
               "(CHANGE THIS after first login)")
     cur.close()
+
+
+def _check_employee_uniqueness(cur, name, email, phone, exclude_emp_id=None):
+    if email:
+        q = "SELECT id FROM employees WHERE email = %s"
+        p = [email]
+        if exclude_emp_id:
+            q += " AND id != %s"
+            p.append(exclude_emp_id)
+        cur.execute(q, tuple(p))
+        if cur.fetchone():
+            raise ValueError(f"Email '{email}' already exists.")
+    if phone:
+        q = "SELECT id FROM employees WHERE phone = %s"
+        p = [phone]
+        if exclude_emp_id:
+            q += " AND id != %s"
+            p.append(exclude_emp_id)
+        cur.execute(q, tuple(p))
+        if cur.fetchone():
+            raise ValueError(f"Phone '{phone}' already exists.")
+    if name:
+        q = "SELECT id FROM employees WHERE name = %s"
+        p = [name]
+        if exclude_emp_id:
+            q += " AND id != %s"
+            p.append(exclude_emp_id)
+        cur.execute(q, tuple(p))
+        if cur.fetchone():
+            raise ValueError(f"Employee '{name}' already exists.")
+
+
+def check_employee_uniqueness(name=None, email=None, phone=None, exclude_emp_id=None):
+    conn = db.get_conn()
+    try:
+        cur = conn.cursor()
+        _check_employee_uniqueness(cur, name, email, phone, exclude_emp_id)
+        cur.close()
+    finally:
+        conn.close()
 
 
 # =============================================================================
@@ -264,21 +313,14 @@ def list_employees_full():
 
 def add_employee(name, department=None, designation=None, email=None,
                  phone=None, join_date=None, photo_path=None):
-    """Insert or update-on-conflict (name is unique). Returns employee id."""
     conn = db.get_conn()
     try:
         cur = conn.cursor()
+        _check_employee_uniqueness(cur, name, email, phone)
         cur.execute("""
             INSERT INTO employees (name, department, designation, email, phone,
                                    join_date, photo_path, active)
             VALUES (%s, %s, %s, %s, %s, %s, %s, TRUE)
-            ON CONFLICT (name) DO UPDATE SET
-                department  = COALESCE(EXCLUDED.department, employees.department),
-                designation = COALESCE(EXCLUDED.designation, employees.designation),
-                email       = COALESCE(EXCLUDED.email, employees.email),
-                phone       = COALESCE(EXCLUDED.phone, employees.phone),
-                join_date   = COALESCE(EXCLUDED.join_date, employees.join_date),
-                photo_path  = COALESCE(EXCLUDED.photo_path, employees.photo_path)
             RETURNING id
         """, (name, department, designation, email, phone, join_date, photo_path))
         emp_id = cur.fetchone()["id"]
@@ -290,7 +332,6 @@ def add_employee(name, department=None, designation=None, email=None,
 
 
 def update_employee(emp_id, **fields):
-    # Date fields mein empty string = NULL
     for date_field in ('join_date', 'resignation'):
         if date_field in fields and fields[date_field] == '':
             fields[date_field] = None
@@ -322,6 +363,15 @@ def update_employee(emp_id, **fields):
 
     try:
         cur = conn.cursor()
+
+        if any(k in fields for k in ("name", "email", "phone")):
+            _check_employee_uniqueness(
+                cur,
+                fields.get("name"),
+                fields.get("email"),
+                fields.get("phone"),
+                exclude_emp_id=emp_id,
+            )
 
         cur.execute(
             f"UPDATE employees SET {', '.join(sets)} WHERE id = %s",

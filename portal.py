@@ -309,15 +309,20 @@ def api_add_employee():
     if not name:
         return jsonify({"error": "Name is required"}), 400
 
-    emp_id = auth_db.add_employee(
-        name=name,
-        department=f.get("department") or None,
-        designation=f.get("designation") or None,
-        email=f.get("email") or None,
-        phone=f.get("phone") or None,
-        join_date=f.get("join_date") or None,
-        photo_path=None,
-    )
+    try:
+        emp_id = auth_db.add_employee(
+            name=name,
+            department=f.get("department") or None,
+            designation=f.get("designation") or None,
+            email=f.get("email") or None,
+            phone=f.get("phone") or None,
+            join_date=f.get("join_date") or None,
+            photo_path=None,
+        )
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        return jsonify({"error": f"Failed to add employee: {e}"}), 500
 
     db.sync_roster([name])
 
@@ -365,7 +370,18 @@ def api_update_employee(emp_id):
     fields = {k: f.get(k) for k in
           ("name", "department", "designation", "email", "phone",
            "join_date", "active")
-           if f.get(k) is not None}
+          if f.get(k) is not None}
+
+    if any(k in fields for k in ("name", "email", "phone")):
+        try:
+            auth_db.check_employee_uniqueness(
+                name=fields.get("name"),
+                email=fields.get("email"),
+                phone=fields.get("phone"),
+                exclude_emp_id=emp_id,
+            )
+        except ValueError as e:
+            return jsonify({"error": str(e)}), 400
 
     username = (f.get("username") or "").strip()
     password = f.get("password") or ""
@@ -412,7 +428,12 @@ def api_update_employee(emp_id):
             if result["warnings"]:
                 resp["warnings"] = result["warnings"]
 
-    auth_db.update_employee(emp_id, **fields)
+    try:
+        auth_db.update_employee(emp_id, **fields)
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
     if username:
         login_warnings = auth_db.set_employee_login(emp_id, username, password)
