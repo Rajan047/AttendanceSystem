@@ -833,7 +833,7 @@ table.gridtbl {
   /* Important */
   width: max-content;
   min-width: 100%;
-  table-layout: auto;
+  table-layout: fixed;
 }
 
 /* Prevent browser from shrinking columns */
@@ -921,6 +921,7 @@ table.gridtbl tbody td {
 table.gridtbl tbody td.dcol {
   min-width: 38px;
   width: 38px;
+  box-sizing: border-box;
 }
 
 /* Mobile */
@@ -981,6 +982,8 @@ table.gridtbl tbody td.dcol {
       border-radius: 6px;
       position: relative;
       cursor: default;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .cell.p {
@@ -995,6 +998,7 @@ table.gridtbl tbody td.dcol {
 
     table.gridtbl thead th.today {
       background: rgba(53, 208, 168, .1);
+      box-sizing: border-box;
     }
 
     table.gridtbl thead th.today .dn {
@@ -1003,6 +1007,7 @@ table.gridtbl tbody td.dcol {
 
     table.gridtbl td.today-col {
       background: rgba(53, 208, 168, .045);
+      box-sizing: border-box;
     }
 
     table.gridtbl tfoot td {
@@ -1737,9 +1742,9 @@ table.gridtbl tbody td.dcol {
             const io = (e.days && e.days[d]) || {};
             const tin = io.in || "—";
             const tout = io.out || "—";
-            return `<td class="${todayCls.trim()}"><div class="cell p" data-d="${d}" data-in="${tin}" data-out="${tout}">P</div></td>`;
+            return `<td class="dcol ${todayCls.trim()}"><div class="cell p" data-d="${d}" data-in="${tin}" data-out="${tout}">P</div></td>`;
           }
-          return `<td class="${todayCls.trim()}"><div class="cell a">A</div></td>`;
+          return `<td class="dcol ${todayCls.trim()}"><div class="cell a">A</div></td>`;
         }).join("");
         const c = pctClass(e.attendance_pct);
         return `<tr>
@@ -2050,6 +2055,24 @@ table.gridtbl tbody td.dcol {
 
     .live-tag.paused .dot {
       animation: none;
+    }
+
+    .live-tag.delayed {
+      color: var(--amber);
+      background: var(--amber-dim);
+      border-color: rgba(240, 184, 86, .28);
+    }
+
+    .live-tag.failed {
+      color: var(--red);
+      background: var(--red-dim);
+      border-color: rgba(236, 111, 116, .28);
+    }
+
+    .live-tag .live-time {
+      font-size: .65rem;
+      opacity: .8;
+      letter-spacing: .03em;
     }
 
     @keyframes pulse {
@@ -2705,12 +2728,11 @@ table.gridtbl thead th {
 
 /* Date columns */
 table.gridtbl thead th.dcol {
-  vertical-align: bottom;
-  line-height: 1.25;
-
-  /* Force every date column to have enough space */
-  min-width: 38px;
-  width: 38px;
+  vertical-align: middle;
+  line-height: 1.2;
+  min-width: 46px;
+  width: 46px;
+  padding: 8px 4px;
 }
 
 /* Day name */
@@ -2771,6 +2793,7 @@ table.gridtbl tbody td {
 table.gridtbl tbody td.dcol {
   min-width: 38px;
   width: 38px;
+  box-sizing: border-box;
 }
 
 /* Mobile */
@@ -2780,22 +2803,32 @@ table.gridtbl tbody td.dcol {
     width: 100%;
     max-width: 100%;
 
+    /* Horizontal scroll only for the attendance grid */
     overflow-x: auto;
-    overflow-y: auto;
+    overflow-y: hidden;
 
-    /* Make horizontal scrolling smooth */
     -webkit-overflow-scrolling: touch;
+    position: relative;
+    isolation: isolate;
   }
 
   table.gridtbl {
     width: max-content;
-    min-width: max-content;
+    min-width: 100%;
+    table-layout: fixed;
   }
 
   /* Employee name */
   table.gridtbl .nm {
     min-width: 125px;
     width: 125px;
+
+    /* Keep sticky name column above the table,
+       but below the header */
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: var(--panel);
   }
 
   /* Date columns */
@@ -2812,10 +2845,12 @@ table.gridtbl tbody td.dcol {
 
   table.gridtbl thead th.dcol .dn {
     font-size: .52rem;
+    white-space: nowrap;
   }
 
   table.gridtbl thead th.dcol .dnum {
     font-size: .68rem;
+    white-space: nowrap;
   }
 }
     .cell {
@@ -2831,6 +2866,8 @@ table.gridtbl tbody td.dcol {
       border-radius: 6px;
       position: relative;
       cursor: default;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .cell.p {
@@ -2845,6 +2882,7 @@ table.gridtbl tbody td.dcol {
 
     table.gridtbl thead th.today {
       background: rgba(53, 208, 168, .1);
+      box-sizing: border-box;
     }
 
     table.gridtbl thead th.today .dn {
@@ -2853,6 +2891,7 @@ table.gridtbl tbody td.dcol {
 
     table.gridtbl td.today-col {
       background: rgba(53, 208, 168, .045);
+      box-sizing: border-box;
     }
 
     table.gridtbl tfoot td {
@@ -3106,7 +3145,7 @@ table.gridtbl tbody td.dcol {
       </div>
 
       <div class="ctrls">
-        <span class="live-tag" id="liveTag"><span class="dot"></span> Live</span>
+        <span class="live-tag" id="liveTag"><span class="dot"></span> Live <small class="live-time" style="font-weight:500;opacity:.85;"></small></span>
         <select id="dateSel" title="Select a date"></select>
         <button class="btn btn-accent" id="exportBtn">⤓ Export CSV</button>
         <a class="btn" href="/portal/login">Admin / Login</a>
@@ -3136,7 +3175,7 @@ table.gridtbl tbody td.dcol {
           <div class="foot">All detections logged</div>
         </div>
         <div class="card plain">
-          <div class="lbl">Last Entry</div>
+          <div class="lbl">Last Update</div>
           <div class="num" id="s-last" style="font-size:1.55rem;">—</div>
           <div class="foot" id="s-last-foot">No entries yet</div>
         </div>
@@ -3279,6 +3318,10 @@ table.gridtbl tbody td.dcol {
     let currentDate = "";
     let allRecords = [];
     let pollTimer = null;
+    let lastApiSuccess = null;
+    let apiOk = false;
+    let liveTimerInterval = null;
+
 
     const $ = id => document.getElementById(id);
 
@@ -3439,6 +3482,46 @@ table.gridtbl tbody td.dcol {
       ).join("");
     }
 
+    function updateLiveTag() {
+      const tag = $("liveTag");
+      if (!tag) return;
+
+      let statusText = "Live";
+      let statusClass = "live-tag";
+      let timeText = "";
+
+      if (apiOk && lastApiSuccess) {
+        const age = Date.now() - lastApiSuccess;
+        if (age < 10000) {
+          statusText = "Live";
+          statusClass = "live-tag";
+        } else if (age < 30000) {
+          statusText = "Delayed";
+          statusClass = "live-tag delayed";
+        } else {
+          statusText = "Failed";
+          statusClass = "live-tag failed";
+        }
+        const d = new Date(lastApiSuccess);
+        timeText = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true });
+      } else {
+        statusText = "Failed";
+        statusClass = "live-tag failed";
+      }
+
+      tag.className = statusClass;
+      tag.innerHTML = `<span class="dot"></span> ${statusText} <small class="live-time" style="font-weight:500;opacity:.85;">${timeText ? "· " + timeText : ""}</small>`;
+    }
+
+    function updateLiveTimeText() {
+      const tag = $("liveTag");
+      if (!tag || !lastApiSuccess) return;
+      const d = new Date(lastApiSuccess);
+      const timeText = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true });
+      const timeEl = tag.querySelector(".live-time");
+      if (timeEl) timeEl.textContent = "· " + timeText;
+    }
+
     async function fetchData() {
       try {
         const url = "/api/data" + (currentDate ? "?date=" + encodeURIComponent(currentDate) : "");
@@ -3467,12 +3550,20 @@ table.gridtbl tbody td.dcol {
         if ($("dateSel").options.length === 0) renderDateOptions(d.available_dates, d.date);
 
         const tag = $("liveTag");
-        if (isToday) { tag.className = "live-tag"; tag.innerHTML = `<span class="dot"></span> Live`; }
-        else { tag.className = "live-tag paused"; tag.innerHTML = `<span class="dot"></span> History`; }
+        if (isToday) {
+          lastApiSuccess = Date.now();
+          apiOk = true;
+          updateLiveTag();
+        } else {
+          tag.className = "live-tag paused";
+          tag.innerHTML = `<span class="dot"></span> History <small class="live-time" style="font-weight:500;opacity:.85;"></small>`;
+        }
 
         $("footnote").textContent = `Last updated ${d.server_time}` + (d.csv_exists ? "" : "  ·  ⚠ Attendance log not yet created — start the recognition service");
       } catch (e) {
         $("footnote").textContent = "⚠ Unable to reach the server — please confirm the dashboard service is running";
+        apiOk = false;
+        updateLiveTag();
       }
     }
 
@@ -3493,6 +3584,8 @@ table.gridtbl tbody td.dcol {
         pollTimer = setInterval(fetchData, POLL_MS);
       }
     }
+
+    setInterval(updateLiveTimeText, 1000);
 
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) { clearInterval(pollTimer); }
@@ -3591,9 +3684,9 @@ table.gridtbl tbody td.dcol {
             const io = (e.days && e.days[d]) || {};
             const tin = io.in || "—";
             const tout = io.out || "—";
-            return `<td class="${todayCls.trim()}"><div class="cell p" data-d="${d}" data-in="${tin}" data-out="${tout}">P</div></td>`;
+            return `<td class="dcol ${todayCls.trim()}"><div class="cell p" data-d="${d}" data-in="${tin}" data-out="${tout}">P</div></td>`;
           }
-          return `<td class="${todayCls.trim()}"><div class="cell a">A</div></td>`;
+          return `<td class="dcol ${todayCls.trim()}"><div class="cell a">A</div></td>`;
         }).join("");
         const c = pctClass(e.attendance_pct);
         return `<tr>

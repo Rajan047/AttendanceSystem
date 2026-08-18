@@ -69,4 +69,4 @@ WEEKEND_DAYS      = [5, 6]   # 0=Mon ... 6=Sun
 #  FLASK SERVER
 # =============================================================================
 HOST = os.environ.get("FLASK_HOST", "0.0.0.0")
-PORT = int(os.environ.get("PORT", os.environ.get("FLASK_PORT", 5400)))
+PORT = int(os.environ.get("PORT", os.environ.get("FLASK_PORT", 5500)))
