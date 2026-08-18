@@ -114,6 +114,9 @@
   tbody tr.clickable{cursor:pointer;}
   .avatar .fallback, .profile-avatar .fallback{width:100%; height:100%; display:flex; align-items:center; justify-content:center;}
 
+  .cf-current{color:var(--amber);}
+  .cf-status{color:var(--teal);}
+
   /* ---- Employee profile card ---- */
   .profile-modal{max-width:460px; max-height:100vh; padding:0; overflow-y:auto; scrollbar-width:none; border-radius:22px;}
   .profile-modal::-webkit-scrollbar{display:none;}
@@ -200,10 +203,15 @@
     #view-overview .stats{grid-template-columns:repeat(3,1fr);}
     #view-overview .panel{overflow:visible;}
     #view-overview .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:0 0 18px 18px;}
-    #view-overview .table-scroll table{min-width:600px;}
+    #view-overview .table-scroll table{min-width:640px;}
     thead th, tbody td{padding:8px 10px; font-size:.78rem;}
-    .qm-btn{padding:5px 8px; font-size:.68rem; border-radius:6px;}
+    .qm-btn{padding:6px 10px; font-size:.72rem; border-radius:8px; min-width:44px; justify-content:center;}
+    .quickmark{gap:6px;}
     .avatar{width:28px; height:28px; font-size:.68rem;}
+    #view-overview .panel-head{flex-direction:row; flex-wrap:wrap; gap:10px;}
+    #view-overview .panel-head h2{width:100%;}
+    #view-overview .panel-head input[type=date]{flex:1; max-width:160px;}
+    #view-overview .panel-head .search{flex:1; max-width:180px;}
     #view-employees .panel-head .btn{margin-left:0; width:100%; justify-content:center;}
     #view-employees .panel{overflow:visible;}
     #view-employees .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:0 0 18px 18px;}
@@ -243,7 +251,12 @@
     .card{padding:12px;}
     .card .lbl{font-size:.62rem;}
     .panel-head h2{font-size:.85rem;}
-    #view-overview .table-scroll table{min-width:480px;}
+    #view-overview .table-scroll table{min-width:520px;}
+    #view-overview .panel-head{flex-direction:column; gap:8px;}
+    #view-overview .panel-head input[type=date]{width:100%; max-width:none;}
+    #view-overview .panel-head .search{width:100%; max-width:none;}
+    .qm-btn{padding:8px 6px; font-size:.7rem; border-radius:8px; min-width:42px; flex:1 1 auto; text-align:center; white-space:nowrap;}
+    .quickmark{display:flex; flex-wrap:wrap; gap:5px;}
     .topbar{padding:12px 14px; gap:10px;}
     .brand h1{font-size:.95rem;}
     .brand .sub{font-size:.65rem;}
@@ -385,6 +398,23 @@
           <tbody id="reqBody"></tbody>
         </table>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-backdrop" id="confirmModal">
+  <div class="modal" style="max-width:400px;">
+    <h3>Confirm Attendance Mark</h3>
+    <div class="errbox" id="cfErr"></div>
+    <p style="color:var(--muted); font-size:.85rem; margin-top:4px;">
+      Employee: <b style="color:var(--text);" id="cf-name"></b><br>
+      Current status: <b style="color:var(--text);" id="cf-current"></b><br>
+      New status: <b style="color:var(--teal);" id="cf-status"></b>
+    </p>
+    <div class="modal-actions">
+      <button class="btn" id="cfCancel">Cancel</button>
+      <button class="btn btn-accent" id="cfConfirm">Confirm</button>
     </div>
   </div>
 </div>
@@ -574,12 +604,55 @@ function renderAtt(){
       </div></td></tr>`;
   }).join("");
 }
-async function mark(name,status){
-  const res=await fetch("/api/portal/attendance/mark",{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({name,status,date:$("attDate").value})});
-  if(res.ok){ toast(`${name}: ${statusLabel(status)}`); loadOverview(); }
-  else { const d=await res.json(); toast(d.error||"Failed",false); }
+function getCurrentStatus(name){
+  if(!attData) return null;
+  const r = attData.marked.find(x => x.name === name);
+  return r ? r.status : null;
 }
+
+async function mark(name,status){
+  const current = getCurrentStatus(name);
+  if(current === status){
+    toast(`${name} is already marked ${statusLabel(status)} today.`, false);
+    return;
+  }
+
+  $("cf-name").textContent = name;
+  $("cf-status").textContent = statusLabel(status);
+  $("cf-current").textContent = current ? statusLabel(current) : "unmarked";
+  $("cfErr").style.display = "none";
+  window._pendingMark = {name, status};
+  $("confirmModal").classList.add("open");
+}
+
+$("cfCancel").addEventListener("click", ()=>{
+  window._pendingMark = null;
+  $("confirmModal").classList.remove("open");
+});
+
+$("cfConfirm").addEventListener("click", async ()=>{
+  if(!window._pendingMark) return;
+  const {name, status} = window._pendingMark;
+  window._pendingMark = null;
+  $("confirmModal").classList.remove("open");
+
+  try {
+    const res = await fetch("/api/portal/attendance/mark",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({name,status,date:$("attDate").value})});
+    if(res.ok){
+      toast(`${name}: ${statusLabel(status)}`);
+      loadOverview();
+    } else {
+      const d = await res.json();
+      toast(d.error || "Failed", false);
+    }
+  } catch (err) {
+    toast("Request failed — " + (err?.message || "network error"), false);
+  }
+});
+
+$("confirmModal").addEventListener("click", e=>{ if(e.target.id==="confirmModal"){ window._pendingMark=null; $("confirmModal").classList.remove("open"); } });
+
 $("attDate").addEventListener("change",loadOverview);
 $("attSearch").addEventListener("input",renderAtt);
 

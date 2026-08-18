@@ -485,7 +485,8 @@ def manual_mark(name, status, on_date=None, in_time=None, marked_by="admin"):
     """
     HR/admin manual mark. Upserts one row per (name, date) for manual statuses
     so re-marking corrects rather than duplicates. Present/Exit still append
-    (they're event-based like the cameras produce).
+    (they're event-based like the cameras produce), but duplicate same-day
+    same-status marks are rejected.
     """
     if status not in _VALID_MANUAL:
         raise ValueError(f"status must be one of {sorted(_VALID_MANUAL)}")
@@ -503,8 +504,18 @@ def manual_mark(name, status, on_date=None, in_time=None, marked_by="admin"):
             raise ValueError(f"No employee named {name}")
         emp_id = row["id"]
 
-        # For manual day-statuses, replace any prior manual mark for that day
-        # (but never clobber camera Present/Exit event rows).
+        cur.execute(
+            "SELECT status FROM attendance WHERE name = %s AND att_date = %s "
+            "ORDER BY att_time DESC, id DESC LIMIT 1",
+            (name, on_date),
+        )
+        latest = cur.fetchone()
+        if latest and latest["status"] == status:
+            cur.close()
+            raise ValueError(
+                f"{name} is already marked {status} today."
+            )
+
         if status in ("WFH", "Leave", "Absent", "HalfDay"):
             cur.execute(
                 "DELETE FROM attendance WHERE name = %s AND att_date = %s "
@@ -599,6 +610,9 @@ def review_request(req_id, decision, reviewer):
 
     if decision == "approved":
         status = "WFH" if req["type"] == "wfh" else "Leave"
-        manual_mark(req["emp_name"], status,
-                    on_date=str(req["req_date"]), marked_by=f"req:{reviewer}")
+        try:
+            manual_mark(req["emp_name"], status,
+                        on_date=str(req["req_date"]), marked_by=f"req:{reviewer}")
+        except ValueError as e:
+            print(f"[auth_db] review_request skipped: {e}")
     return True
