@@ -1616,68 +1616,91 @@ def sync_employee_photos_from_dir():
     """
     Employees ke photo_path ko local PHOTOS_DIR se backfill karo.
 
-    BUG FIXES:
-      1. Pehle sirf PHOTOS_DIR/<folder>/ ke TOP-LEVEL files check hote the.
-         Zyada tar employees ke paas sirf date-wise subfolders hote hain
-         (camera captures) — top-level pe kuch nahi — isliye unka
-         photo_path kabhi set hi nahi hota tha. Ab date subfolders bhi
-         fallback ke taur pe check hote hain (_find_profile_photo).
-      2. Pehle folder ka RAW naam (jisme underscore hai, e.g.
-         "Amitabh_Prajapati") seedha `employees.name` (jisme space hai,
-         "Amitabh Prajapati") se match karne ki koshish hoti thi — kabhi
-         match hi nahi hota tha, aur ulta galat naam se DUPLICATE employee
-         INSERT ho jaata tha. Ab pehle existing employees ka
-         safe-folder-name -> row map banate hain, usi se match karte hain.
+    IMPORTANT:
+      - Employee ka real DB name kabhi bhi photo-folder name se create nahi hoga.
+      - Folder names sanitized hote hain, e.g. "Amitabh_prajapati".
+      - DB employee name "Amitabh prajapati" hi rahega.
+      - Existing employees ko sanitized folder-name ke through match karke
+        sirf photo_path update kiya jayega.
+      - Agar folder ka matching employee nahi milta, folder ko skip kiya jayega;
+        koi naya employee INSERT nahi hoga.
     """
     import os as _os
+
     if not _os.path.isdir(config.PHOTOS_DIR):
         return 0
 
     updated = 0
+
     try:
         conn = get_conn()
         try:
             cur = conn.cursor()
 
+            # Existing employees ka safe-folder-name -> employee row map.
+            # Example:
+            #   DB name    = "Amitabh prajapati"
+            #   folder     = "Amitabh_prajapati"
+            #   map key    = "Amitabh_prajapati"
             cur.execute("SELECT id, name, photo_path FROM employees")
-            emp_by_safe = {_safe_folder_name(r["name"]): r for r in cur.fetchall()}
+            employees = cur.fetchall()
+            emp_by_safe = {
+                _safe_folder_name(r["name"]): r
+                for r in employees
+            }
 
             for entry in sorted(_os.listdir(config.PHOTOS_DIR)):
                 emp_dir = _os.path.join(config.PHOTOS_DIR, entry)
+
                 if not _os.path.isdir(emp_dir):
                     continue
 
                 fname, subdir = _find_profile_photo(emp_dir)
                 if not fname:
                     continue
-                rel_path = f"{entry}/{subdir}/{fname}" if subdir else f"{entry}/{fname}"
 
+                rel_path = (
+                    f"{entry}/{subdir}/{fname}"
+                    if subdir
+                    else f"{entry}/{fname}"
+                )
+
+                # IMPORTANT: entry is a sanitized folder name, NOT the
+                # employee's database name.
                 row = emp_by_safe.get(entry)
-                if row is not None:
-                    if not row["photo_path"]:
-                        cur.execute(
-                            "UPDATE employees SET photo_path = %s WHERE id = %s",
-                            (rel_path, row["id"]),
-                        )
-                        updated += 1
-                else:
-                     # Folder mila, lekin matching employee DB mein nahi mila.
-    # Folder name ko employee name ke roop mein INSERT mat karo,
-    # kyunki folder name sanitized ho sakta hai (spaces -> "_").
-                     print(
-                        f"[db] Skipping unmatched photo folder: {entry} "
 
+                if row is None:
+                    # NEVER INSERT `entry` into employees.name.
+                    # Doing so creates duplicates such as:
+                    #   "Amitabh prajapati"
+                    #   "Amitabh_prajapati"
+                    print(
+                        f"[db] Skipping unmatched photo folder: {entry} "
                         f"(no matching employee found)"
                     )
-                
+                    continue
+
+                # Employee already exists. Only backfill photo_path.
+                if not row["photo_path"]:
+                    cur.execute(
+                        "UPDATE employees SET photo_path = %s WHERE id = %s",
+                        (rel_path, row["id"]),
+                    )
+                    updated += 1
+                    print(
+                        f"[db] Photo path updated → {row['name']} | {rel_path}"
+                    )
 
             conn.commit()
             cur.close()
+
         finally:
             conn.close()
+
     except Exception as e:
         print(f"[db] sync_employee_photos_from_dir skipped (offline): {e}")
         return 0
+
     return updated
 
 
