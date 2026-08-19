@@ -114,8 +114,14 @@
   tbody tr.clickable{cursor:pointer;}
   .avatar .fallback, .profile-avatar .fallback{width:100%; height:100%; display:flex; align-items:center; justify-content:center;}
 
-  .cf-current{color:var(--amber);}
-  .cf-status{color:var(--teal);}
+  .cf-icon{font-size:2.6rem; text-align:center; margin-bottom:6px; line-height:1;}
+  #cfTitle{font-size:1.05rem; font-weight:700;}
+  #cfConfirm.danger{background:var(--red-dim); border-color:rgba(236,111,116,.4); color:var(--red);}
+  #cfConfirm.danger:hover{background:rgba(236,111,116,.22);}
+  #cfConfirm.warning{background:var(--amber-dim); border-color:rgba(240,184,86,.4); color:var(--amber);}
+  #cfConfirm.warning:hover{background:rgba(240,184,86,.22);}
+  #cfConfirm.info{background:var(--teal-dim); border-color:rgba(53,208,168,.4); color:var(--teal);}
+  #cfConfirm.info:hover{background:rgba(53,208,168,.22);}
 
   /* ---- Employee profile card ---- */
   .profile-modal{max-width:460px; max-height:100vh; padding:0; overflow-y:auto; scrollbar-width:none; border-radius:22px;}
@@ -196,6 +202,54 @@
   .profile-loading{padding:50px 20px; text-align:center; color:var(--muted-2); font-size:.85rem;}
   ::-webkit-scrollbar{width:9px; height:9px;} ::-webkit-scrollbar-thumb{background:var(--border-2); border-radius:6px;}
   @media(max-width:980px){ .stats{grid-template-columns:repeat(3,1fr);} }
+    /* Monthly grid styles */
+    .grid-scroll{width:100%; max-width:100%; max-height:600px; overflow-x:auto; overflow-y:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;}
+    .grid-scroll::-webkit-scrollbar{display:none;}
+    table.gridtbl{border-collapse:separate; border-spacing:0; width:max-content; min-width:100%; table-layout:fixed;}
+    table.gridtbl th, table.gridtbl td{white-space:nowrap;}
+    table.gridtbl thead th{font-size:.68rem; padding:8px 4px; text-align:center; min-width:38px; width:38px;}
+    table.gridtbl thead th.dcol{vertical-align:middle; line-height:1.2; min-width:46px; width:46px; padding:8px 4px; box-sizing:border-box; overflow:hidden;}
+    table.gridtbl thead th.dcol .dn{display:block; font-size:.58rem; font-weight:700; color:var(--muted-2); letter-spacing:.02em;}
+    table.gridtbl thead th.dcol .dnum{display:block; font-size:.68rem;}
+    table.gridtbl thead th.wknd{background:rgba(236,111,116,.055);}
+    table.gridtbl thead th.wknd .dn{color:var(--red);}
+    table.gridtbl .nm{position:sticky; left:0; z-index:3; background:var(--panel); text-align:left; min-width:150px; width:150px; border-right:1px solid var(--border);}
+    table.gridtbl thead .nm{z-index:5;}
+    table.gridtbl tbody td{padding:0; text-align:center;}
+    table.gridtbl tbody td.dcol{min-width:38px; width:38px; box-sizing:border-box;}
+    .cell{width:30px; height:34px; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:.72rem; font-weight:700; margin:2px auto; border-radius:6px; position:relative; cursor:default; overflow:hidden; text-overflow:ellipsis;}
+    .cell.p{background:var(--teal-dim); color:var(--teal);}
+    .cell.a{background:var(--red-dim); color:var(--red);}
+    table.gridtbl thead th.today{background:rgba(53,208,168,.1); box-sizing:border-box;}
+    table.gridtbl thead th.today .dn{color:var(--teal);}
+    table.gridtbl td.today-col{background:rgba(53,208,168,.045); box-sizing:border-box;}
+    table.gridtbl tfoot td{position:sticky; bottom:0; background:var(--panel); border-top:1px solid var(--border); padding:8px 0; font-family:var(--mono); font-size:.68rem; color:var(--muted); text-align:center;}
+    table.gridtbl tfoot td.nm{position:sticky; left:0; bottom:0; z-index:5; text-align:left; padding-left:20px; color:var(--muted); font-weight:700;}
+    .glegend{display:flex; align-items:center; gap:18px; flex-wrap:wrap; padding:12px 20px 4px; font-size:.76rem; color:var(--muted);}
+    .glegend .gi{display:flex; align-items:center; gap:7px;}
+    .glegend .sw{width:14px; height:14px; border-radius:4px; display:inline-block;}
+    .sw.p{background:var(--teal-dim); border:1px solid rgba(53,208,168,.3);}
+    .sw.a{background:var(--red-dim); border:1px solid rgba(236,111,116,.3);}
+    .sw.wknd{background:rgba(236,111,116,.055); border:1px solid rgba(236,111,116,.15);}
+    .sw.today{background:rgba(53,208,168,.15); border:1px solid rgba(53,208,168,.3);}
+    .tbl-scroll{overflow:auto; max-height:620px; border-radius:0 0 18px 18px;}
+    .tbl-scroll table{min-width:100%;}
+    .bar-wrap{display:flex; align-items:center; gap:8px;}
+    .mini-bar{flex:1; height:6px; border-radius:5px; background:var(--bg-3); overflow:hidden;}
+    .mini-bar i{display:block; height:100%; border-radius:5px;}
+    .fill-hi{background:linear-gradient(90deg,var(--indigo),var(--teal));}
+    .fill-mid{background:var(--amber);}
+    .fill-lo{background:var(--red);}
+    .pct{font-family:var(--mono); font-size:.78rem; font-weight:700; min-width:42px; text-align:right;}
+    .pct.hi{color:var(--teal);} .pct.mid{color:var(--amber);} .pct.lo{color:var(--red);}
+    .td-name{font-weight:600;}
+    .num-c{font-family:var(--mono); text-align:center;}
+    .gtot{font-family:var(--mono); font-size:.68rem; color:var(--muted); text-align:center;}
+    .tt-d{font-size:.78rem; font-weight:700; color:var(--text); margin-bottom:4px;}
+    .tt-row{display:flex; align-items:center; gap:8px; font-size:.72rem; color:var(--muted); padding:2px 0;}
+    .tt-row .tag{font-size:.6rem; font-weight:700; padding:2px 8px; border-radius:6px; text-transform:uppercase; letter-spacing:.06em;}
+    .tt-row .tag.in{background:var(--teal-dim); color:var(--teal);}
+    .tt-row .tag.out{background:var(--amber-dim); color:var(--amber);}
   @media(max-width:768px){
     .panel-head{flex-direction:column; align-items:stretch; gap:8px;}
     .panel-head .search{max-width:100%; margin-left:0;}
@@ -218,7 +272,8 @@
     #view-employees .table-scroll table{min-width:640px;}
     #view-employees tbody td{padding:8px 10px; font-size:.78rem;}
     #view-employees .avatar{width:28px; height:28px; font-size:.68rem;}
-    #view-monthly .panel-head #expCsv{margin-left:0;}
+    #view-monthly .panel-head{flex-wrap:wrap;}
+    #view-monthly .panel-head .search{flex:1; max-width:180px;}
     #view-requests .panel{overflow:visible;}
     #view-requests .table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; border-radius:0 0 18px 18px;}
     #view-requests .table-scroll table{min-width:420px;}
@@ -292,6 +347,8 @@
     #pf-cal-wrap .daycell{min-height:28px; min-width:28px; max-height:none; font-size:.55rem;}
     #pf-cal-wrap .cal-wdays, #pf-cal-wrap .daygrid{min-width:220px;}
     .calwrap{padding:8px;}
+
+
   }
 </style>
 </head>
@@ -366,7 +423,11 @@
           <button class="on" data-mv="summary">Summary</button>
           <button data-mv="grid">Day-by-Day</button>
         </div>
-        <a class="btn" id="expCsv" style="margin-left:auto;" href="#">⤓ Export CSV</a>
+        <input class="search" id="msearch" placeholder="Search name…" style="margin-left:12px; max-width:200px;">
+        <div style="margin-left:auto; display:flex; gap:8px;">
+          <button class="btn btn-accent" id="expSummary">⤓ Summary CSV</button>
+          <button class="btn" id="expGrid">⤓ P/A Grid CSV</button>
+        </div>
       </div>
       <div class="stats" style="padding:16px 20px 0; grid-template-columns:repeat(4,1fr);">
         <div class="card plain"><div class="lbl">Employees</div><div class="num" id="m-emp">0</div></div>
@@ -375,13 +436,32 @@
         <div class="card amber"><div class="lbl">Low (&lt;75%)</div><div class="num" id="m-low">0</div></div>
       </div>
       <div id="mv-summary" style="margin-top:10px;">
-        <table>
-          <thead><tr><th>Name</th><th>Present</th><th>Absent</th><th>Attendance</th></tr></thead>
-          <tbody id="mtbody"></tbody>
-        </table>
+        <div class="tbl-scroll" style="max-height:620px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th style="text-align:center;">Present</th>
+                <th style="text-align:center;">Absent</th>
+                <th style="text-align:center;">Avg Hrs</th>
+                <th>Attendance</th>
+              </tr>
+            </thead>
+            <tbody id="mtbody"></tbody>
+          </table>
+        </div>
       </div>
-      <div id="mv-grid" style="display:none; overflow:auto; max-height:600px; margin-top:10px;">
-        <table id="gridtbl"></table>
+      <div id="mv-grid" style="display:none;">
+        <div class="glegend">
+          <span class="gi"><span class="sw p"></span> Present</span>
+          <span class="gi"><span class="sw a"></span> Absent</span>
+          <span class="gi"><span class="sw wknd"></span> Weekend</span>
+          <span class="gi"><span class="sw today"></span> Today</span>
+          <span class="gi" style="margin-left:auto; color:var(--muted-2);">Hover a cell for entry/exit time &amp; hours worked</span>
+        </div>
+        <div class="grid-scroll">
+          <table class="gridtbl" id="gridtbl"></table>
+        </div>
       </div>
     </div>
   </div>
@@ -404,17 +484,13 @@
 
 <!-- Confirm Modal -->
 <div class="modal-backdrop" id="confirmModal">
-  <div class="modal" style="max-width:400px;">
-    <h3>Confirm Attendance Mark</h3>
-    <div class="errbox" id="cfErr"></div>
-    <p style="color:var(--muted); font-size:.85rem; margin-top:4px;">
-      Employee: <b style="color:var(--text);" id="cf-name"></b><br>
-      Current status: <b style="color:var(--text);" id="cf-current"></b><br>
-      New status: <b style="color:var(--teal);" id="cf-status"></b>
-    </p>
-    <div class="modal-actions">
+  <div class="modal" style="max-width:420px;">
+    <div class="cf-icon" id="cfIcon">⚠️</div>
+    <h3 id="cfTitle" style="text-align:center; margin-bottom:6px;">Confirm Action</h3>
+    <p id="cfMsg" style="color:var(--muted); font-size:.85rem; text-align:center; margin-top:4px; line-height:1.5;"></p>
+    <div class="modal-actions" style="justify-content:center; margin-top:22px;">
       <button class="btn" id="cfCancel">Cancel</button>
-      <button class="btn btn-accent" id="cfConfirm">Confirm</button>
+      <button class="btn" id="cfConfirm">Confirm</button>
     </div>
   </div>
 </div>
@@ -610,6 +686,39 @@ function getCurrentStatus(name){
   return r ? r.status : null;
 }
 
+function showConfirm({title, message, icon = "⚠️", confirmText = "Confirm", cancelText = "Cancel", variant = "info"} = {}){
+  return new Promise((resolve) => {
+    $("cfIcon").textContent = icon;
+    $("cfTitle").textContent = title;
+    $("cfMsg").textContent = message;
+    $("cfConfirm").textContent = confirmText;
+    $("cfCancel").textContent = cancelText;
+    $("cfConfirm").className = "btn " + variant;
+    window._cfResolve = resolve;
+    $("confirmModal").classList.add("open");
+  });
+}
+
+$("cfCancel").addEventListener("click", ()=>{
+  window._cfResolve && window._cfResolve(false);
+  window._cfResolve = null;
+  $("confirmModal").classList.remove("open");
+});
+
+$("cfConfirm").addEventListener("click", ()=>{
+  window._cfResolve && window._cfResolve(true);
+  window._cfResolve = null;
+  $("confirmModal").classList.remove("open");
+});
+
+$("confirmModal").addEventListener("click", e=>{
+  if(e.target.id==="confirmModal"){
+    window._cfResolve && window._cfResolve(false);
+    window._cfResolve = null;
+    $("confirmModal").classList.remove("open");
+  }
+});
+
 async function mark(name,status){
   const current = getCurrentStatus(name);
   if(current === status){
@@ -617,24 +726,14 @@ async function mark(name,status){
     return;
   }
 
-  $("cf-name").textContent = name;
-  $("cf-status").textContent = statusLabel(status);
-  $("cf-current").textContent = current ? statusLabel(current) : "unmarked";
-  $("cfErr").style.display = "none";
-  window._pendingMark = {name, status};
-  $("confirmModal").classList.add("open");
-}
-
-$("cfCancel").addEventListener("click", ()=>{
-  window._pendingMark = null;
-  $("confirmModal").classList.remove("open");
-});
-
-$("cfConfirm").addEventListener("click", async ()=>{
-  if(!window._pendingMark) return;
-  const {name, status} = window._pendingMark;
-  window._pendingMark = null;
-  $("confirmModal").classList.remove("open");
+  const ok = await showConfirm({
+    title: "Mark Attendance",
+    message: `Employee: ${name}\nCurrent: ${current ? statusLabel(current) : "unmarked"}\nNew: ${statusLabel(status)}`,
+    icon: "📝",
+    confirmText: "Mark " + statusLabel(status),
+    variant: "info"
+  });
+  if(!ok) return;
 
   try {
     const res = await fetch("/api/portal/attendance/mark",{method:"POST",headers:{"Content-Type":"application/json"},
@@ -649,9 +748,7 @@ $("cfConfirm").addEventListener("click", async ()=>{
   } catch (err) {
     toast("Request failed — " + (err?.message || "network error"), false);
   }
-});
-
-$("confirmModal").addEventListener("click", e=>{ if(e.target.id==="confirmModal"){ window._pendingMark=null; $("confirmModal").classList.remove("open"); } });
+}
 
 $("attDate").addEventListener("change",loadOverview);
 $("attSearch").addEventListener("input",renderAtt);
@@ -863,7 +960,16 @@ async function regen(id){
   }
 }
 async function del(id,hard){
-  if(!confirm(hard?"Permanently delete this employee, their attendance history AND face embedding? Cannot be undone.":"Deactivate this employee? Live cameras will stop counting them.")) return;
+  const ok = await showConfirm({
+    title: hard ? "Permanently Delete Employee" : "Deactivate Employee",
+    message: hard
+      ? "This will permanently delete this employee, their attendance history, and face embedding. This cannot be undone."
+      : "This will deactivate the employee. Live cameras will stop counting them.",
+    icon: hard ? "🗑️" : "⏻",
+    confirmText: hard ? "Delete Permanently" : "Deactivate",
+    variant: hard ? "danger" : "warning"
+  });
+  if(!ok) return;
   const res=await fetch(`/api/portal/employees/${id}`+(hard?"?hard=1":""),{method:"DELETE"});
   if(res.ok){ toast(hard?"Deleted":"Deactivated"); loadEmployees(); } else toast("Failed",false);
 }
@@ -996,50 +1102,186 @@ $("pfLightbox").addEventListener("click",()=>$("pfLightbox").classList.remove("o
 /* MONTHLY */
 let monthlyData=null, monthView="summary";
 $("monthSel").value=todayStr().slice(0,7);
-const pctClass=p=>p>=90?"teal":p>=75?"amber":"red";
+
+function toMinutes(hms) {
+  if (!hms || hms === "—") return null;
+  const p = hms.split(":");
+  if (p.length < 2) return null;
+  const h = parseInt(p[0], 10), m = parseInt(p[1], 10);
+  if (Number.isNaN(h) || Number.isNaN(m)) return null;
+  return h * 60 + m;
+}
+
+function durationLabel(tin, tout) {
+  const a = toMinutes(tin), b = toMinutes(tout);
+  if (a === null || b === null || b < a) return "—";
+  const mins = b - a;
+  return `${Math.floor(mins / 60)}h ${mins % 60}m`;
+}
+
+function pctClass(p) { return p >= 90 ? "hi" : p >= 75 ? "mid" : "lo"; }
+
+function empAvgHours(e) {
+  if (!e.days) return null;
+  let total = 0, n = 0;
+  for (const d of (e.present_dates || [])) {
+    const io = e.days[d];
+    if (!io) continue;
+    const a = toMinutes(io.in), b = toMinutes(io.out);
+    if (a === null || b === null || b < a) continue;
+    total += (b - a); n++;
+  }
+  return n ? total / n : null;
+}
+
+function fmtHours(mins) {
+  if (mins === null) return "—";
+  const h = Math.floor(mins / 60), m = Math.round(mins % 60);
+  return `${h}h ${m}m`;
+}
+
+function renderMonthSummary() {
+  const q = $("msearch").value.trim().toLowerCase();
+  let emps = monthlyData.employees;
+  if (q) emps = emps.filter(e => e.name.toLowerCase().includes(q));
+  emps = [...emps].sort((a, b) => a.attendance_pct - b.attendance_pct);
+  const tb = $("mtbody");
+  if (!emps.length) { tb.innerHTML = `<tr><td colspan="5"><div class="empty"><p>No matching results</p></div></td></tr>`; return; }
+  tb.innerHTML = emps.map(e => {
+    const c = pctClass(e.attendance_pct);
+    const avg = fmtHours(empAvgHours(e));
+    return `<tr>
+      <td class="td-name">${e.name}</td>
+      <td class="num-c" style="color:var(--teal)">${e.present_days}</td>
+      <td class="num-c" style="color:${e.absent_days ? 'var(--red)' : 'var(--muted)'}">${e.absent_days}</td>
+      <td class="num-c" style="color:var(--muted)">${avg}</td>
+      <td><div class="bar-wrap">
+        <div class="mini-bar"><i class="fill-${c}" style="width:${e.attendance_pct}%"></i></div>
+        <span class="pct ${c}">${e.attendance_pct}%</span>
+      </div></td>
+    </tr>`;
+  }).join("");
+}
+
+function renderMonthGrid() {
+  const q = $("msearch").value.trim().toLowerCase();
+  let emps = monthlyData.employees;
+  if (q) emps = emps.filter(e => e.name.toLowerCase().includes(q));
+  const dates = monthlyData.working_dates;
+  const tbl = $("gridtbl");
+  if (!dates.length) { tbl.innerHTML = `<tbody><tr><td><div class="empty"><p>No working days this month</p></div></td></tr></tbody>`; return; }
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  const head = `<thead><tr>
+    <th class="nm">Name</th>
+    ${dates.map(d => {
+      const dt = new Date(d + "T00:00:00");
+      const wd = dt.toLocaleDateString("en-GB", { weekday: "short" });
+      const we = (dt.getDay() === 0 || dt.getDay() === 6) ? " wknd" : "";
+      const td = d === todayStr ? " today" : "";
+      return `<th class="dcol${we}${td}" title="${d}"><span class="dn">${wd}</span><span class="dnum">${d.slice(-2)}</span></th>`;
+    }).join("")}
+    <th>P</th><th>A</th><th>%</th>
+  </tr></thead>`;
+
+  const dayCounts = Object.fromEntries(dates.map(d => [d, 0]));
+
+  const body = `<tbody>${emps.map(e => {
+    const pres = new Set(e.present_dates);
+    const cells = dates.map(d => {
+      const todayCls = d === todayStr ? " today-col" : "";
+      if (pres.has(d)) {
+        dayCounts[d]++;
+        const io = (e.days && e.days[d]) || {};
+        const tin = io.in || "—";
+        const tout = io.out || "—";
+        return `<td class="dcol ${todayCls.trim()}"><div class="cell p" data-d="${d}" data-in="${tin}" data-out="${tout}">P</div></td>`;
+      }
+      return `<td class="dcol ${todayCls.trim()}"><div class="cell a">A</div></td>`;
+    }).join("");
+    const c = pctClass(e.attendance_pct);
+    return `<tr>
+      <td class="nm td-name">${e.name}</td>
+      ${cells}
+      <td class="gtot" style="color:var(--teal)">${e.present_days}</td>
+      <td class="gtot" style="color:${e.absent_days ? 'var(--red)' : 'var(--muted)'}">${e.absent_days}</td>
+      <td class="gtot ${c}" style="color:var(--${c === 'hi' ? 'teal' : c === 'mid' ? 'amber' : 'red'})">${e.attendance_pct}</td>
+    </tr>`;
+  }).join("")}</tbody>`;
+
+  const foot = `<tfoot><tr>
+    <td class="nm">Present that day</td>
+    ${dates.map(d => `<td>${dayCounts[d]}</td>`).join("")}
+    <td colspan="3"></td>
+  </tr></tfoot>`;
+
+  tbl.innerHTML = head + body + foot;
+}
+
+function renderMonthly() {
+  if (!monthlyData) return;
+  $("m-emp").textContent = monthlyData.summary.total_employees;
+  $("m-days").textContent = monthlyData.working_days;
+  $("m-avg").textContent = monthlyData.summary.avg_attendance + "%";
+  $("m-low").textContent = monthlyData.summary.low_attendance;
+  if (monthView === "summary") { $("mv-summary").style.display = ""; $("mv-grid").style.display = "none"; renderMonthSummary(); }
+  else { $("mv-summary").style.display = "none"; $("mv-grid").style.display = ""; renderMonthGrid(); }
+}
+
 async function loadMonthly(){
   monthlyData=await (await fetch("/api/portal/monthly?month="+$("monthSel").value)).json();
-  $("m-emp").textContent=monthlyData.summary.total_employees;
-  $("m-days").textContent=monthlyData.working_days;
-  $("m-avg").textContent=monthlyData.summary.avg_attendance+"%";
-  $("m-low").textContent=monthlyData.summary.low_attendance;
   renderMonthly();
 }
-function renderMonthly(){
-  if(monthView==="summary"){ $("mv-summary").style.display=""; $("mv-grid").style.display="none"; renderSummary(); }
-  else { $("mv-summary").style.display="none"; $("mv-grid").style.display=""; renderGrid(); }
-}
-function renderSummary(){
-  const emps=[...monthlyData.employees].sort((a,b)=>a.attendance_pct-b.attendance_pct);
-  const tb=$("mtbody");
-  if(!emps.length){ tb.innerHTML=`<tr><td colspan="4"><div class="empty">No data</div></td></tr>`; return; }
-  tb.innerHTML=emps.map(e=>{ const c=pctClass(e.attendance_pct);
-    return `<tr><td>${e.name}</td><td style="color:var(--teal)">${e.present_days}</td>
-      <td style="color:${e.absent_days?'var(--red)':'var(--muted)'}">${e.absent_days}</td>
-      <td style="color:var(--${c})">${e.attendance_pct}%</td></tr>`; }).join("");
-}
-function renderGrid(){
-  const dates=monthlyData.working_dates, tbl=$("gridtbl");
-  if(!dates.length){ tbl.innerHTML=`<tbody><tr><td><div class="empty">No working days</div></td></tr></tbody>`; return; }
-  const head=`<thead><tr><th style="position:sticky;left:0;background:var(--panel);text-align:left;">Name</th>
-    ${dates.map(d=>`<th style="font-size:.68rem;">${d.slice(-2)}</th>`).join("")}<th>P</th><th>A</th><th>%</th></tr></thead>`;
-  const body=`<tbody>${monthlyData.employees.map(e=>{
-    const pres=new Set(e.present_dates);
-    const cells=dates.map(d=>pres.has(d)?`<td style="text-align:center;color:var(--teal);font-family:var(--mono);">P</td>`:`<td style="text-align:center;color:var(--red);font-family:var(--mono);">A</td>`).join("");
-    const c=pctClass(e.attendance_pct);
-    return `<tr><td style="position:sticky;left:0;background:var(--panel);">${e.name}</td>${cells}
-      <td style="text-align:center;color:var(--teal);font-family:var(--mono);">${e.present_days}</td>
-      <td style="text-align:center;color:var(--red);font-family:var(--mono);">${e.absent_days}</td>
-      <td style="text-align:center;color:var(--${c});font-family:var(--mono);">${e.attendance_pct}</td></tr>`;
-  }).join("")}</tbody>`;
-  tbl.innerHTML=head+body;
-}
+
 $("monthSel").addEventListener("change",loadMonthly);
-$("segView").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{
-  $("segView").querySelectorAll("button").forEach(x=>x.classList.remove("on")); b.classList.add("on");
-  monthView=b.dataset.mv; renderMonthly();
-}));
-$("expCsv").addEventListener("click",e=>{ e.preventDefault(); window.location="/api/monthly/export?month="+$("monthSel").value; });
+$("msearch").addEventListener("input",debounce(renderMonthly,150));
+$("segView").querySelectorAll("button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    $("segView").querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on");
+    monthView=b.dataset.mv;
+    renderMonthly();
+  });
+});
+
+const tip = document.createElement("div");
+tip.id = "celltip";
+document.body.appendChild(tip);
+
+const gridBox = $("mv-grid");
+gridBox.addEventListener("mouseover", e => {
+  const cell = e.target.closest(".cell.p");
+  if (!cell) return;
+  const dt = new Date(cell.dataset.d + "T00:00:00");
+  const wd = dt.toLocaleDateString("en-GB", { weekday: "long" });
+  const dur = durationLabel(cell.dataset.in, cell.dataset.out);
+  tip.innerHTML =
+    `<div class="tt-d">${cell.dataset.d} · ${wd}</div>
+    <div class="tt-row"><span class="tag in">IN</span> ${cell.dataset.in}</div>
+    <div class="tt-row"><span class="tag out">OUT</span> ${cell.dataset.out}</div>
+    <div class="tt-row" style="color:var(--muted); border-top:1px solid var(--border); margin-top:4px; padding-top:6px;">⏱ ${dur}</div>`;
+  tip.style.display = "block";
+});
+gridBox.addEventListener("mousemove", e => {
+  if (tip.style.display !== "block") return;
+  let x = e.clientX + 14, y = e.clientY + 16;
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  if (x + w > window.innerWidth) x = e.clientX - w - 14;
+  if (y + h > window.innerHeight) y = e.clientY - h - 16;
+  tip.style.left = x + "px";
+  tip.style.top = y + "px";
+});
+gridBox.addEventListener("mouseout", e => {
+  if (e.target.closest(".cell.p")) tip.style.display = "none";
+});
+
+$("expSummary").addEventListener("click", () => {
+  window.location = "/api/monthly/export?month=" + encodeURIComponent($("monthSel").value);
+});
+$("expGrid").addEventListener("click", () => {
+  window.location = "/api/monthly/grid-export?month=" + encodeURIComponent($("monthSel").value);
+});
 
 /* REQUESTS */
 async function loadRequests(){

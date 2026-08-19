@@ -1661,14 +1661,15 @@ def sync_employee_photos_from_dir():
                         )
                         updated += 1
                 else:
-                    # Koi matching employee nahi mila — bootstrap case
-                    # (photos already hain, DB row abhi tak nahi bana).
-                    cur.execute(
-                        """INSERT INTO employees (name, photo_path)
-                           VALUES (%s, %s) ON CONFLICT (name) DO NOTHING""",
-                        (entry, rel_path),
+                     # Folder mila, lekin matching employee DB mein nahi mila.
+    # Folder name ko employee name ke roop mein INSERT mat karo,
+    # kyunki folder name sanitized ho sakta hai (spaces -> "_").
+                     print(
+                        f"[db] Skipping unmatched photo folder: {entry} "
+
+                        f"(no matching employee found)"
                     )
-                    updated += 1
+                
 
             conn.commit()
             cur.close()
