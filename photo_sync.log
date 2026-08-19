@@ -29388,3 +29388,509 @@ Premature end of JPEG file
 [sync] Supabase employee names: ['Aakash', 'Abhishek', 'Aditya', 'Amitabh prajapati', 'Amitabh_prajapati', 'Kajal', 'Kuldeep', 'Neeraj', 'Prashant', 'Praveen', 'Rajan', 'Satya', 'Shashwat', 'Sunny', 'meraj', 'vikas sharma']
 [sync] Local embedding names: ['Aakash', 'Abhishek', 'Aditya', 'Amitabh_prajapati', 'Kajal', 'Kuldeep', 'Neeraj', 'Prashant', 'Praveen', 'Rajan', 'Satya', 'Shashwat', 'Sunny', 'meraj', 'vikas sharma']
 [sync] ✅ No deleted employees found.
+[sync] Storage files found: 90
+[sync] Storage file: Aakash/2026-08-19/Entry-1_115951.jpg
+[sync] Storage file: Aakash/face_1_d768a67194494bae924867e2aab666f5.jpg
+[sync] Storage file: Aakash/face_2_5b057b77aacf473983b0d8426610f305.jpg
+[sync] Storage file: Aakash/face_3_afd0237d711e404abd92bb8e3c88ba7f.jpg
+[sync] Storage file: Aakash/face_4_955f8b8f26f549c6aaeb1d3e4c589052.jpg
+[sync] Storage file: Aakash/face_5_a80e990debd6428d876033a61a5c2d67.jpg
+[sync] Storage file: Aakash/profile_752d389858c14070aba36f7eba3522d9.jpg
+[sync] Storage file: Abhishek/face_1_b7186164352648a4b3bb585957ce87ce.jpg
+[sync] Storage file: Abhishek/face_2_c85f14e2af2d41478721874f0bf9e1a9.jpg
+[sync] Storage file: Abhishek/face_3_ca35649e9db44438834e39a9a99f4d05.jpg
+[sync] Storage file: Abhishek/face_4_ca27a72d5a9445aab58d99e7967f4d46.jpg
+[sync] Storage file: Abhishek/face_5_72cd21d14f234962ba904e722e42a26e.jpg
+[sync] Storage file: Abhishek/profile_20f144857a5b4f85923da4dd9f773feb.jpg
+[sync] Storage file: Aditya/face_1_241579e8b50543269878109a5fb30a28.jpeg
+[sync] Storage file: Aditya/face_2_331e22e6069e4c94933ecfa8fa0f02c0.jpeg
+[sync] Storage file: Aditya/face_3_2b29578a1e074d01876264d672851337.jpeg
+[sync] Storage file: Aditya/face_4_9e67144a412d4808ad6f468c79cb7d22.jpeg
+[sync] Storage file: Aditya/profile_9b9010a246444ba2bc8b0fa8d7a7fb36.jpeg
+[sync] Storage file: Amitabh_prajapati/2026-08-19/Entry-4_120632.jpg
+[sync] Storage file: Amitabh_prajapati/face_1_dd6093909c304e15bc1b7fe47bd846c7.jpg
+[sync] Storage file: Amitabh_prajapati/face_2_d099b4b57db74fbdac645f00ebf64af0.jpg
+[sync] Storage file: Amitabh_prajapati/face_3_e3cc29a2f8b441c68583bbdfbb35e291.jpg
+[sync] Storage file: Amitabh_prajapati/face_4_43003cf95e9f4c5e952fdcafc6eb1af0.jpg
+[sync] Storage file: Amitabh_prajapati/face_5_18cad15c39124b81a977e8f782950988.jpg
+[sync] Storage file: Amitabh_prajapati/face_6_027b33e8c1a94d92a8e6d4998a78ee44.jpg
+[sync] Storage file: Amitabh_prajapati/profile_cb1a8de9d13a4a8285dddf87738e3553.jpg
+[sync] Storage file: Kajal/2026-08-19/Entry-1_121527.jpg
+[sync] Storage file: Kajal/face_1_33f448ea56084c0aa3fb473388dae9e0.jpeg
+[sync] Storage file: Kajal/face_2_7ef611ad5bef4fba904253cfa8821019.jpeg
+[sync] Storage file: Kajal/face_3_481c813bdbb14f67b78af964e8af78af.jpeg
+[sync] Storage file: Kajal/profile_682d56e7d11d41bc9552a7672db2d573.jpeg
+[sync] Storage file: Kuldeep/face_1_85dd82bdd4fd41c1a11a658a3407142f.jpg
+[sync] Storage file: Kuldeep/face_2_29e1aade72224016a49111e7bf80291d.jpg
+[sync] Storage file: Kuldeep/face_3_a05f7f8bfda54f7ca22def992cb50a87.jpg
+[sync] Storage file: Kuldeep/face_4_ec372e0474d44148af1ceba2e69b1ae7.jpg
+[sync] Storage file: Kuldeep/face_5_d5a5255431934095913452cc3339b7e1.jpg
+[sync] Storage file: Kuldeep/profile_f0b800ace15040fa9ae13162e97c4215.jpg
+[sync] Storage file: meraj/2026-08-19/Entry-2_122727.jpg
+[sync] Storage file: meraj/face_1_0e968dd70b0b4df4bdd9df5a7787a163.jpg
+[sync] Storage file: meraj/face_2_601cd4d30e244a3fa7f8f1f51586aab3.jpg
+[sync] Storage file: meraj/face_3_d2e91953e150490f927e875262fa2b51.jpg
+[sync] Storage file: meraj/face_4_cf6fdf3fa10c44d7b9c4303e86eb3357.jpg
+[sync] Storage file: meraj/profile_10b2ffb120624de9a8fbc9f88c6b1554.jpg
+[sync] Storage file: Neeraj/face_1_80c055b2ca6e4c15b770e970d3b972d3.jpeg
+[sync] Storage file: Neeraj/face_2_69d296be8c5749b28cafb91f534092c4.jpeg
+[sync] Storage file: Neeraj/face_3_19fee782cba44d89b09dd0bf7537a890.jpeg
+[sync] Storage file: Neeraj/face_4_a978bb61e7704b8ca4f399ef7e1fa075.jpeg
+[sync] Storage file: Neeraj/profile_e5e2d4c9350c4b8e9650157aff95fdba.jpeg
+[sync] Storage file: Prashant/2026-08-19/Entry-4_121602.jpg
+[sync] Storage file: Prashant/face_1_ab58a7489bbe488db7e643c3e5d010c0.jpeg
+[sync] Storage file: Prashant/face_2_760476fad96c4e3f8e4858b4687a3123.jpeg
+[sync] Storage file: Prashant/face_3_655abe6dd2d9458c906d6acabb5b728b.jpeg
+[sync] Storage file: Prashant/face_4_d54904d9753f4292a0c38e1688a31609.jpeg
+[sync] Storage file: Prashant/face_5_3a0527b04c0d4eacb69dd303a571ddba.jpeg
+[sync] Storage file: Prashant/face_6_5decafa79c0842f5b6b776a7d2c68455.jpg
+[sync] Storage file: Prashant/profile_dc0bd7136e2b490eb4a4e5979ea6682d.jpeg
+[sync] Storage file: Praveen/2026-08-19/Entry-2_121054.jpg
+[sync] Storage file: Praveen/face_1_600c587a36224c2f91668085f8d564be.jpg
+[sync] Storage file: Praveen/face_2_8eb81e8852b74aaf98e7ce6d859e9759.jpg
+[sync] Storage file: Praveen/face_3_2f5e9f8fe7a04f1295abffa84572b773.jpg
+[sync] Storage file: Praveen/face_4_08a4ae1c2ed84780942f589304beb57b.jpg
+[sync] Storage file: Praveen/face_5_b155b20f4ea14ce3bdc063905e43593f.jpg
+[sync] Storage file: Praveen/profile_a0910de1e9ba467e901dc55a80623834.jpg
+[sync] Storage file: Rajan/2026-08-19/Entry-1_115955.jpg
+[sync] Storage file: Rajan/face_1_48069a9f82f24a5ea66ba9e476c9641e.jpg
+[sync] Storage file: Rajan/face_2_10fb85cf38e74c18926ffeaf9a55ab3f.jpg
+[sync] Storage file: Rajan/face_3_e69f207549dc4bb18dc8c4bde2714a62.jpg
+[sync] Storage file: Rajan/face_4_751a4a0d4f0848f7afc5ff7167c81baf.jpg
+[sync] Storage file: Rajan/face_5_cf9284899a80464a9006178d2267845d.jpg
+[sync] Storage file: Rajan/face_6_a142aa49be2e45f2abe626c058f60811.jpg
+[sync] Storage file: Rajan/profile_72c136d2b1264eeba4250badebe1c9b2.jpg
+[sync] Storage file: Satya/face_1_050d4e7c4aa64fd29d24f60ea3251272.jpg
+[sync] Storage file: Satya/face_2_5428d32024104dbbbed92dee1c31acfc.jpg
+[sync] Storage file: Satya/face_3_f40fd8d4d17c433bb89d72871c093fd4.jpg
+[sync] Storage file: Satya/face_4_e2fb223ea18c426789ffc32047681118.jpg
+[sync] Storage file: Satya/face_5_d1e89e6abaa349e786a41c4ce9fe59c9.jpg
+[sync] Storage file: Satya/face_6_2803158bd7734d429ca2b86852bc412d.jpg
+[sync] Storage file: Satya/profile_255aa662c73e4631864cfcc8ac8dd832.jpg
+[sync] Storage file: Shashwat/2026-08-19/Entry-1_120042.jpg
+[sync] Storage file: Shashwat/face_1_efb053ebed144d9e88e2005de513cf5a.jpeg
+[sync] Storage file: Shashwat/profile_2d246cf1b64c4ce992b9966df3b4bdb9.jpeg
+[sync] Storage file: Sunny/face_1_ad7fcc2b9e174aaca12ce60828b9183b.jpeg
+[sync] Storage file: Sunny/face_2_52ab914cdfce4d9783dbcd06b8a57858.jpeg
+[sync] Storage file: Sunny/face_3_a27fc002d97042c49aeb57a3f7d656af.jpeg
+[sync] Storage file: Sunny/profile_b36cafe4e72f402690db990581c9c436.jpeg
+[sync] Storage file: vikas sharma/face_1_2b0e6a300f8646308f51f5324f5efbfa.png
+[sync] Storage file: vikas sharma/face_2_f3b8f7a13c06469ab165baa54f18c281.png
+[sync] Storage file: vikas sharma/face_3_b063a37021634ec98ebb96165146205f.png
+[sync] Storage file: vikas sharma/face_4_812baf2c4ed8461c96dad017b921e715.png
+[sync] Storage file: vikas sharma/profile_4f307032cef3489c961dda4d92b1d9fa.png
+[sync] No new employee embeddings.
+[sync] ==================================================
+
+
+[sync] ==================================================
+[sync] Sync started: 2026-08-19 12:30:58
+[sync] 🔍 Checking deleted employees...
+[sync] Employee API status: 200
+[sync] DEBUG raw employees response: [{'name': 'Aakash'}, {'name': 'Rajan'}, {'name': 'Abhishek'}, {'name': 'Aditya'}, {'name': 'Shashwat'}, {'name': 'Prashant'}, {'name': 'Kuldeep'}, {'name': 'Kajal'}, {'name': 'Neeraj'}, {'name': 'Praveen'}, {'name': 'Satya'}, {'name': 'Sunny'}, {'name': 'vikas sharma'}, {'name': 'Amitabh prajapati'}, {'name': 'Amitabh_prajapati'}, {'name': 'meraj'}]
+[sync] Supabase employee names: ['Aakash', 'Abhishek', 'Aditya', 'Amitabh prajapati', 'Amitabh_prajapati', 'Kajal', 'Kuldeep', 'Neeraj', 'Prashant', 'Praveen', 'Rajan', 'Satya', 'Shashwat', 'Sunny', 'meraj', 'vikas sharma']
+[sync] Local embedding names: ['Aakash', 'Abhishek', 'Aditya', 'Amitabh_prajapati', 'Kajal', 'Kuldeep', 'Neeraj', 'Prashant', 'Praveen', 'Rajan', 'Satya', 'Shashwat', 'Sunny', 'meraj', 'vikas sharma']
+[sync] ✅ No deleted employees found.
+[sync] Storage files found: 90
+[sync] Storage file: Aakash/2026-08-19/Entry-1_115951.jpg
+[sync] Storage file: Aakash/face_1_d768a67194494bae924867e2aab666f5.jpg
+[sync] Storage file: Aakash/face_2_5b057b77aacf473983b0d8426610f305.jpg
+[sync] Storage file: Aakash/face_3_afd0237d711e404abd92bb8e3c88ba7f.jpg
+[sync] Storage file: Aakash/face_4_955f8b8f26f549c6aaeb1d3e4c589052.jpg
+[sync] Storage file: Aakash/face_5_a80e990debd6428d876033a61a5c2d67.jpg
+[sync] Storage file: Aakash/profile_752d389858c14070aba36f7eba3522d9.jpg
+[sync] Storage file: Abhishek/face_1_b7186164352648a4b3bb585957ce87ce.jpg
+[sync] Storage file: Abhishek/face_2_c85f14e2af2d41478721874f0bf9e1a9.jpg
+[sync] Storage file: Abhishek/face_3_ca35649e9db44438834e39a9a99f4d05.jpg
+[sync] Storage file: Abhishek/face_4_ca27a72d5a9445aab58d99e7967f4d46.jpg
+[sync] Storage file: Abhishek/face_5_72cd21d14f234962ba904e722e42a26e.jpg
+[sync] Storage file: Abhishek/profile_20f144857a5b4f85923da4dd9f773feb.jpg
+[sync] Storage file: Aditya/face_1_241579e8b50543269878109a5fb30a28.jpeg
+[sync] Storage file: Aditya/face_2_331e22e6069e4c94933ecfa8fa0f02c0.jpeg
+[sync] Storage file: Aditya/face_3_2b29578a1e074d01876264d672851337.jpeg
+[sync] Storage file: Aditya/face_4_9e67144a412d4808ad6f468c79cb7d22.jpeg
+[sync] Storage file: Aditya/profile_9b9010a246444ba2bc8b0fa8d7a7fb36.jpeg
+[sync] Storage file: Amitabh_prajapati/2026-08-19/Entry-4_120632.jpg
+[sync] Storage file: Amitabh_prajapati/face_1_dd6093909c304e15bc1b7fe47bd846c7.jpg
+[sync] Storage file: Amitabh_prajapati/face_2_d099b4b57db74fbdac645f00ebf64af0.jpg
+[sync] Storage file: Amitabh_prajapati/face_3_e3cc29a2f8b441c68583bbdfbb35e291.jpg
+[sync] Storage file: Amitabh_prajapati/face_4_43003cf95e9f4c5e952fdcafc6eb1af0.jpg
+[sync] Storage file: Amitabh_prajapati/face_5_18cad15c39124b81a977e8f782950988.jpg
+[sync] Storage file: Amitabh_prajapati/face_6_027b33e8c1a94d92a8e6d4998a78ee44.jpg
+[sync] Storage file: Amitabh_prajapati/profile_cb1a8de9d13a4a8285dddf87738e3553.jpg
+[sync] Storage file: Kajal/2026-08-19/Entry-1_121527.jpg
+[sync] Storage file: Kajal/face_1_33f448ea56084c0aa3fb473388dae9e0.jpeg
+[sync] Storage file: Kajal/face_2_7ef611ad5bef4fba904253cfa8821019.jpeg
+[sync] Storage file: Kajal/face_3_481c813bdbb14f67b78af964e8af78af.jpeg
+[sync] Storage file: Kajal/profile_682d56e7d11d41bc9552a7672db2d573.jpeg
+[sync] Storage file: Kuldeep/face_1_85dd82bdd4fd41c1a11a658a3407142f.jpg
+[sync] Storage file: Kuldeep/face_2_29e1aade72224016a49111e7bf80291d.jpg
+[sync] Storage file: Kuldeep/face_3_a05f7f8bfda54f7ca22def992cb50a87.jpg
+[sync] Storage file: Kuldeep/face_4_ec372e0474d44148af1ceba2e69b1ae7.jpg
+[sync] Storage file: Kuldeep/face_5_d5a5255431934095913452cc3339b7e1.jpg
+[sync] Storage file: Kuldeep/profile_f0b800ace15040fa9ae13162e97c4215.jpg
+[sync] Storage file: meraj/2026-08-19/Entry-2_122727.jpg
+[sync] Storage file: meraj/face_1_0e968dd70b0b4df4bdd9df5a7787a163.jpg
+[sync] Storage file: meraj/face_2_601cd4d30e244a3fa7f8f1f51586aab3.jpg
+[sync] Storage file: meraj/face_3_d2e91953e150490f927e875262fa2b51.jpg
+[sync] Storage file: meraj/face_4_cf6fdf3fa10c44d7b9c4303e86eb3357.jpg
+[sync] Storage file: meraj/profile_10b2ffb120624de9a8fbc9f88c6b1554.jpg
+[sync] Storage file: Neeraj/face_1_80c055b2ca6e4c15b770e970d3b972d3.jpeg
+[sync] Storage file: Neeraj/face_2_69d296be8c5749b28cafb91f534092c4.jpeg
+[sync] Storage file: Neeraj/face_3_19fee782cba44d89b09dd0bf7537a890.jpeg
+[sync] Storage file: Neeraj/face_4_a978bb61e7704b8ca4f399ef7e1fa075.jpeg
+[sync] Storage file: Neeraj/profile_e5e2d4c9350c4b8e9650157aff95fdba.jpeg
+[sync] Storage file: Prashant/2026-08-19/Entry-4_121602.jpg
+[sync] Storage file: Prashant/face_1_ab58a7489bbe488db7e643c3e5d010c0.jpeg
+[sync] Storage file: Prashant/face_2_760476fad96c4e3f8e4858b4687a3123.jpeg
+[sync] Storage file: Prashant/face_3_655abe6dd2d9458c906d6acabb5b728b.jpeg
+[sync] Storage file: Prashant/face_4_d54904d9753f4292a0c38e1688a31609.jpeg
+[sync] Storage file: Prashant/face_5_3a0527b04c0d4eacb69dd303a571ddba.jpeg
+[sync] Storage file: Prashant/face_6_5decafa79c0842f5b6b776a7d2c68455.jpg
+[sync] Storage file: Prashant/profile_dc0bd7136e2b490eb4a4e5979ea6682d.jpeg
+[sync] Storage file: Praveen/2026-08-19/Entry-2_121054.jpg
+[sync] Storage file: Praveen/face_1_600c587a36224c2f91668085f8d564be.jpg
+[sync] Storage file: Praveen/face_2_8eb81e8852b74aaf98e7ce6d859e9759.jpg
+[sync] Storage file: Praveen/face_3_2f5e9f8fe7a04f1295abffa84572b773.jpg
+[sync] Storage file: Praveen/face_4_08a4ae1c2ed84780942f589304beb57b.jpg
+[sync] Storage file: Praveen/face_5_b155b20f4ea14ce3bdc063905e43593f.jpg
+[sync] Storage file: Praveen/profile_a0910de1e9ba467e901dc55a80623834.jpg
+[sync] Storage file: Rajan/2026-08-19/Entry-1_115955.jpg
+[sync] Storage file: Rajan/face_1_48069a9f82f24a5ea66ba9e476c9641e.jpg
+[sync] Storage file: Rajan/face_2_10fb85cf38e74c18926ffeaf9a55ab3f.jpg
+[sync] Storage file: Rajan/face_3_e69f207549dc4bb18dc8c4bde2714a62.jpg
+[sync] Storage file: Rajan/face_4_751a4a0d4f0848f7afc5ff7167c81baf.jpg
+[sync] Storage file: Rajan/face_5_cf9284899a80464a9006178d2267845d.jpg
+[sync] Storage file: Rajan/face_6_a142aa49be2e45f2abe626c058f60811.jpg
+[sync] Storage file: Rajan/profile_72c136d2b1264eeba4250badebe1c9b2.jpg
+[sync] Storage file: Satya/face_1_050d4e7c4aa64fd29d24f60ea3251272.jpg
+[sync] Storage file: Satya/face_2_5428d32024104dbbbed92dee1c31acfc.jpg
+[sync] Storage file: Satya/face_3_f40fd8d4d17c433bb89d72871c093fd4.jpg
+[sync] Storage file: Satya/face_4_e2fb223ea18c426789ffc32047681118.jpg
+[sync] Storage file: Satya/face_5_d1e89e6abaa349e786a41c4ce9fe59c9.jpg
+[sync] Storage file: Satya/face_6_2803158bd7734d429ca2b86852bc412d.jpg
+[sync] Storage file: Satya/profile_255aa662c73e4631864cfcc8ac8dd832.jpg
+[sync] Storage file: Shashwat/2026-08-19/Entry-1_120042.jpg
+[sync] Storage file: Shashwat/face_1_efb053ebed144d9e88e2005de513cf5a.jpeg
+[sync] Storage file: Shashwat/profile_2d246cf1b64c4ce992b9966df3b4bdb9.jpeg
+[sync] Storage file: Sunny/face_1_ad7fcc2b9e174aaca12ce60828b9183b.jpeg
+[sync] Storage file: Sunny/face_2_52ab914cdfce4d9783dbcd06b8a57858.jpeg
+[sync] Storage file: Sunny/face_3_a27fc002d97042c49aeb57a3f7d656af.jpeg
+[sync] Storage file: Sunny/profile_b36cafe4e72f402690db990581c9c436.jpeg
+[sync] Storage file: vikas sharma/face_1_2b0e6a300f8646308f51f5324f5efbfa.png
+[sync] Storage file: vikas sharma/face_2_f3b8f7a13c06469ab165baa54f18c281.png
+[sync] Storage file: vikas sharma/face_3_b063a37021634ec98ebb96165146205f.png
+[sync] Storage file: vikas sharma/face_4_812baf2c4ed8461c96dad017b921e715.png
+[sync] Storage file: vikas sharma/profile_4f307032cef3489c961dda4d92b1d9fa.png
+[sync] No new employee embeddings.
+[sync] ==================================================
+
+
+[sync] ==================================================
+[sync] Sync started: 2026-08-19 12:31:37
+[sync] 🔍 Checking deleted employees...
+[sync] Employee API status: 200
+[sync] DEBUG raw employees response: [{'name': 'Aakash'}, {'name': 'Rajan'}, {'name': 'Abhishek'}, {'name': 'Aditya'}, {'name': 'Shashwat'}, {'name': 'Prashant'}, {'name': 'Kuldeep'}, {'name': 'Kajal'}, {'name': 'Neeraj'}, {'name': 'Praveen'}, {'name': 'Satya'}, {'name': 'Sunny'}, {'name': 'vikas sharma'}, {'name': 'Amitabh prajapati'}, {'name': 'Amitabh_prajapati'}, {'name': 'meraj'}]
+[sync] Supabase employee names: ['Aakash', 'Abhishek', 'Aditya', 'Amitabh prajapati', 'Amitabh_prajapati', 'Kajal', 'Kuldeep', 'Neeraj', 'Prashant', 'Praveen', 'Rajan', 'Satya', 'Shashwat', 'Sunny', 'meraj', 'vikas sharma']
+[sync] Local embedding names: ['Aakash', 'Abhishek', 'Aditya', 'Amitabh_prajapati', 'Kajal', 'Kuldeep', 'Neeraj', 'Prashant', 'Praveen', 'Rajan', 'Satya', 'Shashwat', 'Sunny', 'meraj', 'vikas sharma']
+[sync] ✅ No deleted employees found.
+[sync] Storage files found: 90
+[sync] Storage file: Aakash/2026-08-19/Entry-1_115951.jpg
+[sync] Storage file: Aakash/face_1_d768a67194494bae924867e2aab666f5.jpg
+[sync] Storage file: Aakash/face_2_5b057b77aacf473983b0d8426610f305.jpg
+[sync] Storage file: Aakash/face_3_afd0237d711e404abd92bb8e3c88ba7f.jpg
+[sync] Storage file: Aakash/face_4_955f8b8f26f549c6aaeb1d3e4c589052.jpg
+[sync] Storage file: Aakash/face_5_a80e990debd6428d876033a61a5c2d67.jpg
+[sync] Storage file: Aakash/profile_752d389858c14070aba36f7eba3522d9.jpg
+[sync] Storage file: Abhishek/face_1_b7186164352648a4b3bb585957ce87ce.jpg
+[sync] Storage file: Abhishek/face_2_c85f14e2af2d41478721874f0bf9e1a9.jpg
+[sync] Storage file: Abhishek/face_3_ca35649e9db44438834e39a9a99f4d05.jpg
+[sync] Storage file: Abhishek/face_4_ca27a72d5a9445aab58d99e7967f4d46.jpg
+[sync] Storage file: Abhishek/face_5_72cd21d14f234962ba904e722e42a26e.jpg
+[sync] Storage file: Abhishek/profile_20f144857a5b4f85923da4dd9f773feb.jpg
+[sync] Storage file: Aditya/face_1_241579e8b50543269878109a5fb30a28.jpeg
+[sync] Storage file: Aditya/face_2_331e22e6069e4c94933ecfa8fa0f02c0.jpeg
+[sync] Storage file: Aditya/face_3_2b29578a1e074d01876264d672851337.jpeg
+[sync] Storage file: Aditya/face_4_9e67144a412d4808ad6f468c79cb7d22.jpeg
+[sync] Storage file: Aditya/profile_9b9010a246444ba2bc8b0fa8d7a7fb36.jpeg
+[sync] Storage file: Amitabh_prajapati/2026-08-19/Entry-4_120632.jpg
+[sync] Storage file: Amitabh_prajapati/face_1_dd6093909c304e15bc1b7fe47bd846c7.jpg
+[sync] Storage file: Amitabh_prajapati/face_2_d099b4b57db74fbdac645f00ebf64af0.jpg
+[sync] Storage file: Amitabh_prajapati/face_3_e3cc29a2f8b441c68583bbdfbb35e291.jpg
+[sync] Storage file: Amitabh_prajapati/face_4_43003cf95e9f4c5e952fdcafc6eb1af0.jpg
+[sync] Storage file: Amitabh_prajapati/face_5_18cad15c39124b81a977e8f782950988.jpg
+[sync] Storage file: Amitabh_prajapati/face_6_027b33e8c1a94d92a8e6d4998a78ee44.jpg
+[sync] Storage file: Amitabh_prajapati/profile_cb1a8de9d13a4a8285dddf87738e3553.jpg
+[sync] Storage file: Kajal/2026-08-19/Entry-1_121527.jpg
+[sync] Storage file: Kajal/face_1_33f448ea56084c0aa3fb473388dae9e0.jpeg
+[sync] Storage file: Kajal/face_2_7ef611ad5bef4fba904253cfa8821019.jpeg
+[sync] Storage file: Kajal/face_3_481c813bdbb14f67b78af964e8af78af.jpeg
+[sync] Storage file: Kajal/profile_682d56e7d11d41bc9552a7672db2d573.jpeg
+[sync] Storage file: Kuldeep/face_1_85dd82bdd4fd41c1a11a658a3407142f.jpg
+[sync] Storage file: Kuldeep/face_2_29e1aade72224016a49111e7bf80291d.jpg
+[sync] Storage file: Kuldeep/face_3_a05f7f8bfda54f7ca22def992cb50a87.jpg
+[sync] Storage file: Kuldeep/face_4_ec372e0474d44148af1ceba2e69b1ae7.jpg
+[sync] Storage file: Kuldeep/face_5_d5a5255431934095913452cc3339b7e1.jpg
+[sync] Storage file: Kuldeep/profile_f0b800ace15040fa9ae13162e97c4215.jpg
+[sync] Storage file: meraj/2026-08-19/Entry-2_122727.jpg
+[sync] Storage file: meraj/face_1_0e968dd70b0b4df4bdd9df5a7787a163.jpg
+[sync] Storage file: meraj/face_2_601cd4d30e244a3fa7f8f1f51586aab3.jpg
+[sync] Storage file: meraj/face_3_d2e91953e150490f927e875262fa2b51.jpg
+[sync] Storage file: meraj/face_4_cf6fdf3fa10c44d7b9c4303e86eb3357.jpg
+[sync] Storage file: meraj/profile_10b2ffb120624de9a8fbc9f88c6b1554.jpg
+[sync] Storage file: Neeraj/face_1_80c055b2ca6e4c15b770e970d3b972d3.jpeg
+[sync] Storage file: Neeraj/face_2_69d296be8c5749b28cafb91f534092c4.jpeg
+[sync] Storage file: Neeraj/face_3_19fee782cba44d89b09dd0bf7537a890.jpeg
+[sync] Storage file: Neeraj/face_4_a978bb61e7704b8ca4f399ef7e1fa075.jpeg
+[sync] Storage file: Neeraj/profile_e5e2d4c9350c4b8e9650157aff95fdba.jpeg
+[sync] Storage file: Prashant/2026-08-19/Entry-4_121602.jpg
+[sync] Storage file: Prashant/face_1_ab58a7489bbe488db7e643c3e5d010c0.jpeg
+[sync] Storage file: Prashant/face_2_760476fad96c4e3f8e4858b4687a3123.jpeg
+[sync] Storage file: Prashant/face_3_655abe6dd2d9458c906d6acabb5b728b.jpeg
+[sync] Storage file: Prashant/face_4_d54904d9753f4292a0c38e1688a31609.jpeg
+[sync] Storage file: Prashant/face_5_3a0527b04c0d4eacb69dd303a571ddba.jpeg
+[sync] Storage file: Prashant/face_6_5decafa79c0842f5b6b776a7d2c68455.jpg
+[sync] Storage file: Prashant/profile_dc0bd7136e2b490eb4a4e5979ea6682d.jpeg
+[sync] Storage file: Praveen/2026-08-19/Entry-2_121054.jpg
+[sync] Storage file: Praveen/face_1_600c587a36224c2f91668085f8d564be.jpg
+[sync] Storage file: Praveen/face_2_8eb81e8852b74aaf98e7ce6d859e9759.jpg
+[sync] Storage file: Praveen/face_3_2f5e9f8fe7a04f1295abffa84572b773.jpg
+[sync] Storage file: Praveen/face_4_08a4ae1c2ed84780942f589304beb57b.jpg
+[sync] Storage file: Praveen/face_5_b155b20f4ea14ce3bdc063905e43593f.jpg
+[sync] Storage file: Praveen/profile_a0910de1e9ba467e901dc55a80623834.jpg
+[sync] Storage file: Rajan/2026-08-19/Entry-1_115955.jpg
+[sync] Storage file: Rajan/face_1_48069a9f82f24a5ea66ba9e476c9641e.jpg
+[sync] Storage file: Rajan/face_2_10fb85cf38e74c18926ffeaf9a55ab3f.jpg
+[sync] Storage file: Rajan/face_3_e69f207549dc4bb18dc8c4bde2714a62.jpg
+[sync] Storage file: Rajan/face_4_751a4a0d4f0848f7afc5ff7167c81baf.jpg
+[sync] Storage file: Rajan/face_5_cf9284899a80464a9006178d2267845d.jpg
+[sync] Storage file: Rajan/face_6_a142aa49be2e45f2abe626c058f60811.jpg
+[sync] Storage file: Rajan/profile_72c136d2b1264eeba4250badebe1c9b2.jpg
+[sync] Storage file: Satya/face_1_050d4e7c4aa64fd29d24f60ea3251272.jpg
+[sync] Storage file: Satya/face_2_5428d32024104dbbbed92dee1c31acfc.jpg
+[sync] Storage file: Satya/face_3_f40fd8d4d17c433bb89d72871c093fd4.jpg
+[sync] Storage file: Satya/face_4_e2fb223ea18c426789ffc32047681118.jpg
+[sync] Storage file: Satya/face_5_d1e89e6abaa349e786a41c4ce9fe59c9.jpg
+[sync] Storage file: Satya/face_6_2803158bd7734d429ca2b86852bc412d.jpg
+[sync] Storage file: Satya/profile_255aa662c73e4631864cfcc8ac8dd832.jpg
+[sync] Storage file: Shashwat/2026-08-19/Entry-1_120042.jpg
+[sync] Storage file: Shashwat/face_1_efb053ebed144d9e88e2005de513cf5a.jpeg
+[sync] Storage file: Shashwat/profile_2d246cf1b64c4ce992b9966df3b4bdb9.jpeg
+[sync] Storage file: Sunny/face_1_ad7fcc2b9e174aaca12ce60828b9183b.jpeg
+[sync] Storage file: Sunny/face_2_52ab914cdfce4d9783dbcd06b8a57858.jpeg
+[sync] Storage file: Sunny/face_3_a27fc002d97042c49aeb57a3f7d656af.jpeg
+[sync] Storage file: Sunny/profile_b36cafe4e72f402690db990581c9c436.jpeg
+[sync] Storage file: vikas sharma/face_1_2b0e6a300f8646308f51f5324f5efbfa.png
+[sync] Storage file: vikas sharma/face_2_f3b8f7a13c06469ab165baa54f18c281.png
+[sync] Storage file: vikas sharma/face_3_b063a37021634ec98ebb96165146205f.png
+[sync] Storage file: vikas sharma/face_4_812baf2c4ed8461c96dad017b921e715.png
+[sync] Storage file: vikas sharma/profile_4f307032cef3489c961dda4d92b1d9fa.png
+[sync] No new employee embeddings.
+[sync] ==================================================
+
+
+[sync] ==================================================
+[sync] Sync started: 2026-08-19 12:32:12
+[sync] 🔍 Checking deleted employees...
+[sync] Employee API status: 200
+[sync] DEBUG raw employees response: [{'name': 'Aakash'}, {'name': 'Rajan'}, {'name': 'Abhishek'}, {'name': 'Aditya'}, {'name': 'Shashwat'}, {'name': 'Prashant'}, {'name': 'Kuldeep'}, {'name': 'Kajal'}, {'name': 'Neeraj'}, {'name': 'Praveen'}, {'name': 'Satya'}, {'name': 'Sunny'}, {'name': 'vikas sharma'}, {'name': 'Amitabh prajapati'}, {'name': 'Amitabh_prajapati'}, {'name': 'meraj'}]
+[sync] Supabase employee names: ['Aakash', 'Abhishek', 'Aditya', 'Amitabh prajapati', 'Amitabh_prajapati', 'Kajal', 'Kuldeep', 'Neeraj', 'Prashant', 'Praveen', 'Rajan', 'Satya', 'Shashwat', 'Sunny', 'meraj', 'vikas sharma']
+[sync] Local embedding names: ['Aakash', 'Abhishek', 'Aditya', 'Amitabh_prajapati', 'Kajal', 'Kuldeep', 'Neeraj', 'Prashant', 'Praveen', 'Rajan', 'Satya', 'Shashwat', 'Sunny', 'meraj', 'vikas sharma']
+[sync] ✅ No deleted employees found.
+[sync] Storage files found: 90
+[sync] Storage file: Aakash/2026-08-19/Entry-1_115951.jpg
+[sync] Storage file: Aakash/face_1_d768a67194494bae924867e2aab666f5.jpg
+[sync] Storage file: Aakash/face_2_5b057b77aacf473983b0d8426610f305.jpg
+[sync] Storage file: Aakash/face_3_afd0237d711e404abd92bb8e3c88ba7f.jpg
+[sync] Storage file: Aakash/face_4_955f8b8f26f549c6aaeb1d3e4c589052.jpg
+[sync] Storage file: Aakash/face_5_a80e990debd6428d876033a61a5c2d67.jpg
+[sync] Storage file: Aakash/profile_752d389858c14070aba36f7eba3522d9.jpg
+[sync] Storage file: Abhishek/face_1_b7186164352648a4b3bb585957ce87ce.jpg
+[sync] Storage file: Abhishek/face_2_c85f14e2af2d41478721874f0bf9e1a9.jpg
+[sync] Storage file: Abhishek/face_3_ca35649e9db44438834e39a9a99f4d05.jpg
+[sync] Storage file: Abhishek/face_4_ca27a72d5a9445aab58d99e7967f4d46.jpg
+[sync] Storage file: Abhishek/face_5_72cd21d14f234962ba904e722e42a26e.jpg
+[sync] Storage file: Abhishek/profile_20f144857a5b4f85923da4dd9f773feb.jpg
+[sync] Storage file: Aditya/face_1_241579e8b50543269878109a5fb30a28.jpeg
+[sync] Storage file: Aditya/face_2_331e22e6069e4c94933ecfa8fa0f02c0.jpeg
+[sync] Storage file: Aditya/face_3_2b29578a1e074d01876264d672851337.jpeg
+[sync] Storage file: Aditya/face_4_9e67144a412d4808ad6f468c79cb7d22.jpeg
+[sync] Storage file: Aditya/profile_9b9010a246444ba2bc8b0fa8d7a7fb36.jpeg
+[sync] Storage file: Amitabh_prajapati/2026-08-19/Entry-4_120632.jpg
+[sync] Storage file: Amitabh_prajapati/face_1_dd6093909c304e15bc1b7fe47bd846c7.jpg
+[sync] Storage file: Amitabh_prajapati/face_2_d099b4b57db74fbdac645f00ebf64af0.jpg
+[sync] Storage file: Amitabh_prajapati/face_3_e3cc29a2f8b441c68583bbdfbb35e291.jpg
+[sync] Storage file: Amitabh_prajapati/face_4_43003cf95e9f4c5e952fdcafc6eb1af0.jpg
+[sync] Storage file: Amitabh_prajapati/face_5_18cad15c39124b81a977e8f782950988.jpg
+[sync] Storage file: Amitabh_prajapati/face_6_027b33e8c1a94d92a8e6d4998a78ee44.jpg
+[sync] Storage file: Amitabh_prajapati/profile_cb1a8de9d13a4a8285dddf87738e3553.jpg
+[sync] Storage file: Kajal/2026-08-19/Entry-1_121527.jpg
+[sync] Storage file: Kajal/face_1_33f448ea56084c0aa3fb473388dae9e0.jpeg
+[sync] Storage file: Kajal/face_2_7ef611ad5bef4fba904253cfa8821019.jpeg
+[sync] Storage file: Kajal/face_3_481c813bdbb14f67b78af964e8af78af.jpeg
+[sync] Storage file: Kajal/profile_682d56e7d11d41bc9552a7672db2d573.jpeg
+[sync] Storage file: Kuldeep/face_1_85dd82bdd4fd41c1a11a658a3407142f.jpg
+[sync] Storage file: Kuldeep/face_2_29e1aade72224016a49111e7bf80291d.jpg
+[sync] Storage file: Kuldeep/face_3_a05f7f8bfda54f7ca22def992cb50a87.jpg
+[sync] Storage file: Kuldeep/face_4_ec372e0474d44148af1ceba2e69b1ae7.jpg
+[sync] Storage file: Kuldeep/face_5_d5a5255431934095913452cc3339b7e1.jpg
+[sync] Storage file: Kuldeep/profile_f0b800ace15040fa9ae13162e97c4215.jpg
+[sync] Storage file: meraj/2026-08-19/Entry-2_122727.jpg
+[sync] Storage file: meraj/face_1_0e968dd70b0b4df4bdd9df5a7787a163.jpg
+[sync] Storage file: meraj/face_2_601cd4d30e244a3fa7f8f1f51586aab3.jpg
+[sync] Storage file: meraj/face_3_d2e91953e150490f927e875262fa2b51.jpg
+[sync] Storage file: meraj/face_4_cf6fdf3fa10c44d7b9c4303e86eb3357.jpg
+[sync] Storage file: meraj/profile_10b2ffb120624de9a8fbc9f88c6b1554.jpg
+[sync] Storage file: Neeraj/face_1_80c055b2ca6e4c15b770e970d3b972d3.jpeg
+[sync] Storage file: Neeraj/face_2_69d296be8c5749b28cafb91f534092c4.jpeg
+[sync] Storage file: Neeraj/face_3_19fee782cba44d89b09dd0bf7537a890.jpeg
+[sync] Storage file: Neeraj/face_4_a978bb61e7704b8ca4f399ef7e1fa075.jpeg
+[sync] Storage file: Neeraj/profile_e5e2d4c9350c4b8e9650157aff95fdba.jpeg
+[sync] Storage file: Prashant/2026-08-19/Entry-4_121602.jpg
+[sync] Storage file: Prashant/face_1_ab58a7489bbe488db7e643c3e5d010c0.jpeg
+[sync] Storage file: Prashant/face_2_760476fad96c4e3f8e4858b4687a3123.jpeg
+[sync] Storage file: Prashant/face_3_655abe6dd2d9458c906d6acabb5b728b.jpeg
+[sync] Storage file: Prashant/face_4_d54904d9753f4292a0c38e1688a31609.jpeg
+[sync] Storage file: Prashant/face_5_3a0527b04c0d4eacb69dd303a571ddba.jpeg
+[sync] Storage file: Prashant/face_6_5decafa79c0842f5b6b776a7d2c68455.jpg
+[sync] Storage file: Prashant/profile_dc0bd7136e2b490eb4a4e5979ea6682d.jpeg
+[sync] Storage file: Praveen/2026-08-19/Entry-2_121054.jpg
+[sync] Storage file: Praveen/face_1_600c587a36224c2f91668085f8d564be.jpg
+[sync] Storage file: Praveen/face_2_8eb81e8852b74aaf98e7ce6d859e9759.jpg
+[sync] Storage file: Praveen/face_3_2f5e9f8fe7a04f1295abffa84572b773.jpg
+[sync] Storage file: Praveen/face_4_08a4ae1c2ed84780942f589304beb57b.jpg
+[sync] Storage file: Praveen/face_5_b155b20f4ea14ce3bdc063905e43593f.jpg
+[sync] Storage file: Praveen/profile_a0910de1e9ba467e901dc55a80623834.jpg
+[sync] Storage file: Rajan/2026-08-19/Entry-1_115955.jpg
+[sync] Storage file: Rajan/face_1_48069a9f82f24a5ea66ba9e476c9641e.jpg
+[sync] Storage file: Rajan/face_2_10fb85cf38e74c18926ffeaf9a55ab3f.jpg
+[sync] Storage file: Rajan/face_3_e69f207549dc4bb18dc8c4bde2714a62.jpg
+[sync] Storage file: Rajan/face_4_751a4a0d4f0848f7afc5ff7167c81baf.jpg
+[sync] Storage file: Rajan/face_5_cf9284899a80464a9006178d2267845d.jpg
+[sync] Storage file: Rajan/face_6_a142aa49be2e45f2abe626c058f60811.jpg
+[sync] Storage file: Rajan/profile_72c136d2b1264eeba4250badebe1c9b2.jpg
+[sync] Storage file: Satya/face_1_050d4e7c4aa64fd29d24f60ea3251272.jpg
+[sync] Storage file: Satya/face_2_5428d32024104dbbbed92dee1c31acfc.jpg
+[sync] Storage file: Satya/face_3_f40fd8d4d17c433bb89d72871c093fd4.jpg
+[sync] Storage file: Satya/face_4_e2fb223ea18c426789ffc32047681118.jpg
+[sync] Storage file: Satya/face_5_d1e89e6abaa349e786a41c4ce9fe59c9.jpg
+[sync] Storage file: Satya/face_6_2803158bd7734d429ca2b86852bc412d.jpg
+[sync] Storage file: Satya/profile_255aa662c73e4631864cfcc8ac8dd832.jpg
+[sync] Storage file: Shashwat/2026-08-19/Entry-1_120042.jpg
+[sync] Storage file: Shashwat/face_1_efb053ebed144d9e88e2005de513cf5a.jpeg
+[sync] Storage file: Shashwat/profile_2d246cf1b64c4ce992b9966df3b4bdb9.jpeg
+[sync] Storage file: Sunny/face_1_ad7fcc2b9e174aaca12ce60828b9183b.jpeg
+[sync] Storage file: Sunny/face_2_52ab914cdfce4d9783dbcd06b8a57858.jpeg
+[sync] Storage file: Sunny/face_3_a27fc002d97042c49aeb57a3f7d656af.jpeg
+[sync] Storage file: Sunny/profile_b36cafe4e72f402690db990581c9c436.jpeg
+[sync] Storage file: vikas sharma/face_1_2b0e6a300f8646308f51f5324f5efbfa.png
+[sync] Storage file: vikas sharma/face_2_f3b8f7a13c06469ab165baa54f18c281.png
+[sync] Storage file: vikas sharma/face_3_b063a37021634ec98ebb96165146205f.png
+[sync] Storage file: vikas sharma/face_4_812baf2c4ed8461c96dad017b921e715.png
+[sync] Storage file: vikas sharma/profile_4f307032cef3489c961dda4d92b1d9fa.png
+[sync] No new employee embeddings.
+[sync] ==================================================
+
+
+[sync] ==================================================
+[sync] Sync started: 2026-08-19 12:32:47
+[sync] 🔍 Checking deleted employees...
+[sync] Employee API status: 200
+[sync] DEBUG raw employees response: [{'name': 'Aakash'}, {'name': 'Rajan'}, {'name': 'Abhishek'}, {'name': 'Aditya'}, {'name': 'Shashwat'}, {'name': 'Prashant'}, {'name': 'Kuldeep'}, {'name': 'Kajal'}, {'name': 'Neeraj'}, {'name': 'Praveen'}, {'name': 'Satya'}, {'name': 'Sunny'}, {'name': 'vikas sharma'}, {'name': 'Amitabh prajapati'}, {'name': 'Amitabh_prajapati'}, {'name': 'meraj'}]
+[sync] Supabase employee names: ['Aakash', 'Abhishek', 'Aditya', 'Amitabh prajapati', 'Amitabh_prajapati', 'Kajal', 'Kuldeep', 'Neeraj', 'Prashant', 'Praveen', 'Rajan', 'Satya', 'Shashwat', 'Sunny', 'meraj', 'vikas sharma']
+[sync] Local embedding names: ['Aakash', 'Abhishek', 'Aditya', 'Amitabh_prajapati', 'Kajal', 'Kuldeep', 'Neeraj', 'Prashant', 'Praveen', 'Rajan', 'Satya', 'Shashwat', 'Sunny', 'meraj', 'vikas sharma']
+[sync] ✅ No deleted employees found.
+[sync] Storage files found: 90
+[sync] Storage file: Aakash/2026-08-19/Entry-1_115951.jpg
+[sync] Storage file: Aakash/face_1_d768a67194494bae924867e2aab666f5.jpg
+[sync] Storage file: Aakash/face_2_5b057b77aacf473983b0d8426610f305.jpg
+[sync] Storage file: Aakash/face_3_afd0237d711e404abd92bb8e3c88ba7f.jpg
+[sync] Storage file: Aakash/face_4_955f8b8f26f549c6aaeb1d3e4c589052.jpg
+[sync] Storage file: Aakash/face_5_a80e990debd6428d876033a61a5c2d67.jpg
+[sync] Storage file: Aakash/profile_752d389858c14070aba36f7eba3522d9.jpg
+[sync] Storage file: Abhishek/face_1_b7186164352648a4b3bb585957ce87ce.jpg
+[sync] Storage file: Abhishek/face_2_c85f14e2af2d41478721874f0bf9e1a9.jpg
+[sync] Storage file: Abhishek/face_3_ca35649e9db44438834e39a9a99f4d05.jpg
+[sync] Storage file: Abhishek/face_4_ca27a72d5a9445aab58d99e7967f4d46.jpg
+[sync] Storage file: Abhishek/face_5_72cd21d14f234962ba904e722e42a26e.jpg
+[sync] Storage file: Abhishek/profile_20f144857a5b4f85923da4dd9f773feb.jpg
+[sync] Storage file: Aditya/face_1_241579e8b50543269878109a5fb30a28.jpeg
+[sync] Storage file: Aditya/face_2_331e22e6069e4c94933ecfa8fa0f02c0.jpeg
+[sync] Storage file: Aditya/face_3_2b29578a1e074d01876264d672851337.jpeg
+[sync] Storage file: Aditya/face_4_9e67144a412d4808ad6f468c79cb7d22.jpeg
+[sync] Storage file: Aditya/profile_9b9010a246444ba2bc8b0fa8d7a7fb36.jpeg
+[sync] Storage file: Amitabh_prajapati/2026-08-19/Entry-4_120632.jpg
+[sync] Storage file: Amitabh_prajapati/face_1_dd6093909c304e15bc1b7fe47bd846c7.jpg
+[sync] Storage file: Amitabh_prajapati/face_2_d099b4b57db74fbdac645f00ebf64af0.jpg
+[sync] Storage file: Amitabh_prajapati/face_3_e3cc29a2f8b441c68583bbdfbb35e291.jpg
+[sync] Storage file: Amitabh_prajapati/face_4_43003cf95e9f4c5e952fdcafc6eb1af0.jpg
+[sync] Storage file: Amitabh_prajapati/face_5_18cad15c39124b81a977e8f782950988.jpg
+[sync] Storage file: Amitabh_prajapati/face_6_027b33e8c1a94d92a8e6d4998a78ee44.jpg
+[sync] Storage file: Amitabh_prajapati/profile_cb1a8de9d13a4a8285dddf87738e3553.jpg
+[sync] Storage file: Kajal/2026-08-19/Entry-1_121527.jpg
+[sync] Storage file: Kajal/face_1_33f448ea56084c0aa3fb473388dae9e0.jpeg
+[sync] Storage file: Kajal/face_2_7ef611ad5bef4fba904253cfa8821019.jpeg
+[sync] Storage file: Kajal/face_3_481c813bdbb14f67b78af964e8af78af.jpeg
+[sync] Storage file: Kajal/profile_682d56e7d11d41bc9552a7672db2d573.jpeg
+[sync] Storage file: Kuldeep/face_1_85dd82bdd4fd41c1a11a658a3407142f.jpg
+[sync] Storage file: Kuldeep/face_2_29e1aade72224016a49111e7bf80291d.jpg
+[sync] Storage file: Kuldeep/face_3_a05f7f8bfda54f7ca22def992cb50a87.jpg
+[sync] Storage file: Kuldeep/face_4_ec372e0474d44148af1ceba2e69b1ae7.jpg
+[sync] Storage file: Kuldeep/face_5_d5a5255431934095913452cc3339b7e1.jpg
+[sync] Storage file: Kuldeep/profile_f0b800ace15040fa9ae13162e97c4215.jpg
+[sync] Storage file: meraj/2026-08-19/Entry-2_122727.jpg
+[sync] Storage file: meraj/face_1_0e968dd70b0b4df4bdd9df5a7787a163.jpg
+[sync] Storage file: meraj/face_2_601cd4d30e244a3fa7f8f1f51586aab3.jpg
+[sync] Storage file: meraj/face_3_d2e91953e150490f927e875262fa2b51.jpg
+[sync] Storage file: meraj/face_4_cf6fdf3fa10c44d7b9c4303e86eb3357.jpg
+[sync] Storage file: meraj/profile_10b2ffb120624de9a8fbc9f88c6b1554.jpg
+[sync] Storage file: Neeraj/face_1_80c055b2ca6e4c15b770e970d3b972d3.jpeg
+[sync] Storage file: Neeraj/face_2_69d296be8c5749b28cafb91f534092c4.jpeg
+[sync] Storage file: Neeraj/face_3_19fee782cba44d89b09dd0bf7537a890.jpeg
+[sync] Storage file: Neeraj/face_4_a978bb61e7704b8ca4f399ef7e1fa075.jpeg
+[sync] Storage file: Neeraj/profile_e5e2d4c9350c4b8e9650157aff95fdba.jpeg
+[sync] Storage file: Prashant/2026-08-19/Entry-4_121602.jpg
+[sync] Storage file: Prashant/face_1_ab58a7489bbe488db7e643c3e5d010c0.jpeg
+[sync] Storage file: Prashant/face_2_760476fad96c4e3f8e4858b4687a3123.jpeg
+[sync] Storage file: Prashant/face_3_655abe6dd2d9458c906d6acabb5b728b.jpeg
+[sync] Storage file: Prashant/face_4_d54904d9753f4292a0c38e1688a31609.jpeg
+[sync] Storage file: Prashant/face_5_3a0527b04c0d4eacb69dd303a571ddba.jpeg
+[sync] Storage file: Prashant/face_6_5decafa79c0842f5b6b776a7d2c68455.jpg
+[sync] Storage file: Prashant/profile_dc0bd7136e2b490eb4a4e5979ea6682d.jpeg
+[sync] Storage file: Praveen/2026-08-19/Entry-2_121054.jpg
+[sync] Storage file: Praveen/face_1_600c587a36224c2f91668085f8d564be.jpg
+[sync] Storage file: Praveen/face_2_8eb81e8852b74aaf98e7ce6d859e9759.jpg
+[sync] Storage file: Praveen/face_3_2f5e9f8fe7a04f1295abffa84572b773.jpg
+[sync] Storage file: Praveen/face_4_08a4ae1c2ed84780942f589304beb57b.jpg
+[sync] Storage file: Praveen/face_5_b155b20f4ea14ce3bdc063905e43593f.jpg
+[sync] Storage file: Praveen/profile_a0910de1e9ba467e901dc55a80623834.jpg
+[sync] Storage file: Rajan/2026-08-19/Entry-1_115955.jpg
+[sync] Storage file: Rajan/face_1_48069a9f82f24a5ea66ba9e476c9641e.jpg
+[sync] Storage file: Rajan/face_2_10fb85cf38e74c18926ffeaf9a55ab3f.jpg
+[sync] Storage file: Rajan/face_3_e69f207549dc4bb18dc8c4bde2714a62.jpg
+[sync] Storage file: Rajan/face_4_751a4a0d4f0848f7afc5ff7167c81baf.jpg
+[sync] Storage file: Rajan/face_5_cf9284899a80464a9006178d2267845d.jpg
+[sync] Storage file: Rajan/face_6_a142aa49be2e45f2abe626c058f60811.jpg
+[sync] Storage file: Rajan/profile_72c136d2b1264eeba4250badebe1c9b2.jpg
+[sync] Storage file: Satya/face_1_050d4e7c4aa64fd29d24f60ea3251272.jpg
+[sync] Storage file: Satya/face_2_5428d32024104dbbbed92dee1c31acfc.jpg
+[sync] Storage file: Satya/face_3_f40fd8d4d17c433bb89d72871c093fd4.jpg
+[sync] Storage file: Satya/face_4_e2fb223ea18c426789ffc32047681118.jpg
+[sync] Storage file: Satya/face_5_d1e89e6abaa349e786a41c4ce9fe59c9.jpg
+[sync] Storage file: Satya/face_6_2803158bd7734d429ca2b86852bc412d.jpg
+[sync] Storage file: Satya/profile_255aa662c73e4631864cfcc8ac8dd832.jpg
+[sync] Storage file: Shashwat/2026-08-19/Entry-1_120042.jpg
+[sync] Storage file: Shashwat/face_1_efb053ebed144d9e88e2005de513cf5a.jpeg
+[sync] Storage file: Shashwat/profile_2d246cf1b64c4ce992b9966df3b4bdb9.jpeg
+[sync] Storage file: Sunny/face_1_ad7fcc2b9e174aaca12ce60828b9183b.jpeg
+[sync] Storage file: Sunny/face_2_52ab914cdfce4d9783dbcd06b8a57858.jpeg
+[sync] Storage file: Sunny/face_3_a27fc002d97042c49aeb57a3f7d656af.jpeg
+[sync] Storage file: Sunny/profile_b36cafe4e72f402690db990581c9c436.jpeg
+[sync] Storage file: vikas sharma/face_1_2b0e6a300f8646308f51f5324f5efbfa.png
+[sync] Storage file: vikas sharma/face_2_f3b8f7a13c06469ab165baa54f18c281.png
+[sync] Storage file: vikas sharma/face_3_b063a37021634ec98ebb96165146205f.png
+[sync] Storage file: vikas sharma/face_4_812baf2c4ed8461c96dad017b921e715.png
+[sync] Storage file: vikas sharma/profile_4f307032cef3489c961dda4d92b1d9fa.png
+[sync] No new employee embeddings.
+[sync] ==================================================
+

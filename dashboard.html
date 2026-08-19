@@ -2057,24 +2057,6 @@ table.gridtbl tbody td.dcol {
       animation: none;
     }
 
-    .live-tag.delayed {
-      color: var(--amber);
-      background: var(--amber-dim);
-      border-color: rgba(240, 184, 86, .28);
-    }
-
-    .live-tag.failed {
-      color: var(--red);
-      background: var(--red-dim);
-      border-color: rgba(236, 111, 116, .28);
-    }
-
-    .live-tag .live-time {
-      font-size: .65rem;
-      opacity: .8;
-      letter-spacing: .03em;
-    }
-
     @keyframes pulse {
       0% {
         box-shadow: 0 0 0 0 rgba(53, 208, 168, .55);
@@ -2733,8 +2715,6 @@ table.gridtbl thead th.dcol {
   min-width: 46px;
   width: 46px;
   padding: 8px 4px;
-  box-sizing: border-box;
-  overflow: hidden;
 }
 
 /* Day name */
@@ -3147,7 +3127,7 @@ table.gridtbl tbody td.dcol {
       </div>
 
       <div class="ctrls">
-        <span class="live-tag" id="liveTag"><span class="dot"></span> Live <small class="live-time" style="font-weight:500;opacity:.85;"></small></span>
+        <span class="live-tag" id="liveTag"><span class="dot"></span> Live</span>
         <select id="dateSel" title="Select a date"></select>
         <button class="btn btn-accent" id="exportBtn">⤓ Export CSV</button>
         <a class="btn" href="/portal/login">Admin / Login</a>
@@ -3320,10 +3300,6 @@ table.gridtbl tbody td.dcol {
     let currentDate = "";
     let allRecords = [];
     let pollTimer = null;
-    let lastApiSuccess = null;
-    let apiOk = false;
-    let liveTimerInterval = null;
-
 
     const $ = id => document.getElementById(id);
 
@@ -3484,46 +3460,6 @@ table.gridtbl tbody td.dcol {
       ).join("");
     }
 
-    function updateLiveTag() {
-      const tag = $("liveTag");
-      if (!tag) return;
-
-      let statusText = "Live";
-      let statusClass = "live-tag";
-      let timeText = "";
-
-      if (apiOk && lastApiSuccess) {
-        const age = Date.now() - lastApiSuccess;
-        if (age < 10000) {
-          statusText = "Live";
-          statusClass = "live-tag";
-        } else if (age < 30000) {
-          statusText = "Delayed";
-          statusClass = "live-tag delayed";
-        } else {
-          statusText = "Failed";
-          statusClass = "live-tag failed";
-        }
-        const d = new Date(lastApiSuccess);
-        timeText = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true });
-      } else {
-        statusText = "Failed";
-        statusClass = "live-tag failed";
-      }
-
-      tag.className = statusClass;
-      tag.innerHTML = `<span class="dot"></span> ${statusText} <small class="live-time" style="font-weight:500;opacity:.85;">${timeText ? "· " + timeText : ""}</small>`;
-    }
-
-    function updateLiveTimeText() {
-      const tag = $("liveTag");
-      if (!tag || !lastApiSuccess) return;
-      const d = new Date(lastApiSuccess);
-      const timeText = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true });
-      const timeEl = tag.querySelector(".live-time");
-      if (timeEl) timeEl.textContent = "· " + timeText;
-    }
-
     async function fetchData() {
       try {
         const url = "/api/data" + (currentDate ? "?date=" + encodeURIComponent(currentDate) : "");
@@ -3552,20 +3488,12 @@ table.gridtbl tbody td.dcol {
         if ($("dateSel").options.length === 0) renderDateOptions(d.available_dates, d.date);
 
         const tag = $("liveTag");
-        if (isToday) {
-          lastApiSuccess = Date.now();
-          apiOk = true;
-          updateLiveTag();
-        } else {
-          tag.className = "live-tag paused";
-          tag.innerHTML = `<span class="dot"></span> History <small class="live-time" style="font-weight:500;opacity:.85;"></small>`;
-        }
+        if (isToday) { tag.className = "live-tag"; tag.innerHTML = `<span class="dot"></span> Live`; }
+        else { tag.className = "live-tag paused"; tag.innerHTML = `<span class="dot"></span> History`; }
 
         $("footnote").textContent = `Last updated ${d.server_time}` + (d.csv_exists ? "" : "  ·  ⚠ Attendance log not yet created — start the recognition service");
       } catch (e) {
         $("footnote").textContent = "⚠ Unable to reach the server — please confirm the dashboard service is running";
-        apiOk = false;
-        updateLiveTag();
       }
     }
 
@@ -3586,8 +3514,6 @@ table.gridtbl tbody td.dcol {
         pollTimer = setInterval(fetchData, POLL_MS);
       }
     }
-
-    setInterval(updateLiveTimeText, 1000);
 
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) { clearInterval(pollTimer); }
