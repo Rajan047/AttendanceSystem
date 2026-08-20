@@ -227,6 +227,20 @@
       --accent: #9aa7b4;
     }
 
+    .card.filterable {
+      cursor: pointer;
+      transition: .15s;
+    }
+
+    .card.filterable:hover {
+      border-color: var(--accent);
+    }
+
+    .card.filterable.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent) inset;
+    }
+
     .panel {
       background: linear-gradient(180deg, var(--bg-2), var(--panel));
       border: 1px solid var(--border);
@@ -659,9 +673,12 @@
     /* ---- Employee profile card ---- */
     .profile-modal {
       max-width: 460px;
+      max-height: 88vh;
       padding: 0;
       overflow: hidden;
       border-radius: 22px;
+      display: flex;
+      flex-direction: column;
     }
 
     .profile-topbar {
@@ -813,6 +830,28 @@
 
     .profile-body {
       padding: 18px 22px 22px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 0;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-2) transparent;
+    }
+
+    .profile-body::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    .profile-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .profile-body::-webkit-scrollbar-thumb {
+      background: var(--border-2);
+      border-radius: 6px;
+    }
+
+    .profile-body::-webkit-scrollbar-thumb:hover {
+      background: var(--muted-2);
     }
 
     .profile-stats {
@@ -1533,27 +1572,27 @@
     <!-- OVERVIEW -->
     <div class="view active" id="view-overview">
       <div class="stats">
-        <div class="card teal">
+        <div class="card teal filterable" data-status="Present" onclick="filterByCard('Present')">
           <div class="lbl">Present</div>
           <div class="num" id="ov-present">0</div>
         </div>
-        <div class="card indigo">
+        <div class="card indigo filterable" data-status="WFH" onclick="filterByCard('WFH')">
           <div class="lbl">WFH</div>
           <div class="num" id="ov-wfh">0</div>
         </div>
-        <div class="card amber">
+        <div class="card amber filterable" data-status="Leave" onclick="filterByCard('Leave')">
           <div class="lbl">Leave</div>
           <div class="num" id="ov-leave">0</div>
         </div>
-        <div class="card red">
+        <div class="card red filterable" data-status="Absent" onclick="filterByCard('Absent')">
           <div class="lbl">Absent</div>
           <div class="num" id="ov-absent">0</div>
         </div>
-        <div class="card plain">
+        <div class="card plain filterable" data-status="Exit" onclick="filterByCard('Exit')">
           <div class="lbl">Exited</div>
           <div class="num" id="ov-exited">0</div>
         </div>
-        <div class="card plain">
+        <div class="card plain filterable" data-status="unmarked" onclick="filterByCard('unmarked')">
           <div class="lbl">Unmarked</div>
           <div class="num" id="ov-unmarked">0</div>
         </div>
@@ -1598,7 +1637,6 @@
                 <th>Department</th>
                 <th>Designation</th>
                 <th>Email</th>
-                <th>Face ID</th>
                 <th>Login</th>
                 <th>Status</th>
                 <th></th>
@@ -1891,16 +1929,30 @@
       $("ov-exited").textContent = c.exited; $("ov-unmarked").textContent = c.unmarked;
       renderAtt();
     }
+    let attStatusFilter = null;
+    function filterByCard(status) {
+      attStatusFilter = (attStatusFilter === status) ? null : status;
+      document.querySelectorAll("#view-overview .stats .card").forEach(c => {
+        c.classList.toggle("active", c.dataset.status === attStatusFilter);
+      });
+      renderAtt();
+    }
+
     function renderAtt() {
       if (!attData) return;
       const q = $("attSearch").value.trim().toLowerCase();
       const marked = attData.marked.map(r => ({ ...r, _m: true }));
       const unmarked = attData.unmarked.map(n => ({ name: n, _m: false }));
       let rows = [...marked, ...unmarked];
+      if (attStatusFilter) {
+        rows = attStatusFilter === "unmarked"
+          ? rows.filter(r => !r._m)
+          : rows.filter(r => r._m && r.status === attStatusFilter);
+      }
       if (q) rows = rows.filter(r => r.name.toLowerCase().includes(q));
       rows.sort((a, b) => a.name.localeCompare(b.name));
       const tb = $("attBody");
-      if (!rows.length) { tb.innerHTML = `<tr><td colspan="5"><div class="empty">No employees</div></td></tr>`; return; }
+      if (!rows.length) { tb.innerHTML = `<tr><td colspan="5"><div class="empty">No employees${attStatusFilter ? " for this filter" : ""}</div></td></tr>`; return; }
       tb.innerHTML = rows.map(r => {
         const av = avatarHTML(r.photo, r.name);
         const pill = r._m ? `<span class="pill ${r.status}">${statusLabel(r.status)}</span>` : `<span class="pill unmarked">unmarked</span>`;
@@ -1984,17 +2036,16 @@
       const q = $("empSearch").value.trim().toLowerCase();
       let rows = employees; if (q) rows = rows.filter(e => e.name.toLowerCase().includes(q));
       const tb = $("empBody");
-      if (!rows.length) { tb.innerHTML = `<tr><td colspan="9"><div class="empty">No employees yet — add your first one.</div></td></tr>`; return; }
+      if (!rows.length) { tb.innerHTML = `<tr><td colspan="8"><div class="empty">No employees yet — add your first one.</div></td></tr>`; return; }
       tb.innerHTML = rows.map(e => {
         const av = avatarHTML(e.photo_path, e.name);
-        const face = e.has_embedding ? `<span class="pill ready">ready</span>` : `<span class="pill missing">missing</span>`;
         const login = e.has_login ? `<span class="pill ready">yes</span>` : `<span class="pill unmarked">no</span>`;
         const st = e.active ? `<span class="pill active">active</span>` : `<span class="pill inactive">inactive</span>`;
         return `<tr class="clickable" onclick="openProfile(${e.id})">
       <td><div class="avatar">${av}</div></td>
       <td>${e.name}</td><td>${e.department || '—'}</td><td>${e.designation || '—'}</td>
       <td style="color:var(--muted); font-size:.82rem;">${e.email || '—'}</td>
-      <td>${face}</td><td>${login}</td><td>${st}</td>
+      <td>${login}</td><td>${st}</td>
       <td onclick="event.stopPropagation()">
         <button class="icon-btn" title="Edit" onclick="openEdit(${e.id})">✎</button>
         <button class="icon-btn" title="Regenerate face embedding" onclick="regen(${e.id})">⟳</button>
@@ -2206,7 +2257,6 @@
       $("pf-sub").textContent = [e.department, "EMP-" + String(e.id).padStart(4, "0")].filter(Boolean).join(" · ");
       $("pf-pills").innerHTML = [
         e.active ? `<span class="pill active">active</span>` : `<span class="pill inactive">inactive</span>`,
-        e.has_embedding ? `<span class="pill ready">face ready</span>` : `<span class="pill missing">face missing</span>`,
         e.has_login ? `<span class="pill ready">login yes</span>` : `<span class="pill unmarked">login no</span>`,
       ].join("");
       $("pf-email").textContent = e.email || "—";
