@@ -4,6 +4,8 @@ UPDATED: Supabase Storage mein photos upload karo.
 """
 from dataclasses import fields
 import os
+import io
+import csv
 import uuid
 import calendar
 from functools import wraps
@@ -12,7 +14,7 @@ from collections import defaultdict
 
 from flask import (
     Blueprint, request, session, redirect, url_for,
-    render_template, jsonify
+    render_template, jsonify, Response
 )
 from werkzeug.utils import secure_filename
 
@@ -687,6 +689,59 @@ def _build_monthly(month, only_name=None, only_emp_id=None):
 @admin_required
 def api_admin_monthly():
     return jsonify(_build_monthly(request.args.get("month", "").strip()))
+
+
+@portal.route("/api/portal/monthly/export", methods=["GET"])
+@admin_required
+def api_admin_monthly_export():
+    month = request.args.get("month", "").strip() or datetime.now().strftime("%Y-%m")
+    rep = _build_monthly(month)
+
+    buf = io.StringIO()
+    w = csv.writer(buf)
+    w.writerow([f"Monthly Attendance Report — {month}"])
+    w.writerow([f"Working days: {rep['working_days']}", f"Mode: {rep['mode']}"])
+    w.writerow([])
+    w.writerow(["Name", "Present Days", "Absent Days", "Working Days", "Attendance %"])
+    for e in rep["employees"]:
+        w.writerow([e["name"], e["present_days"], e["absent_days"],
+                    rep["working_days"], e["attendance_pct"]])
+
+    return Response(
+        buf.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": f"attachment; filename=monthly_report_{month}.csv"},
+    )
+
+
+@portal.route("/api/portal/monthly/grid-export", methods=["GET"])
+@admin_required
+def api_admin_monthly_grid_export():
+    month = request.args.get("month", "").strip() or datetime.now().strftime("%Y-%m")
+    rep = _build_monthly(month)
+    dates = rep["working_dates"]
+
+    buf = io.StringIO()
+    w = csv.writer(buf)
+
+    def _hdr(d):
+        try:
+            return d[-2:] + " " + datetime.strptime(d, "%Y-%m-%d").strftime("%a")
+        except Exception:
+            return d[-2:]
+
+    w.writerow(["Name"] + [_hdr(d) for d in dates] + ["Present", "Absent", "%"])
+    for e in rep["employees"]:
+        pres = set(e["present_dates"])
+        cells = ["P" if d in pres else "A" for d in dates]
+        w.writerow([e["name"]] + cells +
+                   [e["present_days"], e["absent_days"], e["attendance_pct"]])
+
+    return Response(
+        buf.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": f"attachment; filename=monthly_grid_{month}.csv"},
+    )
 
 
 @portal.route("/api/portal/employees/<int:emp_id>/monthly", methods=["GET"])

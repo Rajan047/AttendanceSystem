@@ -2733,39 +2733,40 @@ table.gridtbl td {
 
 /* Header */
 table.gridtbl thead th {
+  position: sticky;
+  top: 0;
+  z-index: 4;                  /* ← z-index badha */
+  background: var(--panel);    /* ← explicit background ZARURI hai */
   padding: 10px 8px;
   text-align: center;
-
   min-width: 30px;
   width: 30px;
-
   font-size: .68rem;
+  vertical-align: top;
 }
 
 /* Date columns */
 table.gridtbl thead th.dcol {
-  vertical-align: middle;
-  line-height: 1.2;
-  min-width: 46px;
-  width: 46px;
-  padding: 8px 4px;
+  background: var(--panel);    /* ← explicit background */
+  z-index: 4;
 }
 
 /* Day name */
 table.gridtbl thead th.dcol .dn {
   display: block;
-
   font-size: .58rem;
   font-weight: 700;
-
   color: var(--muted-2);
   letter-spacing: .02em;
+  margin-bottom: 3px;
+  line-height: 1;              /* ← add karo */
 }
 
 /* Date number */
 table.gridtbl thead th.dcol .dnum {
   display: block;
   font-size: .74rem;
+  line-height: 1;              /* ← add karo */
 }
 
 /* Weekend */
@@ -2899,8 +2900,11 @@ table.gridtbl tbody td.dcol {
 
     table.gridtbl thead th.today {
       background: rgba(53, 208, 168, .1);
-      box-sizing: border-box;
-      transform: translateZ(0);
+      z-index: 4;
+    }
+    table.gridtbl thead th.nm {
+      z-index: 6;                  /* ← corner cell sabse upar */
+      background: var(--panel);
     }
 
     table.gridtbl thead th.today .dn {
@@ -2909,8 +2913,9 @@ table.gridtbl tbody td.dcol {
 
     table.gridtbl td.today-col {
       background: rgba(53, 208, 168, .045);
+
       box-sizing: border-box;
-      transform: translateZ(0);
+      /* transform: translateZ(0); */
     }
 
     table.gridtbl tfoot td {
