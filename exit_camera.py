@@ -1324,21 +1324,82 @@ def _save_capture(frame, bbox, name, cam_id):
 
 
 # =============================================================================
+#  NAME CANONICALIZATION
+#
+#  photo_sync.py sanitized folder names (Rishu_Kumar) ko embeddings.pkl key
+#  bana deta hai — jo Supabase employees.name (Rishu Kumar, jo manual
+#  attendance use karta hai) se match nahi karta. Isi wajah se exit camera
+#  "No Entry Found" / wrong-person exits log karta tha. Yahan har local key
+#  ko canonical roster naam se map karo; jo kisi active employee se match
+#  nahi karta use drop kar do.
+# =============================================================================
+def _canonicalize_embedding_names(data):
+    if not data:
+        return {}
+
+    try:
+        roster, _ = db.get_roster()
+        canonical_by_safe = {_safe(name): name for name in roster}
+    except Exception as e:
+        print(f"[names] Supabase roster unavailable; keeping local names: {e}")
+        return data
+
+    if not canonical_by_safe:
+        return data
+
+    out = {}
+    for raw_name, emb_list in data.items():
+        canonical = canonical_by_safe.get(_safe(str(raw_name)))
+        if canonical is not None:
+            if canonical != raw_name:
+                print(f"[names] Canonicalized: {raw_name!r} -> {canonical!r}")
+            out.setdefault(canonical, []).extend(emb_list)
+        else:
+            print(f"[names] Ignoring unknown local embedding name: {raw_name!r}")
+
+    return out
+
+
+def _save_canonical_embeddings(data):
+    try:
+        os.makedirs(os.path.dirname(EMBEDDINGS_FILE) or ".", exist_ok=True)
+        with open(EMBEDDINGS_FILE, "wb") as f:
+            pickle.dump(data, f)
+    except Exception as e:
+        print(f"[names] Could not save canonical embeddings cache: {e}")
+
+
+# =============================================================================
 #  LOAD EMBEDDINGS
 # =============================================================================
 print("Loading embeddings …")
-with open(EMBEDDINGS_FILE, "rb") as f:
-    known_embeddings = pickle.load(f)
+try:
+    with open(EMBEDDINGS_FILE, "rb") as f:
+        known_embeddings = pickle.load(f)
+except Exception as e:
+    print(f"[reload] embeddings.pkl read failed: {e}")
+    known_embeddings = {}
+
+known_embeddings = _canonicalize_embedding_names(known_embeddings)
+_save_canonical_embeddings(known_embeddings)
 
 known_face_db = {}
 for name, emb_list in known_embeddings.items():
+    if not emb_list:
+        continue
     emb_array = np.array(emb_list, dtype=np.float32)
     mean_emb  = np.mean(emb_array, axis=0)
-    mean_emb  = mean_emb / np.linalg.norm(mean_emb)
+    norm      = np.linalg.norm(mean_emb)
+    if norm == 0:
+        continue
+    mean_emb  = mean_emb / norm
     known_face_db[name] = mean_emb
 
 _known_names  = list(known_face_db.keys())
-_known_matrix = np.stack(list(known_face_db.values()), axis=0)  # (N, 512)
+_known_matrix = (
+    np.stack(list(known_face_db.values()), axis=0)  # (N, 512)
+    if known_face_db else None
+)
 print(f"Total employees loaded: {len(known_face_db)}\n")
 
 # =============================================================================
