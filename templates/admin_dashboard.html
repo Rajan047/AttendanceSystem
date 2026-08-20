@@ -344,6 +344,37 @@
       min-width: 420px;
     }
 
+    .req-hist-scroll {
+      max-height: 360px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-2) transparent;
+    }
+
+    .req-hist-scroll::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    .req-hist-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .req-hist-scroll::-webkit-scrollbar-thumb {
+      background: var(--border-2);
+      border-radius: 6px;
+    }
+
+    .req-hist-scroll::-webkit-scrollbar-thumb:hover {
+      background: var(--muted-2);
+    }
+
+    .req-hist-scroll thead th {
+      position: sticky;
+      top: 0;
+      background: var(--panel);
+      z-index: 1;
+    }
+
     .pill {
       display: inline-flex;
       align-items: center;
@@ -415,6 +446,16 @@
     .pill.inactive {
       color: var(--muted);
       background: rgba(132, 146, 163, .12);
+    }
+
+    .pill.approved {
+      color: var(--teal);
+      background: var(--teal-dim);
+    }
+
+    .pill.rejected {
+      color: var(--red);
+      background: var(--red-dim);
     }
 
     .quickmark {
@@ -1720,6 +1761,30 @@
           </table>
         </div>
       </div>
+
+      <div class="panel" style="margin-top:16px;">
+        <div class="panel-head">
+          <h2>Request History</h2>
+          <span style="color:var(--muted-2); font-size:.72rem;">Last 30 days · older records auto-removed</span>
+          <span id="reqHistCount"
+            style="margin-left:auto; font-family:var(--mono); font-size:.8rem; color:var(--muted);"></span>
+        </div>
+        <div class="table-scroll req-hist-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Reviewed By</th>
+              </tr>
+            </thead>
+            <tbody id="reqHistBody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1913,7 +1978,7 @@
         if (activeTab === "overview") loadOverview();
         if (activeTab === "employees") loadEmployees();
         if (activeTab === "monthly") loadMonthly();
-        if (activeTab === "requests") loadRequests();
+        if (activeTab === "requests") { loadRequests(); loadRequestHistory(); }
       });
     });
 
@@ -2427,9 +2492,21 @@
     <td><button class="qm-btn p" onclick="review(${r.id},'approved')">Approve</button>
         <button class="qm-btn a" onclick="review(${r.id},'rejected')">Reject</button></td></tr>`).join("");
     }
+    async function loadRequestHistory() {
+      const rows = await (await fetch("/api/portal/requests?status=history")).json();
+      $("reqHistCount").textContent = rows.length + " in last 30 days";
+      const tb = $("reqHistBody");
+      if (!rows.length) { tb.innerHTML = `<tr><td colspan="6"><div class="empty">No reviewed requests in the last 30 days</div></td></tr>`; return; }
+      tb.innerHTML = rows.map(r => `<tr><td>${r.emp_name}</td>
+    <td><span class="pill ${r.type === 'wfh' ? 'WFH' : 'Leave'}">${r.type.toUpperCase()}</span></td>
+    <td style="font-family:var(--mono);">${r.req_date}</td>
+    <td style="color:var(--muted);">${r.reason || '—'}</td>
+    <td><span class="pill ${r.status}">${r.status}</span></td>
+    <td style="color:var(--muted);">${r.reviewed_by || '—'}</td></tr>`).join("");
+    }
     async function review(id, decision) {
       const res = await fetch(`/api/portal/requests/${id}/review`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ decision }) });
-      if (res.ok) { toast(`Request ${decision}`); loadRequests(); } else toast("Failed", false);
+      if (res.ok) { toast(`Request ${decision}`); loadRequests(); loadRequestHistory(); } else toast("Failed", false);
     }
 
     loadOverview();

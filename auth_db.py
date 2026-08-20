@@ -554,19 +554,49 @@ def submit_request(emp_name, req_date, req_type, reason=""):
 
 
 def list_requests(status="pending"):
+    """status='history' returns approved/rejected requests from the last
+       HISTORY_RETENTION_DAYS, and opportunistically prunes anything older."""
+    if status == "history":
+        prune_old_requests()
+
     conn = db.get_conn()
     try:
         cur = conn.cursor()
-        cur.execute(
-            "SELECT * FROM requests WHERE status = %s ORDER BY created_at DESC",
-            (status,),
-        )
+        if status == "history":
+            cur.execute(
+                "SELECT * FROM requests WHERE status IN ('approved','rejected') "
+                "ORDER BY created_at DESC"
+            )
+        else:
+            cur.execute(
+                "SELECT * FROM requests WHERE status = %s ORDER BY created_at DESC",
+                (status,),
+            )
         rows = [dict(r) for r in cur.fetchall()]
         cur.close()
         for r in rows:
             r["req_date"] = str(r["req_date"])
             r["created_at"] = str(r["created_at"])
         return rows
+    finally:
+        conn.close()
+
+
+HISTORY_RETENTION_DAYS = 30
+
+
+def prune_old_requests(days=HISTORY_RETENTION_DAYS):
+    """Delete requests older than `days` — keeps the requests table (and the
+       admin panel's history view) capped to roughly one month of records."""
+    conn = db.get_conn()
+    try:
+        cur = conn.cursor()
+        cur.execute(
+            "DELETE FROM requests WHERE created_at < NOW() - (%s || ' days')::interval",
+            (days,),
+        )
+        conn.commit()
+        cur.close()
     finally:
         conn.close()
 

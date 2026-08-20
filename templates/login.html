@@ -43,9 +43,15 @@
   .success{display:none; background:var(--green-dim); border:1px solid rgba(53,208,168,.3); color:var(--teal);
     padding:10px 13px; border-radius:10px; font-size:.85rem; margin-bottom:16px;}
   .foot{text-align:center; color:#5b6774; font-size:.76rem; margin-top:20px; font-family:var(--mono);}
+  .home-btn{position:fixed; top:20px; left:20px; display:inline-flex; align-items:center; gap:7px;
+    padding:9px 15px; border-radius:10px; border:1px solid var(--border-2); background:var(--bg-2);
+    color:var(--muted); text-decoration:none; font-size:.82rem; font-weight:600; font-family:var(--sans);
+    transition:.15s;}
+  .home-btn:hover{color:var(--teal); border-color:rgba(53,208,168,.4); background:var(--teal-dim);}
 </style>
 </head>
 <body>
+  <a href="/" class="home-btn" title="Back to Live Dashboard">⌂ Live Dashboard</a>
   <div class="card">
     <div class="logo-mark">CT</div>
     <h1>Attendance Intelligence</h1>
