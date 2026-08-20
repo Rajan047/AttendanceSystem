@@ -847,7 +847,7 @@ import config
 # =============================================================================
 CONNECT_TIMEOUT_SECONDS = 5
 STATEMENT_TIMEOUT_MS    = 5000
-SYNC_INTERVAL_SECONDS   = 300     # 5 min
+SYNC_INTERVAL_SECONDS   = 120     # 5 min
 PURGE_AFTER_DAYS        = 7       # 7 din baad synced rows delete
 PURGE_CHECK_INTERVAL    = 12      # har 12 cycles (~1 ghanta)
 DEDUP_WINDOW_SECONDS    = 300     # 5 min mein same person same status → skip

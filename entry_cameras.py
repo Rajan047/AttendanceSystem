@@ -22,13 +22,13 @@ PHOTOS_DIR      = config.PHOTOS_DIR
 
 RTSP_CAMERAS = [
     {
-        "id":      "Entry-1",
+        "id":      "IT-Room",
         "url":     "rtsp://192.168.1.101:554/video/live?channel=1&subtype=1",
         "user_id": "admin",
         "user_pw": "Tts@110092",
     },
     {
-        "id":      "Entry-2",
+        "id":      "R&D-Room",
         "url":     "rtsp://192.168.1.104:554/video/live?channel=1&subtype=1",
         "user_id": "admin",
         "user_pw": "Tts@110092",
@@ -40,7 +40,7 @@ RTSP_CAMERAS = [
     #     "user_pw": "Tts@110092",
     # },
     {
-        "id":      "Entry-4",
+        "id":      "R&D-Hall",
         "url":     "rtsp://192.168.1.106:554/video/live?channel=1&subtype=1",
         "user_id": "admin",
         "user_pw": "Tts@110092",

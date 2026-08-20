@@ -2057,6 +2057,34 @@ table.gridtbl tbody td.dcol {
       animation: none;
     }
 
+    .live-tag.delay {
+      color: var(--amber);
+      background: var(--amber-dim);
+      border-color: rgba(240, 184, 86, .28);
+    }
+
+    .live-tag.delay .dot {
+      animation: pulse 2s infinite;
+    }
+
+    .live-tag.failed {
+      color: var(--red);
+      background: var(--red-dim);
+      border-color: rgba(236, 111, 116, .28);
+    }
+
+    .live-tag.failed .dot {
+      animation: none;
+    }
+
+    .live-timer {
+      font-weight: 500;
+      opacity: .75;
+      text-transform: none;
+      letter-spacing: normal;
+      margin-left: 2px;
+    }
+
     @keyframes pulse {
       0% {
         box-shadow: 0 0 0 0 rgba(53, 208, 168, .55);
@@ -2678,6 +2706,12 @@ table.gridtbl tbody td.dcol {
 
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+
+  /* Own stacking context so cell backgrounds (esp. the tinted
+     weekend/today columns) don't ghost/overlap the header during
+     horizontal scroll -- same fix already applied for mobile below. */
+  position: relative;
+  isolation: isolate;
 }
 
 /* Keep the table wider than the mobile screen when required */
@@ -2785,9 +2819,10 @@ table.gridtbl tbody td.dcol {
     width: 100%;
     max-width: 100%;
 
-    /* Horizontal scroll only for the attendance grid */
+    /* Horizontal AND vertical scroll for the attendance grid — rows
+       beyond max-height (600px) were unreachable on mobile before. */
     overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: auto;
 
     -webkit-overflow-scrolling: touch;
     position: relative;
@@ -2865,6 +2900,7 @@ table.gridtbl tbody td.dcol {
     table.gridtbl thead th.today {
       background: rgba(53, 208, 168, .1);
       box-sizing: border-box;
+      transform: translateZ(0);
     }
 
     table.gridtbl thead th.today .dn {
@@ -2874,6 +2910,7 @@ table.gridtbl tbody td.dcol {
     table.gridtbl td.today-col {
       background: rgba(53, 208, 168, .045);
       box-sizing: border-box;
+      transform: translateZ(0);
     }
 
     table.gridtbl tfoot td {
@@ -3127,7 +3164,7 @@ table.gridtbl tbody td.dcol {
       </div>
 
       <div class="ctrls">
-        <span class="live-tag" id="liveTag"><span class="dot"></span> Live</span>
+        <span class="live-tag" id="liveTag"><span class="dot"></span> Live<span class="live-timer" id="liveTimer"></span></span>
         <select id="dateSel" title="Select a date"></select>
         <button class="btn btn-accent" id="exportBtn">⤓ Export CSV</button>
         <a class="btn" href="/portal/login">Admin / Login</a>
@@ -3300,8 +3337,42 @@ table.gridtbl tbody td.dcol {
     let currentDate = "";
     let allRecords = [];
     let pollTimer = null;
+    let liveTickTimer = null;
+    let lastApiTime = null;   // Date.now() of last successful /api/data response
+    let lastApiOk = null;     // null = no attempt yet, true = last attempt ok, false = last attempt failed
+    let viewingToday = true;  // false when browsing a past date (not a connectivity signal)
 
     const $ = id => document.getElementById(id);
+
+    function fmtAgo(ms) {
+      const s = Math.floor(ms / 1000);
+      if (s < 60) return s + "s ago";
+      return Math.floor(s / 60) + "m " + (s % 60) + "s ago";
+    }
+
+    function updateLiveTag() {
+      const tag = $("liveTag");
+      if (!tag) return;
+
+      if (!viewingToday) {
+        tag.className = "live-tag paused";
+        tag.innerHTML = `<span class="dot"></span> History`;
+        return;
+      }
+
+      if (lastApiTime == null) {
+        tag.className = "live-tag";
+        tag.innerHTML = `<span class="dot"></span> Live`;
+        return;
+      }
+
+      const elapsed = Date.now() - lastApiTime;
+      let state = "live", label = "Live";
+      if (elapsed > POLL_MS * 2) { state = "delay"; label = "Delay"; }
+
+      tag.className = "live-tag" + (state === "live" ? "" : " " + state);
+      tag.innerHTML = `<span class="dot"></span> ${label}<span class="live-timer" id="liveTimer"> · ${fmtAgo(elapsed)}</span>`;
+    }
 
     function debounce(fn, wait) {
       let t;
@@ -3487,12 +3558,15 @@ table.gridtbl tbody td.dcol {
         renderCams(d.per_camera);
         if ($("dateSel").options.length === 0) renderDateOptions(d.available_dates, d.date);
 
-        const tag = $("liveTag");
-        if (isToday) { tag.className = "live-tag"; tag.innerHTML = `<span class="dot"></span> Live`; }
-        else { tag.className = "live-tag paused"; tag.innerHTML = `<span class="dot"></span> History`; }
+        viewingToday = isToday;
+        lastApiOk = true;
+        lastApiTime = Date.now();
+        updateLiveTag();
 
         $("footnote").textContent = `Last updated ${d.server_time}` + (d.csv_exists ? "" : "  ·  ⚠ Attendance log not yet created — start the recognition service");
       } catch (e) {
+        lastApiOk = false;
+        updateLiveTag();
         $("footnote").textContent = "⚠ Unable to reach the server — please confirm the dashboard service is running";
       }
     }
@@ -3747,6 +3821,8 @@ table.gridtbl tbody td.dcol {
       });
     }
     fetchData().then(restartPoll);
+    updateLiveTag();
+    liveTickTimer = setInterval(updateLiveTag, 1000);
   </script>
 </body>
 
