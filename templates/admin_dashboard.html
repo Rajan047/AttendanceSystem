@@ -2446,6 +2446,19 @@
     </div>
   </div>
 
+  <!-- Employee delete/deactivate confirmation -->
+  <div class="modal-backdrop" id="empDelModal">
+    <div class="modal">
+      <h3 id="edTitle">Confirm</h3>
+      <div style="color:var(--muted); font-size:.86rem;" id="edSub">—</div>
+      <div class="warn" id="edWarn" style="display:none;"></div>
+      <div class="modal-actions">
+        <button class="btn" id="edCancel">Cancel</button>
+        <button class="btn btn-accent" id="edConfirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script>
@@ -2794,11 +2807,29 @@
         toast(d.error || "Failed", false);
       }
     }
-    async function del(id, hard) {
-      if (!confirm(hard ? "Permanently delete this employee, their attendance history AND face embedding? Cannot be undone." : "Deactivate this employee? Live cameras will stop counting them.")) return;
+    let _pendingDel = null;
+    function del(id, hard) {
+      const e = employees.find(x => x.id === id);
+      _pendingDel = { id, hard };
+      $("edTitle").textContent = hard ? "Delete employee" : "Deactivate employee";
+      $("edSub").textContent = e ? e.name : "";
+      $("edWarn").style.display = "block";
+      $("edWarn").textContent = hard
+        ? "Permanently delete this employee, their attendance history AND face embedding. This cannot be undone."
+        : "Live cameras will stop counting them.";
+      $("edConfirm").textContent = hard ? "Delete" : "Deactivate";
+      $("empDelModal").classList.add("open");
+    }
+    function closeEmpDel() { $("empDelModal").classList.remove("open"); _pendingDel = null; }
+    $("edCancel").addEventListener("click", closeEmpDel);
+    $("empDelModal").addEventListener("click", e => { if (e.target.id === "empDelModal") closeEmpDel(); });
+    $("edConfirm").addEventListener("click", async () => {
+      if (!_pendingDel) return;
+      const { id, hard } = _pendingDel;
+      closeEmpDel();
       const res = await fetch(`/api/portal/employees/${id}` + (hard ? "?hard=1" : ""), { method: "DELETE" });
       if (res.ok) { toast(hard ? "Deleted" : "Deactivated"); loadEmployees(); } else toast("Failed", false);
-    }
+    });
 
     /* EMPLOYEE PROFILE CARD */
     let profileEmp = null;
