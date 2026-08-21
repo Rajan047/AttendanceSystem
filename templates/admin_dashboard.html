@@ -776,6 +776,58 @@
       margin-top: 6px;
     }
 
+    @media (max-width: 1400px) {
+      #view-monthly .stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      #view-monthly .card {
+        width: 100%;
+        height: auto;
+        min-height: 90px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #view-monthly .stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      #view-monthly .card {
+        width: 100%;
+        height: auto;
+        min-height: 80px;
+        padding: 12px;
+      }
+      #view-monthly .card .num {
+        font-size: 1.3rem;
+        margin-top: 4px;
+      }
+      #view-monthly .card .lbl {
+        font-size: .68rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #view-monthly .stats {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      #view-monthly .card {
+        width: 100%;
+        height: auto;
+        min-height: 72px;
+        padding: 10px 12px;
+      }
+      #view-monthly .card .num {
+        font-size: 1.2rem;
+        margin-top: 2px;
+      }
+      #view-monthly .card .lbl {
+        font-size: .65rem;
+      }
+    }
+
     @media (max-width: 600px) {
       .grid-scroll {
         width: 100%;
@@ -995,6 +1047,210 @@
 
     .icon-btn.danger:hover {
       color: var(--red);
+    }
+
+    /* ── Employee cards ── */
+    .emp-card {
+      background: #1e2537;
+      border: 1px solid #2a3448;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: box-shadow .15s, border-color .15s;
+    }
+
+    .emp-card:hover {
+      border-color: #3a4a68;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
+    }
+
+    .emp-card.login-disabled {
+      background: #1f1a1a;
+      border: 1px solid #3d1a1a;
+    }
+
+    .emp-card.login-disabled:hover {
+      border-color: #5c2a2a;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
+    }
+
+    .emp-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .85rem;
+      color: #ffffff;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .emp-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .emp-avatar .fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .emp-avatar.avatar-active {
+      background: #0d3d2e;
+      color: #1D9E75;
+    }
+
+    .emp-avatar.avatar-disabled {
+      background: #3d1a1a;
+      color: #E24B4A;
+    }
+
+    .emp-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .emp-name {
+      font-weight: 700;
+      font-size: 14px;
+      color: #e2e8f0;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .emp-meta {
+      font-size: 12px;
+      color: #7c8fa8;
+      margin-bottom: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .emp-email {
+      font-size: 11px;
+      color: #4a5f7a;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .emp-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .emp-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    .emp-pill::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .emp-pill.active-pill {
+      color: #1D9E75;
+      background: #0d3d2e;
+      border: 1px solid #1D9E75;
+    }
+
+    .emp-pill.login-yes {
+      color: #378ADD;
+      background: #0d2b3d;
+      border: 1px solid #1a5276;
+    }
+
+    .emp-pill.login-no {
+      color: #E24B4A;
+      background: #3d0d0d;
+      border: 1px solid #7a1a1a;
+    }
+
+    .emp-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .emp-action-btn {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #3a4a68;
+      background: #2a3448;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: .9rem;
+      color: #fcfcfc;
+      transition: .15s;
+      text-decoration: none;
+    }
+
+    .emp-action-btn:hover {
+      background: #3a4a68;
+      border-color: #4a5f8a;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    .emp-action-btn.danger {
+      color: #f87171;
+      /* border-color: #5c2a2a;
+      background: #3d1a1a; */
+    }
+
+    .emp-action-btn.danger:hover {
+      /* background: #5c2a2a;
+      border-color: #7a3a3a; */
+      color: #fca5a5;
+    }
+
+    @media (max-width: 767px) {
+      .emp-card {
+        flex-wrap: wrap;
+      }
+
+      .emp-actions {
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 8px;
+      }
+    }
+
+    #empCards {
+      background: #111827;
+      border-radius: 16px;
+      padding: 14px;
     }
 
     .empty {
@@ -2137,23 +2393,7 @@
           <input class="search" id="empSearch" placeholder="Search name…">
           <button class="btn btn-accent" id="btnAddEmployee">+ Add Employee</button>
         </div>
-        <div class="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Designation</th>
-                <th>Email</th>
-                <th>Login</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="empBody"></tbody>
-          </table>
-        </div>
+        <div id="empCards" style="padding: 16px;"></div>
       </div>
     </div>
 
@@ -2477,6 +2717,13 @@
       return `<img src="/photos/${photo}" alt="${name}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'fallback',textContent:'${ini}'}))">`;
     }
 
+    const AVATAR_COLORS = ["#1D9E75", "#5DCAA5", "#378ADD", "#D85A30", "#7F77DD", "#D84A30", "#2EA89F", "#8B5CF6"];
+    function getAvatarColor(name) {
+      let hash = 0;
+      for (let i = 0; i < (name || "").length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+    }
+
     let activeTab = "overview";
     document.querySelectorAll(".tab").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -2609,23 +2856,38 @@
     function renderEmployees() {
       const q = $("empSearch").value.trim().toLowerCase();
       let rows = employees; if (q) rows = rows.filter(e => e.name.toLowerCase().includes(q));
-      const tb = $("empBody");
-      if (!rows.length) { tb.innerHTML = `<tr><td colspan="8"><div class="empty">No employees yet — add your first one.</div></td></tr>`; return; }
-      tb.innerHTML = rows.map(e => {
+      const container = $("empCards");
+      if (!rows.length) { container.innerHTML = `<div class="empty">No employees yet — add your first one.</div>`; return; }
+      container.innerHTML = rows.map(e => {
         const av = avatarHTML(e.photo_path, e.name);
-        const login = e.has_login ? `<span class="pill ready">yes</span>` : `<span class="pill unmarked">no</span>`;
-        const st = e.active ? `<span class="pill active">active</span>` : `<span class="pill inactive">inactive</span>`;
-        return `<tr class="clickable" onclick="openProfile(${e.id})">
-      <td><div class="avatar">${av}</div></td>
-      <td>${e.name}</td><td>${e.department || '—'}</td><td>${e.designation || '—'}</td>
-      <td style="color:var(--muted); font-size:.82rem;">${e.email || '—'}</td>
-      <td>${login}</td><td>${st}</td>
-      <td onclick="event.stopPropagation()">
-        <button class="icon-btn" title="Edit" onclick="openEdit(${e.id})">✎</button>
-        <button class="icon-btn" title="Regenerate face embedding" onclick="regen(${e.id})">⟳</button>
-        <button class="icon-btn danger" title="Deactivate" onclick="del(${e.id},false)">⏻</button>
-        <button class="icon-btn danger" title="Delete permanently" onclick="del(${e.id},true)">🗑</button>
-      </td></tr>`;
+        const avatarColor = getAvatarColor(e.name);
+        const loginPill = e.has_login
+          ? `<span class="emp-pill login-yes">login: yes</span>`
+          : `<span class="emp-pill login-no">login: no</span>`;
+        const activePill = e.active
+          ? `<span class="emp-pill active-pill">active</span>`
+          : `<span class="emp-pill" style="color:#6b7280;background:#f3f4f6;">inactive</span>`;
+        const avatarEl = e.photo_path
+          ? `<div class="emp-avatar">${av}</div>`
+          : `<div class="emp-avatar" style="background:${avatarColor}">${av}</div>`;
+        return `<div class="emp-card" onclick="openProfile(${e.id})">
+          ${avatarEl}
+          <div class="emp-info">
+            <div class="emp-name">${e.name}</div>
+            <div class="emp-meta">${e.department || '—'} · ${e.designation || '—'}</div>
+            <div class="emp-email">${e.email || '—'}</div>
+            <div class="emp-pills">
+              ${activePill}
+              ${loginPill}
+            </div>
+          </div>
+          <div class="emp-actions" onclick="event.stopPropagation()">
+            <button class="emp-action-btn" title="Edit" onclick="openEdit(${e.id})">✎</button>
+            <button class="emp-action-btn" title="Regenerate face embedding" onclick="regen(${e.id})">⟳</button>
+            <button class="emp-action-btn danger" title="Deactivate" onclick="del(${e.id},false)">⏻</button>
+            <button class="emp-action-btn danger" title="Delete permanently" onclick="del(${e.id},true)">🗑</button>
+          </div>
+        </div>`;
       }).join("");
     }
     $("empSearch").addEventListener("input", renderEmployees);
